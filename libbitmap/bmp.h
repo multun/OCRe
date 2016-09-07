@@ -7,25 +7,25 @@ typedef struct __attribute__((__packed__))
 s_bmp_file_header
 {
   unsigned char	sig_BM[2];
-  unsigned int  bfSize;
+  uint32_t	bfSize;
   uint32_t	unused_zero;
-  unsigned int  imageDataOffset;
+  uint32_t	imageDataOffset;
 } t_bmp_file_header;
 
 typedef struct __attribute__((__packed__))
 s_bmp_img_header
 {
-  unsigned int  biSize;
-  int           width;
-  int           height;
+  uint32_t	biSize;
+  uint32_t      width;
+  uint32_t      height;
   uint16_t	planes;
   uint16_t	bitPix;
-  unsigned int  biCompression;
-  unsigned int  biSizeImage;
-  int           biXPelsPerMeter;
-  int           biYPelsPerMeter;
-  unsigned int  biClrUsed;
-  unsigned int  biClrImportant;
+  uint32_t	biCompression;
+  uint32_t	biSizeImage;
+  uint32_t      biXPelsPerMeter;
+  uint32_t      biYPelsPerMeter;
+  uint32_t	biClrUsed;
+  uint32_t	biClrImportant;
 } t_bmp_img_header;
 
 typedef struct __attribute__((__packed__))
