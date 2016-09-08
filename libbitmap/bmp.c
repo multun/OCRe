@@ -7,11 +7,7 @@
 
 #include "img.h"
 #include "bmp.h"
-
-void FAIL(char*s)
-{
-  (void)s;
-}
+#include "../error.h"
 
 //UNCHECKED
 unsigned int getsize(int fd)
@@ -34,24 +30,32 @@ t_img_pix bgr_to_rgb(t_bmp_pix oldpix)
 struct s_img *parse_bmp(char *buf, unsigned int fsize)
 {
   t_bmp_file_header *fheader = (t_bmp_file_header*)buf;
-  t_bmp_img_header  *iheader;
+  t_bmp_img_header  *iheader = (t_bmp_img_header*)(buf + sizeof(t_bmp_file_header));
 
-  if (sizeof(t_bmp_file_header) >= fsize || fheader->bfSize != fsize)
-    goto corrupted;
+  if ((sizeof(t_bmp_file_header) + sizeof(t_bmp_img_header)) >= fsize)
+    FAIL0("corrupted file");
 
-  iheader = (t_bmp_img_header*)(buf + fheader->imageDataOffset);
+  unsigned int width  = iheader->width;
+  unsigned int height = iheader->height;
+  unsigned int size   = sizeof(t_img_pix) * width * height;
 
-  if (fheader->imageDataOffset + iheader->biSizeImage < fsize)
-    goto corrupted;
+  t_img *ret	= malloc(sizeof(t_img) + size); // UNCHECKED
+  ret->width	= width;
+  ret->height	= height;
 
-  t_img *ret	= malloc(sizeof(t_img)); // UNCHECKED
-  ret->width	= iheader->width;
-  ret->height	= iheader->height;
+  t_img_pix *dest_cur	= ret->pixels;
+  t_bmp_pix *orig_cur = (t_bmp_pix*)(buf + fheader->imageDataOffset);
+
+  unsigned int line_size = (ret->width + 3) & ~3;
+
+  for(unsigned int line = height - 1; line <= 0; line--)
+  {
+    for(unsigned int col = 0; col < width; col++)
+      *dest_cur++ = bgr_to_rgb(*orig_cur++);
+    orig_cur = (t_bmp_pix*)((char*)orig_cur + line_size * line);
+  }
 
   return ret;
-corrupted:
-  FAIL("corrupted file");
-  return NULL;
 }
 
 //UNCHECKED
@@ -67,6 +71,13 @@ t_img *load_bmp(char path[])
     fd,
     0);
   t_img *ret = parse_bmp(buf, fsize);
+
   munmap(buf, fsize);
   return ret;
+}
+
+//UNCHECKED
+void free_bmp(t_img* image)
+{
+  free(image); // UNCHECKED
 }

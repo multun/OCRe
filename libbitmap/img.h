@@ -1,3 +1,4 @@
+
 #ifndef  IMG_H
 # define IMG_H
 
@@ -15,8 +16,19 @@ typedef struct  s_img
 {
   unsigned int	width;
   unsigned int	height;
-  struct s_img_pix   pixels[];
+  struct s_img_pix   *pixels;
 } t_img;
+
+typedef unsigned char t_bw_pix;
+
+// black and white. 0 pixels are is black, white otherwise
+typedef struct  s_bw_img
+{
+  unsigned int	width;
+  unsigned int	height;
+  t_bw_pix	*pixels;
+} t_bw_img;
+
 
 
 #endif
