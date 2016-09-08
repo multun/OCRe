@@ -10,6 +10,6 @@ int main()
   printf("pixaddr %p\n", ret->pixels);
   printf("ret %p\n", ret);
 
-  free_bmp(ret);
+  free_img(ret);
   return 0;
 }

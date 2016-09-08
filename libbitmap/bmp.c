@@ -8,6 +8,7 @@
 #include "img.h"
 #include "bmp.h"
 #include "../error.h"
+#include "../memtools.h"
 
 //UNCHECKED
 unsigned int getsize(int fd)
@@ -43,16 +44,18 @@ struct s_img *parse_bmp(char *buf, unsigned int fsize)
   ret->width	= width;
   ret->height	= height;
 
-  t_img_pix *dest_cur	= ret->pixels;
+  unsigned int dest_offset = sizeof(t_img_pix) * width * (height - 1);
+  t_img_pix *dest_cur = (t_img_pix*)((char*)ret->pixels + dest_offset);
   t_bmp_pix *orig_cur = (t_bmp_pix*)(buf + fheader->imageDataOffset);
 
-  unsigned int line_size = (ret->width + 3) & ~3;
+  unsigned int offset = 4 - ((ret->width * 3) & 3);
 
-  for(unsigned int line = height - 1; line <= 0; line--)
+  for(unsigned int line = 0; line < height; line++)
   {
     for(unsigned int col = 0; col < width; col++)
       *dest_cur++ = bgr_to_rgb(*orig_cur++);
-    orig_cur = (t_bmp_pix*)((char*)orig_cur + line_size * line);
+    orig_cur = (t_bmp_pix*)((char*)orig_cur + offset);
+    dest_cur = (t_img_pix*)((char*)dest_cur - 2 * width * sizeof(t_img_pix));
   }
 
   return ret;
