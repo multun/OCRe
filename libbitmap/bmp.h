@@ -40,7 +40,7 @@ unsigned int	getsize(int fd);
 t_img_pix	bgr_to_rgb(t_bmp_pix oldpix);
 struct s_img	*parse_bmp(char *buf, unsigned int fsize);
 t_img		*load_bmp(char path[]);
-void		free_bmp(t_img* image);
+void		free_img(t_img* image);
 
 
 #endif

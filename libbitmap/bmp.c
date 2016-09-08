@@ -76,8 +76,29 @@ t_img *load_bmp(char path[])
   return ret;
 }
 
+t_img* alloc_img(unsigned int width, unsigned int height)
+{
+  t_img *ret	= malloc(sizeof(t_img) + sizeof(t_img_pix) * width * height);
+  ret->width	= width;
+  ret->height	= height;
+  return ret;
+}
+
+t_bw_img* alloc_bw_img(unsigned int width, unsigned int height)
+{
+  t_bw_img *ret	= malloc(sizeof(t_bw_img) + sizeof(t_bw_pix) * width * height);
+  ret->width	= width;
+  ret->height	= height;
+  return ret;
+}
+
 //UNCHECKED
-void free_bmp(t_img* image)
+void free_img(t_img* image)
+{
+  free(image); // UNCHECKED
+}
+
+void free_bw_img(t_bw_img* image)
 {
   free(image); // UNCHECKED
 }
