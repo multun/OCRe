@@ -6,7 +6,7 @@ CFLAGS_BUILD=-O3 -Wall -pedantic -std=c99 -Wextra
 
 #pthread pour le threading, et ld pour les modules
 LDFLAGS= #-lpthread -ldl
-EXEC=libbitmap
+EXEC=libbitmap.so
 
 SRC= $(wildcard *.c)
 
@@ -30,7 +30,7 @@ build: clean all
 
 $(EXEC): $(OBJ)
 	@echo "Building the main binary file..."
-	@$(CC) -shared -o $@.so $^ $(LDFLAGS)
+	@$(CC) -shared -o $@ $^ $(LDFLAGS)
 
 #dépendances additionnelles ; le fichier est reconstruit si une dépendance est modifiée.
 
@@ -38,7 +38,7 @@ $(EXEC): $(OBJ)
 # règle générique pour tous les dépendances en .o, avec un pipe pour les arguments de comp.
 %.o: %.c
 	@echo "Building $@..."
-	@$(CC) -o $@ -c $< $(CFLAGS)
+	@$(CC) -fPIC -o $@ -c $< $(CFLAGS)
 #.phony reconstruit toujours ses dépendances
 .PHONY: clean mrproper
 #vire tous les fichiers intermédiaires
