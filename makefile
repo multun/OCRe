@@ -8,7 +8,8 @@ LDFLAGS= #-lpthread -ldl
 EXEC=ocre
 
 SRC= $(wildcard *.c)
-#SRC+= $(wildcard threads/*.c)
+SRC+= $(wildcard binarisation/*.c)
+SRC+= $(wildcard libbitmap/*.c)
 
 OBJ= $(SRC:.c=.o)
 
