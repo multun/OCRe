@@ -95,6 +95,21 @@ t_bw_img* alloc_bw_img(unsigned int width, unsigned int height)
   return ret;
 }
 
+t_bw_img *greyscale(unsigned char (*intensity)(t_img_pix), const t_img *orig_img)
+{
+  unsigned int width = orig_img->width;
+  unsigned int height = orig_img->height;
+  t_bw_img* img = alloc_bw_img(width, height);
+
+  for(unsigned int x = 0; x < width; x++)
+    for(unsigned int y = 0; y < height; y++)
+    {
+      unsigned int offset = y * width + x;
+      img->pixels[offset] = intensity(orig_img->pixels[offset]);
+    }
+  return img;
+}
+
 //UNCHECKED
 void free_img(t_img* image)
 {

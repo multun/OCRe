@@ -1,10 +1,16 @@
 #include <stdlib.h>
 #include "binarise.h"
 #include "../error.h"
+#include "histogram.h"
+#include "bin_treshold.h"
+#include "../libbitmap/bmp.h"
 
 t_bw_img *bin_median(const t_img *orig_img)
 {
-  UNUSED(orig_img);
-  return NULL;
-  //s_bw_img *dest_img = malloc(orig_img->width * orig_img->height
+  t_histogram hist;
+  t_bw_img *bw_img = greyscale(intensity, orig_img);
+  fill_histogram(bw_img, &hist);
+  unsigned char median = (unsigned char)histogram_median(&hist);
+  bw_img_treshold(median, bw_img);
+  return bw_img;
 }

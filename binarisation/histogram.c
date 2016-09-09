@@ -14,11 +14,16 @@ void fill_histogram(t_bw_img *image, t_histogram *hist)
 // TODO: do a sister function with quartiles / ratios
 unsigned int histogram_median(const t_histogram *hist)
 {
+  return histogram_ratio(0.5f, hist);
+}
+
+unsigned int histogram_ratio(float ratio, const t_histogram *hist)
+{
   unsigned int ncount = 0;
   for (unsigned int i = 0; i < sizeof(hist->cells); i++)
   {
     ncount += hist->cells[i];
-    if (ncount > hist->count / 2)
+    if (ncount > hist->count * ratio)
       return i;
   }
   FAIL0("invalid histogram");

@@ -47,5 +47,7 @@ t_img*		alloc_img(unsigned int width, unsigned int height);
 void		free_img(t_img* image);
 void		free_bw_img(t_bw_img* image);
 
+t_bw_img	*greyscale(unsigned char (*intensity)(t_img_pix), const t_img*);
+
 
 #endif
