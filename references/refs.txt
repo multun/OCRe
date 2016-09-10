@@ -1,3 +1,11 @@
+INTEGRAL IMAGES
+ useful for Wolf binarisation
+ - OpenCV implementation:
+  tuto:    http://aishack.in/tutorials/integral-images-opencv/
+  doc:     http://www.swarthmore.edu/NatSci/mzucker1/opencv-2.4.10-docs/modules/imgproc/doc/miscellaneous_transformations.html#integral
+  source:  https://github.com/opencv/opencv/blob/master/modules/imgproc/src/sumpixels.cpp#L144
+
+
 BINARISATION
  - Wolf approach:
  http://liris.cnrs.fr/christian.wolf/papers/icpr2002v.pdf
