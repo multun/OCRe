@@ -37,17 +37,17 @@ s_bmp_pix
 } t_bmp_pix;
 
 unsigned int	getsize(int fd);
-t_img_pix	bgr_to_rgb(t_bmp_pix oldpix);
-struct s_img	*parse_bmp(char *buf, unsigned int fsize);
-t_img		*load_bmp(char path[]);
+t_color_pix	bgr_to_rgb(t_bmp_pix oldpix);
+t_color_img	*parse_bmp(char *buf, unsigned int fsize);
+t_color_img	*load_bmp(char path[]);
 
-t_bw_img*	alloc_bw_img(unsigned int width, unsigned int height);
-t_img*		alloc_img(unsigned int width, unsigned int height);
+t_bw_img        *alloc_bw_img(unsigned int width, unsigned int height);
+t_color_img     *alloc_img(unsigned int width, unsigned int height);
 
-void		free_img(t_img* image);
+void		free_img(t_color_img* image);
 void		free_bw_img(t_bw_img* image);
 
-t_bw_img	*greyscale(unsigned char (*intensity)(t_img_pix), const t_img*);
+t_bw_img	*greyscale(unsigned char (*intensity)(t_color_pix), const t_color_img*);
 
 
 #endif

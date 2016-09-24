@@ -5,7 +5,7 @@
 #include "bin_treshold.h"
 #include "../libbitmap/bmp.h"
 
-t_bw_img *bin_median(const t_img *orig_img)
+t_bw_img *bin_median(const t_color_img *orig_img)
 {
   t_histogram hist;
   t_bw_img *bw_img = greyscale(intensity, orig_img);

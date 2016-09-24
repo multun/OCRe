@@ -10,9 +10,9 @@ typedef enum e_bintype
   WOLF,
 } t_bintype;
 
-typedef t_bw_img* (*t_binarisator)(const t_img *);
+typedef t_bw_img* (*t_binarisator)(const t_color_img *);
 
-t_bw_img *binarise(t_bintype bintype, const t_img *orig_img);
-unsigned char intensity(t_img_pix pix);
+t_bw_img *binarise(t_bintype bintype, const t_color_img *orig_img);
+unsigned char intensity(t_color_pix pix);
 
 #endif

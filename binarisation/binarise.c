@@ -13,12 +13,12 @@ t_binarisator binarisators[] = {
   bin_wolf,
 };
 
-unsigned char intensity(t_img_pix pix)
+unsigned char intensity(t_color_pix pix)
 {
   return (pix.r + pix.g + pix.b)/3;
 }
 
-t_bw_img *binarise(t_bintype bintype, const t_img *orig_img)
+t_bw_img *binarise(t_bintype bintype, const t_color_img *orig_img)
 {
   if (bintype > sizeof(binarisators))
     FAIL0("no such binarisator");

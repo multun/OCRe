@@ -6,7 +6,7 @@
 
 int main(void)
 {
-  t_img *img = load_bmp("libbitmap/tests/test_art.bmp");
+  t_color_img *img = load_bmp("libbitmap/tests/test_art.bmp");
 
   t_bw_img *bw_img = binarise(FIXED, img);
 

@@ -18,9 +18,9 @@ unsigned int getsize(int fd)
   return infos.st_size;
 }
 
-t_img_pix bgr_to_rgb(t_bmp_pix oldpix)
+t_color_pix bgr_to_rgb(t_bmp_pix oldpix)
 {
-  t_img_pix npix;
+  t_color_pix npix;
   npix.r = oldpix.r;
   npix.g = oldpix.g;
   npix.b = oldpix.b;
@@ -28,7 +28,7 @@ t_img_pix bgr_to_rgb(t_bmp_pix oldpix)
   return npix;
 }
 
-struct s_img *parse_bmp(char *buf, unsigned int fsize)
+t_color_img *parse_bmp(char *buf, unsigned int fsize)
 {
   t_bmp_file_header *fheader = (t_bmp_file_header*)buf;
   t_bmp_img_header  *iheader = (t_bmp_img_header*)(buf + sizeof(t_bmp_file_header));
@@ -38,14 +38,14 @@ struct s_img *parse_bmp(char *buf, unsigned int fsize)
 
   unsigned int width  = iheader->width;
   unsigned int height = iheader->height;
-  unsigned int size   = sizeof(t_img_pix) * width * height;
+  unsigned int size   = sizeof(t_color_pix) * width * height;
 
-  t_img *ret	= malloc(sizeof(t_img) + size); // UNCHECKED
+  t_color_img *ret	= malloc(sizeof(t_color_img) + size); // UNCHECKED
   ret->width	= width;
   ret->height	= height;
 
-  unsigned int dest_offset = sizeof(t_img_pix) * width * (height - 1);
-  t_img_pix *dest_cur = (t_img_pix*)((char*)ret->pixels + dest_offset);
+  unsigned int dest_offset = sizeof(t_color_pix) * width * (height - 1);
+  t_color_pix *dest_cur = (t_color_pix*)((char*)ret->pixels + dest_offset);
   t_bmp_pix *orig_cur = (t_bmp_pix*)(buf + fheader->imageDataOffset);
 
   unsigned int offset = 4 - ((ret->width * 3) & 3);
@@ -55,14 +55,14 @@ struct s_img *parse_bmp(char *buf, unsigned int fsize)
     for(unsigned int col = 0; col < width; col++)
       *dest_cur++ = bgr_to_rgb(*orig_cur++);
     orig_cur = (t_bmp_pix*)((char*)orig_cur + offset);
-    dest_cur = (t_img_pix*)((char*)dest_cur - 2 * width * sizeof(t_img_pix));
+    dest_cur = (t_color_pix*)((char*)dest_cur - 2 * width * sizeof(t_color_pix));
   }
 
   return ret;
 }
 
 //UNCHECKED
-t_img *load_bmp(char path[])
+t_color_img *load_bmp(char path[])
 {
   int		fd	= open(path, 0, O_RDONLY);
   unsigned int	fsize	= getsize(fd);
@@ -73,15 +73,15 @@ t_img *load_bmp(char path[])
     MAP_PRIVATE,
     fd,
     0);
-  t_img *ret = parse_bmp(buf, fsize);
+  t_color_img *ret = parse_bmp(buf, fsize);
 
   munmap(buf, fsize);
   return ret;
 }
 
-t_img* alloc_img(unsigned int width, unsigned int height)
+t_color_img* alloc_img(unsigned int width, unsigned int height)
 {
-  t_img *ret	= malloc(sizeof(t_img) + sizeof(t_img_pix) * width * height);
+  t_color_img *ret	= malloc(sizeof(t_color_img) + sizeof(t_color_pix) * width * height);
   ret->width	= width;
   ret->height	= height;
   return ret;
@@ -95,7 +95,7 @@ t_bw_img* alloc_bw_img(unsigned int width, unsigned int height)
   return ret;
 }
 
-t_bw_img *greyscale(unsigned char (*intensity)(t_img_pix), const t_img *orig_img)
+t_bw_img *greyscale(unsigned char (*intensity)(t_color_pix), const t_color_img *orig_img)
 {
   unsigned int width = orig_img->width;
   unsigned int height = orig_img->height;
@@ -111,7 +111,7 @@ t_bw_img *greyscale(unsigned char (*intensity)(t_img_pix), const t_img *orig_img
 }
 
 //UNCHECKED
-void free_img(t_img* image)
+void free_img(t_color_img* image)
 {
   free(image); // UNCHECKED
 }

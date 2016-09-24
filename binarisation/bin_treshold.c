@@ -15,7 +15,7 @@ void bw_img_treshold(unsigned char treshold, t_bw_img *img)
     }
 }
 
-t_bw_img *bin_treshold(unsigned char treshold, const t_img *orig_img)
+t_bw_img *bin_treshold(unsigned char treshold, const t_color_img *orig_img)
 {
   t_bw_img *bw_img = greyscale(intensity, orig_img);
   bw_img_treshold(treshold, bw_img);
