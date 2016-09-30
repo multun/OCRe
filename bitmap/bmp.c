@@ -8,7 +8,6 @@
 #include "img.h"
 #include "bmp.h"
 #include "../error.h"
-#include "../memtools.h"
 
 //UNCHECKED
 static long unsigned int getsize(int fd)

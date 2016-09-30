@@ -23,7 +23,7 @@ const float k = 0.11f;
 t_bw_img *bin_sauvola(const t_color_img *orig_img)
 {
   t_bw_img *bw_img = greyscale(intensity, orig_img);
-  t_bw_img *ret_img = bw_img_alloc_twin(bw_img);
+  t_bw_img *ret_img = alloc_bw_img_twin(bw_img);
 
   for (uint y = 0; y < bw_img->height; y++)
     for (uint x = 0; x < bw_img->width; x++)

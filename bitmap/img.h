@@ -25,18 +25,28 @@ typedef unsigned char t_bw_pix;
 
 IMAGE_DECLARE(t_color_pix, color_img)
 IMAGE_DECLARE(t_bw_pix, bw_img)
+IMAGE_DECLARE(double, double_mat)
 
 
 #define AT(img, x, y) \
   (img->pixels[y * img->width + x])
 
+#define DEFAULT_IMG_TYPES_APPLY(F, SEP)			\
+  F(color_img) SEP					\
+  F(bw_img) SEP						\
+  F(double_mat) SEP
 
-t_bw_img        *alloc_bw_img(unsigned int width, unsigned int height);
-t_color_img     *alloc_img(unsigned int width, unsigned int height);
-t_color_img	*img_alloc_twin(t_color_img*);
-t_bw_img	*bw_img_alloc_twin(t_bw_img*);
-void		free_img(t_color_img* image);
-void		free_bw_img(t_bw_img* image);
+#define ALLOC_IMAGE_DECLARE(TYPE)					\
+  t_ ## TYPE * alloc_ ## TYPE (unsigned int width, unsigned int height)
+
+#define FREE_IMAGE_DECLARE(TYPE)		\
+  void free_ ## TYPE (t_ ## TYPE *img)
+#define ALLOC_IMAGE_TWIN_DECLARE(TYPE)			\
+  t_ ## TYPE * alloc_ ## TYPE ## _twin(t_ ## TYPE *img)
+
+DEFAULT_IMG_TYPES_APPLY(ALLOC_IMAGE_DECLARE, ;)
+DEFAULT_IMG_TYPES_APPLY(FREE_IMAGE_DECLARE, ;)
+DEFAULT_IMG_TYPES_APPLY(ALLOC_IMAGE_TWIN_DECLARE, ;)
 
 t_bw_img	*greyscale(unsigned char (*intensity)(t_color_pix), const t_color_img*);
 
