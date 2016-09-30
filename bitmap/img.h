@@ -36,13 +36,41 @@ IMAGE_DECLARE(double, double_mat)
   F(bw_img) SEP						\
   F(double_mat) SEP
 
+// IMAGE DECLARATION //////////////////////
 #define ALLOC_IMAGE_DECLARE(TYPE)					\
   t_ ## TYPE * alloc_ ## TYPE (unsigned int width, unsigned int height)
+#define ALLOC_IMAGE_DEFINE(TYPE)					\
+  ALLOC_IMAGE_DECLARE(TYPE)						\
+  {									\
+    t_ ## TYPE *ret	= malloc(					\
+      sizeof(t_ ## TYPE ) + sizeof(ret->pixels[0]) * width * height);	\
+    ret->width	= width;						\
+    ret->height	= height;						\
+    return ret;								\
+  }
 
+// IMAGE FREEING //////////////////////
 #define FREE_IMAGE_DECLARE(TYPE)		\
   void free_ ## TYPE (t_ ## TYPE *img)
+#define FREE_IMAGE_DEFINE(TYPE)						\
+  FREE_IMAGE_DECLARE(TYPE)						\
+  {									\
+    free(img);								\
+  }
+
+// IMAGE MIRRORING //////////////////////
 #define ALLOC_IMAGE_TWIN_DECLARE(TYPE)			\
   t_ ## TYPE * alloc_ ## TYPE ## _twin(t_ ## TYPE *img)
+#define ALLOC_IMAGE_TWIN_DEFINE(TYPE)					\
+  ALLOC_IMAGE_TWIN_DECLARE(TYPE)					\
+  {									\
+    return alloc_ ## TYPE (img->width, img->height);			\
+  }
+
+#define DEFINE_IMG_TOOLS(TYPE)			\
+  ALLOC_IMAGE_DEFINE(TYPE)			\
+  FREE_IMAGE_DEFINE(TYPE)			\
+  ALLOC_IMAGE_TWIN_DEFINE(TYPE)			\
 
 DEFAULT_IMG_TYPES_APPLY(ALLOC_IMAGE_DECLARE, ;)
 DEFAULT_IMG_TYPES_APPLY(FREE_IMAGE_DECLARE, ;)
