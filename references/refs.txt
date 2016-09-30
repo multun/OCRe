@@ -11,7 +11,14 @@ BINARISATION
  http://liris.cnrs.fr/christian.wolf/papers/icpr2002v.pdf
  http://liris.cnrs.fr/christian.wolf/software/binarize/
  => binarizewolfjolion.cpp
+ - Global approach:
+ https://github.com/zp-j/binarizewolfjolion
+ https://github.com/thethirdman/sauvolas/
 
 NOISE FILTERING
  - K-algorithm
  https://arxiv.org/pdf/1306.1462.pdf
+
+LEARNING
+ - General ressources:
+ https://github.com/kjw0612/awesome-rnn
