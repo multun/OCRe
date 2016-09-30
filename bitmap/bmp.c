@@ -11,11 +11,11 @@
 #include "../memtools.h"
 
 //UNCHECKED
-unsigned int getsize(int fd)
+static long unsigned int getsize(int fd)
 {
   struct stat infos;
   fstat(fd, &infos); //UNCHECKED
-  return infos.st_size;
+  return (long unsigned int)infos.st_size;
 }
 
 t_color_pix bgr_to_rgb(t_bmp_pix oldpix)
@@ -28,7 +28,7 @@ t_color_pix bgr_to_rgb(t_bmp_pix oldpix)
   return npix;
 }
 
-t_color_img *parse_bmp(char *buf, unsigned int fsize)
+t_color_img *parse_bmp(char *buf, long unsigned int fsize)
 {
   t_bmp_file_header *fheader = (t_bmp_file_header*)buf;
   t_bmp_img_header  *iheader = (t_bmp_img_header*)(buf + sizeof(t_bmp_file_header));
@@ -38,13 +38,13 @@ t_color_img *parse_bmp(char *buf, unsigned int fsize)
 
   unsigned int width  = iheader->width;
   unsigned int height = iheader->height;
-  unsigned int size   = sizeof(t_color_pix) * width * height;
+  long unsigned int size   = sizeof(t_color_pix) * width * height;
 
   t_color_img *ret	= malloc(sizeof(t_color_img) + size); // UNCHECKED
   ret->width	= width;
   ret->height	= height;
 
-  unsigned int dest_offset = sizeof(t_color_pix) * width * (height - 1);
+  long unsigned int dest_offset = sizeof(t_color_pix) * width * (height - 1);
   t_color_pix *dest_cur = (t_color_pix*)((char*)ret->pixels + dest_offset);
   t_bmp_pix *orig_cur = (t_bmp_pix*)(buf + fheader->imageDataOffset);
 
@@ -64,9 +64,9 @@ t_color_img *parse_bmp(char *buf, unsigned int fsize)
 //UNCHECKED
 t_color_img *load_bmp(char path[])
 {
-  int		fd	= open(path, 0, O_RDONLY);
-  unsigned int	fsize	= getsize(fd);
-  void		*buf	= mmap(
+  int			fd	= open(path, 0, O_RDONLY);
+  long unsigned int	fsize	= getsize(fd);
+  void			*buf	= mmap(
     NULL,
     fsize,
     PROT_READ,

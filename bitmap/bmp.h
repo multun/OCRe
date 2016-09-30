@@ -36,9 +36,8 @@ s_bmp_pix
   unsigned char r;
 } t_bmp_pix;
 
-unsigned int	getsize(int fd);
 t_color_pix	bgr_to_rgb(t_bmp_pix oldpix);
-t_color_img	*parse_bmp(char *buf, unsigned int fsize);
+t_color_img	*parse_bmp(char *buf, long unsigned int fsize);
 t_color_img	*load_bmp(char path[]);
 
 t_bw_img        *alloc_bw_img(unsigned int width, unsigned int height);
