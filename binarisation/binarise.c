@@ -6,11 +6,13 @@
 #include "bin_fixed.h"
 #include "bin_median.h"
 #include "bin_wolf.h"
+#include "bin_sauvola.h"
 
 t_binarisator binarisators[] = {
   bin_fixed,
   bin_median,
   bin_wolf,
+  bin_sauvola,
 };
 typedef unsigned int uint;
 unsigned char intensity(t_color_pix pix)

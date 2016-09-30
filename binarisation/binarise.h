@@ -8,6 +8,7 @@ typedef enum e_bintype
   FIXED,
   MEDIAN,
   WOLF,
+  SAUVOLA,
 } t_bintype;
 
 typedef t_bw_img* (*t_binarisator)(const t_color_img *);
