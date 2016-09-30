@@ -23,3 +23,16 @@ int img_deviation(t_bw_img *img, uint x, uint y)
   uchar d_y = AT(img, (uint)MAX(0, (int)x - 1), y);
   return (int)cur - (int)d_x - (int)d_y;
 }
+
+t_double_mat *integral(t_bw_img *img)
+{
+  t_double_mat *mat = alloc_double_mat(img->width, img->height);
+  for(uint x = 0; x < mat->width; x++)
+    for(uint y = 0; y < mat->height; y++)
+    {
+      double left = (x > 0) ? AT(mat, x-1, y) : 0.0;
+      double top = (y > 0) ? AT(mat, x, y-1) : 0.0;
+      AT(mat, x, y) += left + top + (double)AT(img, x, y);
+    }
+  return mat;
+}
