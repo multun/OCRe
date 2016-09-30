@@ -17,6 +17,17 @@ t_bw_img* alloc_bw_img(unsigned int width, unsigned int height)
   return ret;
 }
 
+t_color_img	*img_alloc_twin(t_color_img *img)
+{
+  return alloc_img(img->width, img->height);
+}
+
+t_bw_img	*bw_img_alloc_twin(t_bw_img *img)
+{
+  return alloc_bw_img(img->width, img->height);
+}
+
+
 t_bw_img *greyscale(unsigned char (*intensity)(t_color_pix), const t_color_img *orig_img)
 {
   unsigned int width = orig_img->width;

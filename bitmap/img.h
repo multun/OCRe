@@ -29,13 +29,12 @@ IMAGE_DECLARE(t_bw_pix, bw_img)
 
 #define AT(img, x, y) \
   (img->pixels[y * img->width + x])
-#define IMG_ALLOC_TWIN(img) \
-  malloc(sizeof(*img) + sizeof(*img->pixels) * img->height * img->width)
 
 
 t_bw_img        *alloc_bw_img(unsigned int width, unsigned int height);
 t_color_img     *alloc_img(unsigned int width, unsigned int height);
-
+t_color_img	*img_alloc_twin(t_color_img*);
+t_bw_img	*bw_img_alloc_twin(t_bw_img*);
 void		free_img(t_color_img* image);
 void		free_bw_img(t_bw_img* image);
 
