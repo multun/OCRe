@@ -23,7 +23,7 @@ unsigned int histogram_ratio(float ratio, const t_histogram *hist)
   for (unsigned int i = 0; i < sizeof(hist->cells); i++)
   {
     ncount += hist->cells[i];
-    if (ncount > hist->count * ratio)
+    if (ncount > (unsigned int)((long double)hist->count * ratio))
       return i;
   }
   FAIL0("invalid histogram");
