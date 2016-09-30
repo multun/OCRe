@@ -7,7 +7,9 @@ FLAGS_BUILD=-O3 -Wall -pedantic -std=c99 -Wextra -fomit-frame-pointer
 LDFLAGS=
 EXEC=ocre
 
-SRC = $(wildcard *.c)
+SRC  = $(wildcard *.c)
+SRC += $(wildcard binarisation/*.c)
+SRC += $(wildcard bitmap/*.c)
 
 OBJ = $(SRC:.c=.o)
 DEP = ${SRC:.c=.d}
@@ -20,7 +22,6 @@ build: clean all
 shared: CFLAGS  += -fPIC
 shared: LDFLAGS += -shared
 shared: clean all
-
 
 $(EXEC): $(OBJ)
 	@echo "Linking the main binary file..."

@@ -1,6 +1,6 @@
 #include <string.h>
 #include "../error.h"
-#include "../libbitmap/img.h"
+#include "../bitmap/img.h"
 #include "histogram.h"
 
 void fill_histogram(t_bw_img *image, t_histogram *hist)

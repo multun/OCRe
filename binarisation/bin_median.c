@@ -3,7 +3,7 @@
 #include "../error.h"
 #include "histogram.h"
 #include "bin_treshold.h"
-#include "../libbitmap/bmp.h"
+#include "../bitmap/bmp.h"
 
 t_bw_img *bin_median(const t_color_img *orig_img)
 {

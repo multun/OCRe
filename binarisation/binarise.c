@@ -1,5 +1,5 @@
 #include "../error.h"
-#include "../libbitmap/img.h"
+#include "../bitmap/img.h"
 
 #include "binarise.h"
 

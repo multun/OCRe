@@ -1,12 +1,12 @@
 #include <stdio.h>
-#include "libbitmap/img.h"
-#include "libbitmap/bmp.h"
+#include "bitmap/img.h"
+#include "bitmap/bmp.h"
 #include "binarisation/binarise.h"
 #include "memtools.h"
 
 int main(void)
 {
-  t_color_img *img = load_bmp("libbitmap/tests/test_art.bmp");
+  t_color_img *img = load_bmp("bitmap/tests/test_art.bmp");
 
   t_bw_img *bw_img = binarise(FIXED, img);
 

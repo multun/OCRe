@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include "binarise.h"
-#include "../libbitmap/bmp.h"
+#include "../bitmap/bmp.h"
 
 void bw_img_treshold(unsigned char treshold, t_bw_img *img)
 {

@@ -1,7 +1,7 @@
 #ifndef BINARISE_H
 # define BINARISE_H
 
-#include "../libbitmap/img.h"
+#include "../bitmap/img.h"
 
 typedef enum e_bintype
 {
