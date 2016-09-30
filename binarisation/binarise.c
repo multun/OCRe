@@ -12,10 +12,10 @@ t_binarisator binarisators[] = {
   bin_median,
   bin_wolf,
 };
-
+typedef unsigned int uint;
 unsigned char intensity(t_color_pix pix)
 {
-  return (pix.r + pix.g + pix.b)/3;
+  return (unsigned char)(((uint)pix.r + (uint)pix.g + (uint)pix.b)/3);
 }
 
 t_bw_img *binarise(t_bintype bintype, const t_color_img *orig_img)
