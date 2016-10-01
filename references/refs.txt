@@ -22,3 +22,4 @@ NOISE FILTERING
 LEARNING
  - General ressources:
  https://github.com/kjw0612/awesome-rnn
+ http://karpathy.github.io/neuralnets/
