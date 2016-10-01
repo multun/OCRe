@@ -3,10 +3,13 @@
 #include "bitmap/bmp.h"
 #include "binarisation/binarise.h"
 #include "memtools.h"
+#include "error.h"
 
-int main(void)
+int main(int argc, char *argv[])
 {
-  t_color_img *img = load_bmp("bitmap/tests/test_art.bmp");
+  if (argc < 2)
+    FAIL("use: %s image", argv[0]);
+  t_color_img *img = load_bmp(argv[1]);
 
   t_bw_img *bw_img = binarise(SAUVOLA, img);
 
