@@ -5,10 +5,16 @@
 #define IMAGE_DECLARE(PIX_TYPE, NAME)		\
   typedef struct s_ ##NAME			\
   {						\
-    unsigned int	width;			\
-    unsigned int	height;			\
+    unsigned int	width, height;		\
     PIX_TYPE		pixels[];		\
-  } t_ ##NAME;
+  } t_ ##NAME;					\
+  typedef struct s_sub_ ##NAME			\
+  {						\
+    t_ ##NAME		*father;		\
+    unsigned int	width, height;		\
+    unsigned int	xoff, yoff;		\
+  } t_sub_ ##NAME;
+
 
 typedef struct
 __attribute__((__packed__))
@@ -31,6 +37,9 @@ IMAGE_DECLARE(double, double_mat)
 #define AT(img, x, y) \
   (img->pixels[y * img->width + x])
 
+#define SUB_AT(img, x, y)				\
+  (img->father->pixels[(y + img->yoff) * img->father->width + x + img->xoff])
+
 #define DEFAULT_IMG_TYPES_APPLY(F, SEP)			\
   F(color_img) SEP					\
   F(bw_img) SEP						\
@@ -49,11 +58,40 @@ IMAGE_DECLARE(double, double_mat)
     return ret;								\
   }
 
+// SUB IMAGE DECLARATION //////////////////////
+#define ALLOC_SUB_IMAGE_DECLARE(TYPE)					\
+  t_sub_ ## TYPE * alloc_sub_ ## TYPE (					\
+    t_ ## TYPE * father,						\
+    unsigned int xoff,							\
+    unsigned int yoff,							\
+    unsigned int width,							\
+    unsigned int height)
+#define ALLOC_SUB_IMAGE_DEFINE(TYPE)					\
+  ALLOC_SUB_IMAGE_DECLARE(TYPE)						\
+  {									\
+    t_sub_ ## TYPE *ret	= malloc(sizeof(t_sub_ ## TYPE ));		\
+    ret->father = father;						\
+    ret->xoff	= xoff;							\
+    ret->yoff	= yoff;							\
+    ret->width	= width;						\
+    ret->height	= height;						\
+    return ret;								\
+  }
+
 // IMAGE FREEING //////////////////////
 #define FREE_IMAGE_DECLARE(TYPE)		\
   void free_ ## TYPE (t_ ## TYPE *img)
 #define FREE_IMAGE_DEFINE(TYPE)						\
   FREE_IMAGE_DECLARE(TYPE)						\
+  {									\
+    free(img);								\
+  }
+
+// SUB IMAGE FREEING //////////////////////
+#define FREE_SUB_IMAGE_DECLARE(TYPE)		\
+  void free_sub_ ## TYPE (t_sub_ ## TYPE *img)
+#define FREE_SUB_IMAGE_DEFINE(TYPE)					\
+  FREE_SUB_IMAGE_DECLARE(TYPE)						\
   {									\
     free(img);								\
   }
@@ -69,11 +107,15 @@ IMAGE_DECLARE(double, double_mat)
 
 #define DEFINE_IMG_TOOLS(TYPE)			\
   ALLOC_IMAGE_DEFINE(TYPE)			\
+  ALLOC_SUB_IMAGE_DEFINE(TYPE)			\
   FREE_IMAGE_DEFINE(TYPE)			\
+  FREE_SUB_IMAGE_DEFINE(TYPE)			\
   ALLOC_IMAGE_TWIN_DEFINE(TYPE)			\
 
 DEFAULT_IMG_TYPES_APPLY(ALLOC_IMAGE_DECLARE, ;)
+DEFAULT_IMG_TYPES_APPLY(ALLOC_SUB_IMAGE_DECLARE, ;)
 DEFAULT_IMG_TYPES_APPLY(FREE_IMAGE_DECLARE, ;)
+DEFAULT_IMG_TYPES_APPLY(FREE_SUB_IMAGE_DECLARE, ;)
 DEFAULT_IMG_TYPES_APPLY(ALLOC_IMAGE_TWIN_DECLARE, ;)
 
 t_bw_img	*greyscale(unsigned char (*intensity)(t_color_pix), const t_color_img*);
