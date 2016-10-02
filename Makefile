@@ -40,5 +40,5 @@ clean:
 	rm -f $(EXEC) $(DEP) $(OBJ)
 run:
 	./$(EXEC) $(ARGS)
-valgrind:
+valgrind: $(EXEC)
 	valgrind valgrind --show-reachable=yes --dsymutil=yes --tool=memcheck --leak-check=full --track-origins=yes ./$(EXEC) $(ARGS)
