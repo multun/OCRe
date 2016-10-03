@@ -23,3 +23,4 @@ LEARNING
  - General ressources:
  https://github.com/kjw0612/awesome-rnn
  http://karpathy.github.io/neuralnets/
+ https://medium.com/learning-new-stuff/how-to-learn-neural-networks-758b78f2736e
