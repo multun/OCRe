@@ -6,12 +6,15 @@ CFLAGS=-std=c99 -Wconversion -pedantic -Wall -Wextra  -Wformat=2 -Wswitch-defaul
 
 FLAGS_BUILD=-O3 -Wall -pedantic -std=c99 -Wextra -fomit-frame-pointer
 
-LDFLAGS=
+CFLAGS += $(shell pkg-config --cflags sdl2)
+LDFLAGS = $(shell pkg-config --libs sdl2)
+
 EXEC=ocre
 
 SRC  = $(wildcard *.c)
 SRC += $(wildcard binarisation/*.c)
 SRC += $(wildcard bitmap/*.c)
+SRC += $(wildcard sdl/*.c)
 
 OBJ = $(SRC:.c=.o)
 DEP = ${SRC:.c=.d}
@@ -41,4 +44,4 @@ clean:
 run:
 	./$(EXEC) $(ARGS)
 valgrind: $(EXEC)
-	valgrind valgrind --show-reachable=yes --dsymutil=yes --tool=memcheck --leak-check=full --track-origins=yes ./$(EXEC) $(ARGS)
+	valgrind --show-reachable=yes --dsymutil=yes --tool=memcheck --leak-check=full --track-origins=yes ./$(EXEC) $(ARGS)
