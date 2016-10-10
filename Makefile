@@ -15,6 +15,7 @@ SRC  = $(wildcard *.c)
 SRC += $(wildcard binarisation/*.c)
 SRC += $(wildcard bitmap/*.c)
 SRC += $(wildcard sdl/*.c)
+SRC += $(wildcard boxing/*.c)
 
 OBJ = $(SRC:.c=.o)
 DEP = ${SRC:.c=.d}

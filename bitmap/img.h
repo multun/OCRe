@@ -36,7 +36,7 @@ typedef unsigned char t_bw_pix;
 DEFAULT_IMG_TYPES_APPLY(IMAGE_DECLARE,)
 
 #define AT(img, x, y) \
-  (img->pixels[y * img->width + x])
+  (img->pixels[(y) * img->width + (x)])
 
 #define SUB_AT(img, x, y)				\
   (img->father->pixels[(y + img->yoff) * img->father->width + x + img->xoff])

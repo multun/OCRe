@@ -4,6 +4,8 @@
 #include "binarisation/binarise.h"
 #include "memtools.h"
 #include "error.h"
+#include "boxing/morpho.h"
+
 
 int main(int argc, char *argv[])
 {
@@ -13,10 +15,15 @@ int main(int argc, char *argv[])
 
   t_bw_img *bw_img = binarise(SAUVOLA, img);
 
+  bw_img = dilate(bw_img);
+
   for(unsigned int y = 0; y < img->height; y++)
   {
     for(unsigned int x = 0; x < img->width; x++)
-      printf((bw_img->pixels[y*img->width + x]) ? "#" : ".");
+      {
+	printf("%d %d\n", x, y);
+	printf((AT(bw_img,x,y) ? "#" : "."));
+      }
     printf("\n");
   }
 
