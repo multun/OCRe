@@ -1,4 +1,5 @@
 ocre
 *.o
 *.d
-*.bmp
+*.bmpGNOME.supp
+gtk.suppression
