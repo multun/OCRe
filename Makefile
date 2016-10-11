@@ -48,5 +48,12 @@ clean:
 	rm -f $(EXEC) $(DEP) $(OBJ)
 run:
 	./$(EXEC) $(ARGS)
-valgrind: $(EXEC)
-	valgrind --show-reachable=yes --dsymutil=yes --tool=memcheck --leak-check=full --track-origins=yes ./$(EXEC) $(ARGS)
+suppr:
+	test -d GNOME.supp || git clone https://github.com/dtrebbien/GNOME.supp.git
+	(cd GNOME.supp && make)
+	test -f gtk.suppression || curl -L -O http://www.gnome.org/~johan/gtk.suppression
+
+SUPPRS = $(addprefix --suppressions=, gtk-cairo-custom.supp gtk.suppression $(shell find GNOME.supp -type f -name '*.supp'))
+
+valgrind: $(EXEC) suppr
+	G_DEBUG=resident-modules G_SLICE=always-malloc valgrind --gen-suppressions=all $(SUPPRS) --dsymutil=yes --tool=memcheck  --leak-check=full --track-origins=yes ./$(EXEC) $(ARGS)
