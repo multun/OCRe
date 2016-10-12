@@ -4,12 +4,31 @@
 # include <stdlib.h>
 # include <stdio.h>
 
+typedef enum _E_DEBUG_LEVEL
+{
+  LOW,
+  MEDIUM,
+  HIGH
+} _T_DEBUG_LEVEL;
+
 // ignores an unused parameter warning
 #define UNUSED(...) (void)(__VA_ARGS__)
 
 /*
 ** Prints a formatted error message and exits
 */
+
+#ifdef DEBUG
+
+#define DEBUG_LOG(LVL, ...)				\
+  if (DEBUG >= LVL) {fprintf(stderr,#LVL __VA_ARGS__);}
+
+#else
+
+#define DEBUG_LOG(...)
+
+#endif
+
 
 # define PERROR(FCT)						\
   do								\
