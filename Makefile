@@ -48,7 +48,7 @@ $(EXEC): $(OBJ)
 .PHONY: clean valgrind
 clean:
 	rm -f $(EXEC) $(DEP) $(OBJ)
-run:
+run: all
 	./$(EXEC) $(ARGS)
 suppr:
 	test -d GNOME.supp || git clone https://github.com/dtrebbien/GNOME.supp.git
