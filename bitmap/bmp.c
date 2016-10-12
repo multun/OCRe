@@ -39,11 +39,14 @@ t_color_img *parse_bmp(char *buf, luint fsize)
     FAIL0("not a BMP file");
 
   if ((sizeof(t_bmp_file_header) + sizeof(t_bmp_img_header)) >= fsize)
-    FAIL0("corrupted file");
+    FAIL0("corrupted file: smaller than minimum size");
 
   uint width  = iheader->width;
   uint height = iheader->height;
-  luint size   = sizeof(t_color_pix) * width * height;
+  luint size  = sizeof(t_color_pix) * width * height;
+
+  if (width * height * sizeof(t_bmp_pix) > (fsize - sizeof(t_bmp_file_header) - sizeof(t_bmp_img_header)))
+    FAIL0("corrupted file: invalid size");
 
   t_color_img *ret	= malloc(sizeof(t_color_img) + size); // UNCHECKED
   ret->width	= width;
