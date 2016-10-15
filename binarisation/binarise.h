@@ -6,14 +6,14 @@
 typedef enum e_bintype
 {
   FIXED,
-  MEDIAN,
+  RATIO,
   WOLF,
   SAUVOLA,
 } t_bintype;
 
-typedef t_bw_img* (*t_binarisator)(const t_color_img *);
+typedef t_bw_img* (*t_binarisator)(const t_color_img *, void *);
 
-t_bw_img *binarise(t_bintype bintype, const t_color_img *orig_img);
+t_bw_img *binarise(t_bintype, const t_color_img *, void *);
 unsigned char intensity(t_color_pix pix);
 
 #endif
