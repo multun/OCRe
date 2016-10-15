@@ -45,7 +45,7 @@ $(EXEC): $(OBJ)
 
 -include ${DEP}
 
-.PHONY: clean valgrind
+.PHONY: clean valgrind gtkdbg
 clean:
 	rm -f $(EXEC) $(DEP) $(OBJ)
 run: all
@@ -56,6 +56,9 @@ suppr:
 	test -f gtk.suppression || curl -L -O http://www.gnome.org/~johan/gtk.suppression
 
 SUPPRS = $(addprefix --suppressions=, gtk-cairo-custom.supp gtk.suppression $(shell find GNOME.supp -type f -name '*.supp'))
+
+gtkdbg:
+	GTK_DEBUG=interactive make run
 
 valgrind: $(EXEC) suppr
 	G_DEBUG=resident-modules G_SLICE=always-malloc valgrind --gen-suppressions=all $(SUPPRS) --dsymutil=yes --tool=memcheck  --leak-check=full --track-origins=yes ./$(EXEC) $(ARGS)
