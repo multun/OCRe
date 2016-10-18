@@ -6,6 +6,168 @@
    fun:g_realloc
    obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
    fun:g_type_register_static
+   fun:g_flags_register_static
+   fun:rsvg_handle_flags_get_type
+   obj:/usr/lib/x86_64-linux-gnu/librsvg-2.so.2.40.16
+   fun:g_type_class_ref
+   fun:g_object_newv
+   fun:g_object_new
+   fun:rsvg_handle_new
+   obj:/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader-svg.so
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:g_slice_alloc
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   fun:g_type_add_interface_static
+   fun:gtk_list_store_get_type
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+   fun:gtk_builder_get_type_from_name
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:realloc
+   fun:g_realloc
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   fun:g_type_register_static
+   fun:g_enum_register_static
+   fun:gdk_cursor_type_get_type
+   obj:/usr/lib/x86_64-linux-gnu/libgdk-3.so.0.2200.1
+   fun:g_type_class_ref
+   fun:g_type_class_ref
+   fun:g_object_new_valist
+   fun:g_object_new
+   obj:/usr/lib/x86_64-linux-gnu/libgdk-3.so.0.2200.1
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:realloc
+   obj:/usr/lib/x86_64-linux-gnu/libfontconfig.so.1.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libfontconfig.so.1.8.0
+   fun:FcFontRenderPrepare
+   fun:FcFontMatch
+   obj:/usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0.4000.3
+   obj:/usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0.4000.3
+   fun:pango_context_get_metrics
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:realloc
+   obj:/usr/lib/x86_64-linux-gnu/libfontconfig.so.1.8.0
+   obj:/usr/lib/x86_64-linux-gnu/libfontconfig.so.1.8.0
+   fun:FcPatternAddInteger
+   obj:/usr/lib/x86_64-linux-gnu/libcairo.so.2.11400.6
+   obj:/usr/lib/x86_64-linux-gnu/libpangocairo-1.0.so.0.4000.3
+   obj:/usr/lib/x86_64-linux-gnu/libpangoft2-1.0.so.0.4000.3
+   fun:pango_context_get_metrics
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:realloc
+   fun:g_realloc
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   fun:g_type_register_static
+   fun:g_type_register_static_simple
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:g_slice_alloc
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   fun:g_type_add_interface_static
+   fun:gtk_application_window_get_type
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+   fun:gtk_builder_get_type_from_name
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:malloc
+   fun:g_malloc
+   fun:g_slice_alloc
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   fun:g_type_add_interface_static
+   fun:gtk_application_window_get_type
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+   fun:gtk_builder_get_type_from_name
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:realloc
+   fun:g_realloc
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   fun:g_type_register_static
+   fun:g_flags_register_static
+   fun:gdk_anchor_hints_get_type
+   obj:/usr/lib/x86_64-linux-gnu/libgtk-3.so.0.2200.1
+   fun:g_type_class_ref
+   fun:g_object_newv
+   fun:g_object_new
+   fun:gtk_notebook_popup_enable
+   fun:g_object_set_property
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: possible
+   fun:realloc
+   fun:g_realloc
+   obj:/usr/lib/x86_64-linux-gnu/libgobject-2.0.so.0.5000.0
+   fun:g_type_register_static
    fun:g_enum_register_static
    fun:atk_state_type_get_type
    fun:atk_state_type_get_name

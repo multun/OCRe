@@ -8,7 +8,7 @@ void pixbuf_color_img_destroy(guchar *pixels, gpointer img)
   free_color_img((t_color_img*)img);
 }
 
-void refresh_pixbuf_from_img(GdkPixbuf *gimg, t_color_img *img)
+void refresh_img_from_pixbuf(GdkPixbuf *gimg, t_color_img *img)
 {
   gpointer row = gdk_pixbuf_get_pixels(gimg);
   int rowstride = gdk_pixbuf_get_rowstride(gimg);

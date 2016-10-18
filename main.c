@@ -6,16 +6,10 @@
 #include "memtools.h"
 #include "error.h"
 #include "filtering.h"
-#include "gtk/pixbuf.h"
-
-
-// called when window is closed
-void on_window_main_destroy(void)
-{
-  puts("main_quit");
-  gtk_main_quit();
-}
-
+#include "binarisation/bin_sauvola.h"
+#include "gtk/img_autoscale.h"
+#include "gtk/bootstrap.h"
+#include "gtk/helpers.h"
 
 int main(int argc, char *argv[])
 {
@@ -23,36 +17,31 @@ int main(int argc, char *argv[])
     FAIL("use: %s image", argv[(argc--) - 1]);
   t_color_img *img = load_bmp(argv[1]);
 
-  t_bw_img *bw_img = binarise(SAUVOLA, img);
+  t_bin_sauvola_opts bin_opts = {.window=4, .k=0.3f};
+  t_bw_img *bw_img = binarise(SAUVOLA, img, &bin_opts);
   t_sub_bw_img *sub = alloc_sub_bw_img(bw_img, 12, 1, 42, 42);
 
   // GTK PART
 
   GtkBuilder      *builder;
-  GtkWidget       *window;
+  GtkWidget       *window, *container;
+  t_img_autoscale_data *autosc_data;
 
   gtk_init(&argc, &argv);
+  window = gtk_bootstrap(&builder);
 
-  builder = gtk_builder_new();
-  gtk_builder_add_from_file (builder, "window_main.glade", NULL);
-
-  window = GTK_WIDGET(gtk_builder_get_object(builder, "window_main"));
-  //gtk_builder_connect_signals(builder, NULL);
-
-  g_signal_connect (G_OBJECT(window), "destroy", (GCallback)on_window_main_destroy, NULL);
+  container	= _GET_WIDGET(builder, "image_scrolled_window");
 
 
-  GtkImage *gtk_img = (GtkImage*)GTK_WIDGET(gtk_builder_get_object(builder, "image"));
-  GdkPixbuf *pixbuf = alloc_pixbuf_from_img(img);
-  refresh_pixbuf_from_img(pixbuf, img);
-  gtk_image_set_from_pixbuf(gtk_img, pixbuf);
+  GtkImage *gtk_img = (GtkImage*)_GET_WIDGET(builder, "image");
+  autosc_data = autoscale_init(container, gtk_img, img);
+
 
   gtk_widget_show(window);
   gtk_main();
 
+  autoscale_free(autosc_data);
   g_object_unref(builder);
-  g_object_unref(pixbuf);
-
   // GTK_END
 
   free_bw_img(bw_img);
