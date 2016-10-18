@@ -14,8 +14,8 @@
 int main(int argc, char *argv[])
 {
   if (argc < 2)
-    FAIL("use: %s image", argv[(argc--) - 1]);
-  t_color_img *img = load_bmp(argv[1]);
+    FAIL("use: %s image", argv[argc - 1]);
+  t_color_img *img = load_bmp(argv[(argc--) - 1]);
 
   t_bin_sauvola_opts bin_opts = {.window=4, .k=0.3f};
   t_bw_img *bw_img = binarise(SAUVOLA, img, &bin_opts);
