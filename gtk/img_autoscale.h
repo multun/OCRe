@@ -19,7 +19,7 @@ GdkPixbuf *resize_image(GdkPixbuf *orig,
 t_img_autoscale_data *autoscale_init(
   GtkWidget *container,
   GtkImage *gimg,
-  t_color_img *img);
+  GdkPixbuf *pixbuf);
 
 void autoscale_free(t_img_autoscale_data *data);
 

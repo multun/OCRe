@@ -20,7 +20,7 @@ GdkPixbuf *resize_image(GdkPixbuf *orig,
 
   double hscale = (double)width / imgw;
   double vscale = (double)height / imgh;
-  double scale = MIN(hscale, vscale);
+  double scale = MIN(1.0, MIN(hscale, vscale));
 
   return gdk_pixbuf_scale_simple(
     orig,
@@ -41,17 +41,13 @@ void autoscale_free(t_img_autoscale_data *data)
 t_img_autoscale_data *autoscale_init(
   GtkWidget *container,
   GtkImage *gtk_img,
-  t_color_img *img)
+  GdkPixbuf *pixbuf)
 {
-  GdkPixbuf *pixbuf = alloc_pixbuf_from_img(img);
-
   t_img_autoscale_data *data = malloc(sizeof(t_img_autoscale_data));
   data->img    = gtk_img;
   data->pixbuf = pixbuf;
 
   get_alloc(container, &data->alloc);
-
-  refresh_img_from_pixbuf(pixbuf, img);
 
   GdkPixbuf *npixbuf = resize_image(pixbuf,
 				    data->alloc.width,
