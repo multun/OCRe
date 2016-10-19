@@ -5,7 +5,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
-
 #include "img.h"
 #include "bmp.h"
 #include "../tdefs.h"
@@ -56,7 +55,7 @@ t_color_img *parse_bmp(char *buf, luint fsize)
   t_color_pix *dest_cur = (t_color_pix*)((char*)ret->pixels + dest_offset);
   t_bmp_pix *orig_cur = (t_bmp_pix*)(buf + fheader->imageDataOffset);
 
-  uint offset = 4 - ((ret->width * 3) & 3);
+  uint offset = (4 - width % 4) % 4;
 
   for(uint line = 0; line < height; line++)
   {
