@@ -18,6 +18,12 @@ GdkPixbuf *resize_image(GdkPixbuf *orig,
   int imgw = gdk_pixbuf_get_width(orig);
   int imgh = gdk_pixbuf_get_height(orig);
 
+  if (width < 2 || height < 2)
+  {
+    height = imgh;
+    width = imgw;
+  }
+
   double hscale = (double)width / imgw;
   double vscale = (double)height / imgh;
   double scale = MIN(1.0, MIN(hscale, vscale));
@@ -48,6 +54,7 @@ t_img_autoscale_data *autoscale_init(
   data->pixbuf = pixbuf;
 
   get_alloc(container, &data->alloc);
+
 
   GdkPixbuf *npixbuf = resize_image(pixbuf,
 				    data->alloc.width,
