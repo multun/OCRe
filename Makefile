@@ -48,6 +48,9 @@ $(EXEC): $(OBJ)
 .PHONY: clean valgrind gtkdbg
 clean:
 	rm -f $(EXEC) $(DEP) $(OBJ)
+gdbrun: all
+	gdb --args ./$(EXEC) $(ARGS)
+
 run: all
 	./$(EXEC) $(ARGS)
 suppr:
@@ -58,7 +61,7 @@ suppr:
 SUPPRS = $(addprefix --suppressions=, gtk-cairo-custom.supp gtk.suppression $(shell find GNOME.supp -type f -name '*.supp'))
 
 gtkdbg:
-	GTK_DEBUG=interactive make run
+	G_DEBUG=all GTK_DEBUG=interactive make gdbrun
 
 valgrind: $(EXEC) suppr
 	G_DEBUG=resident-modules G_SLICE=always-malloc valgrind --gen-suppressions=all $(SUPPRS) --dsymutil=yes --tool=memcheck  --leak-check=full --track-origins=yes ./$(EXEC) $(ARGS)
