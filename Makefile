@@ -15,6 +15,7 @@ LDFLAGS = $(shell pkg-config --libs gtk+-3.0)
 EXEC=ocre
 
 SRC  = $(wildcard *.c)
+SRC += $(wildcard base_structs/*.c)
 SRC += $(wildcard binarisation/*.c)
 SRC += $(wildcard bitmap/*.c)
 SRC += $(wildcard gtk/*.c)
