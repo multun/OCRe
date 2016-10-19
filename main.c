@@ -11,7 +11,7 @@
 #include "gtk/bootstrap.h"
 #include "gtk/helpers.h"
 #include "gtk/pixbuf.h"
-
+#include "boxing/morpho.h"
 
 int main(int argc, char *argv[])
 {
@@ -21,7 +21,10 @@ int main(int argc, char *argv[])
 
   t_bin_sauvola_opts bin_opts = {.window=5, .k=0.05f};
   t_bw_img *bw_img = binarise(SAUVOLA, img, &bin_opts);
+  bw_img = close_morph(bw_img, 16);
   t_sub_bw_img *sub = alloc_sub_bw_img(bw_img, 12, 1, 42, 42);
+
+
 
   // GTK PART
 
