@@ -11,6 +11,7 @@
 #include "gtk/bootstrap.h"
 #include "gtk/helpers.h"
 #include "gtk/pixbuf.h"
+#include "gtk/img_history.h"
 
 
 int main(int argc, char *argv[])
@@ -32,10 +33,10 @@ int main(int argc, char *argv[])
   gtk_init(&argc, &argv);
   window = gtk_bootstrap(&builder);
 
-  container	= _GET_WIDGET(builder, "image_scrolled_window");
 
 
   GtkImage *gtk_img = (GtkImage*)_GET_WIDGET(builder, "image");
+  container	= _GET_WIDGET(builder, "image_scrolled_window");
 
   GdkPixbuf *pixbuf = alloc_pixbuf_from_bw_img(bw_img);
   refresh_pixbuf_from_bw_img(pixbuf, bw_img);
@@ -43,6 +44,12 @@ int main(int argc, char *argv[])
 
 
   gtk_widget_show(window);
+
+  GtkWidget *img_h = _GET_WIDGET(builder, "img_history");
+  img_history	= history_init(GTK_LIST_BOX(img_h));
+  history_add_img(img_history, COLOR_IMG, (void*)img);
+  history_add_img(img_history, BW_IMG, (void*)bw_img);
+
   gtk_main();
 
   autoscale_free(autosc_data);
