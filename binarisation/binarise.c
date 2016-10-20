@@ -20,9 +20,9 @@ unsigned char intensity(t_color_pix pix)
   return (unsigned char)(((uint)pix.r + (uint)pix.g + (uint)pix.b)/3);
 }
 
-t_bw_img *binarise(t_bintype bintype, const t_color_img *orig_img, void *options)
+t_bw_img *binarise(t_bintype bintype, const t_color_img *orig_img, void *opts)
 {
   if (bintype > sizeof(binarisators))
     FAIL0("no such binarisator");
-  return binarisators[bintype](orig_img, options);
+  return binarisators[bintype](orig_img, opts);
 }

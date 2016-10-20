@@ -30,8 +30,12 @@ t_color_pix bgr_to_rgb(t_bmp_pix oldpix)
 
 t_color_img *parse_bmp(char *buf, luint fsize)
 {
+  const uint bmpfh_size = sizeof(t_bmp_file_header);
+  const uint bmpih_size = sizeof(t_bmp_img_header);
+  const uint color_pix_size = sizeof(t_color_pix);
+
   t_bmp_file_header *fheader = (t_bmp_file_header*)buf;
-  t_bmp_img_header  *iheader = (t_bmp_img_header*)(buf + sizeof(t_bmp_file_header));
+  t_bmp_img_header  *iheader = (t_bmp_img_header*)(buf + bmpfh_size);
 
   const char sig[] = "BM";
   if (fsize < 3 || memcmp(fheader->sig_BM, sig, 2) != 0)
@@ -44,7 +48,7 @@ t_color_img *parse_bmp(char *buf, luint fsize)
   uint height = iheader->height;
   luint size  = sizeof(t_color_pix) * width * height;
 
-  if (width * height * sizeof(t_bmp_pix) > (fsize - sizeof(t_bmp_file_header) - sizeof(t_bmp_img_header)))
+  if (width * height * sizeof(t_bmp_pix) > (fsize - bmpfh_size - bmpih_size))
     FAIL0("corrupted file: invalid size");
 
   t_color_img *ret	= malloc(sizeof(t_color_img) + size); // UNCHECKED
@@ -62,7 +66,7 @@ t_color_img *parse_bmp(char *buf, luint fsize)
     for(uint col = 0; col < width; col++)
       *dest_cur++ = bgr_to_rgb(*orig_cur++);
     orig_cur = (t_bmp_pix*)((char*)orig_cur + offset);
-    dest_cur = (t_color_pix*)((char*)dest_cur - 2 * width * sizeof(t_color_pix));
+    dest_cur = (t_color_pix*)((char*)dest_cur - 2 * width * color_pix_size);
   }
 
   return ret;

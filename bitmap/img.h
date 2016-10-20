@@ -1,7 +1,6 @@
 #ifndef  IMG_H
 # define IMG_H
 
-
 #define IMAGE_DECLARE(PIX_TYPE, NAME)		\
   typedef struct s_ ##NAME			\
   {						\
@@ -27,6 +26,9 @@ s_color_pix
 } t_color_pix;
 
 typedef unsigned char t_bw_pix;
+
+typedef t_bw_pix (*f_intensity)(t_color_pix);
+
 
 #define DEFAULT_IMG_TYPES_APPLY(F, SEP)			\
   F(t_color_pix, color_img) SEP				\
