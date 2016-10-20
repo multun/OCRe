@@ -6,6 +6,7 @@ typedef struct s_img_autoscale_data
   GtkImage *img;
   GdkPixbuf *pixbuf;
   GtkAllocation alloc;
+  GtkWidget *container;
 } t_img_autoscale_data;
 
 gboolean auto_resize_image(GtkWidget *container,
@@ -22,5 +23,6 @@ t_img_autoscale_data *autoscale_init(
   GdkPixbuf *pixbuf);
 
 void autoscale_free(t_img_autoscale_data *data);
+void autoscale_set_image(t_img_autoscale_data *img_data, GdkPixbuf *nbuf);
 
 #endif

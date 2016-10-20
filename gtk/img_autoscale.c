@@ -52,6 +52,7 @@ t_img_autoscale_data *autoscale_init(
   t_img_autoscale_data *data = malloc(sizeof(t_img_autoscale_data));
   data->img    = gtk_img;
   data->pixbuf = pixbuf;
+  data->container = container;
 
   get_alloc(container, &data->alloc);
 
@@ -65,6 +66,22 @@ t_img_autoscale_data *autoscale_init(
 
   _GTK_CONNECT(container, "size-allocate", auto_resize_image, data);
   return data;
+}
+
+
+void autoscale_set_image(t_img_autoscale_data *img_data, GdkPixbuf *nbuf)
+{
+  img_data->pixbuf = nbuf;
+  GdkPixbuf *oldbuf = gtk_image_get_pixbuf(img_data->img);
+  get_alloc(img_data->container, &img_data->alloc);
+  GdkPixbuf *sized_pixbuf = resize_image(nbuf,
+					 img_data->alloc.width,
+					 img_data->alloc.height);
+
+  gtk_image_set_from_pixbuf(img_data->img, sized_pixbuf);
+  g_object_unref(oldbuf);
+
+  gtk_widget_queue_draw(img_data->container);
 }
 
 
