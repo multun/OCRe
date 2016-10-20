@@ -34,8 +34,9 @@ void set_history_callback(t_img_history *hist,
   hist->callback = callback;
 }
 
-t_img_history *history_init(GtkListBox *listbox)
+t_img_history *history_init(GtkBuilder *builder)
 {
+  GtkListBox *listbox = GTK_LIST_BOX(_GET_WIDGET(builder, "img_history"));
   t_img_history *hist = malloc(sizeof(t_img_history));
   hist->user_data = NULL;
   hist->callback = (history_callback)NULL;

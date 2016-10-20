@@ -1,6 +1,8 @@
 #ifndef BIN_RATIO_H
 # define BIN_RATIO_H
 
+#include "../bitmap/img.h"
+
 typedef struct s_bin_ratio_opts
 {
   float	hist_ratio;

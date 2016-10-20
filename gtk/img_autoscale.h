@@ -17,11 +17,7 @@ gboolean auto_resize_image(GtkWidget *container,
 GdkPixbuf *resize_image(GdkPixbuf *orig,
 		        int width, int height);
 
-t_img_autoscale_data *autoscale_init(
-  GtkWidget *container,
-  GtkImage *gimg,
-  GdkPixbuf *pixbuf);
-
+t_img_autoscale_data *autoscale_init(GtkBuilder *builder);
 void autoscale_free(t_img_autoscale_data *data);
 void autoscale_set_image(t_img_autoscale_data *img_data, GdkPixbuf *nbuf);
 

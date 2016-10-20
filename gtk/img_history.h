@@ -35,7 +35,7 @@ typedef struct s_img_history
 typedef void (*history_callback)(t_img_history  *,
 				 t_img_history_e*);
 
-t_img_history *history_init(GtkListBox *listbox);
+t_img_history *history_init(GtkBuilder*);
 void history_add_img(t_img_history *hist,
 		     t_img_type    type,
 		     void *img);
