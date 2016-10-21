@@ -12,7 +12,14 @@
 #include "gtk/helpers.h"
 #include "gtk/pixbuf.h"
 #include "boxing/morpho.h"
-#include "boxing/boxing.h"
+#include "boxing/bounding_box.h"
+#include "gtk/img_history.h"
+#include "gtk/preproc.h"
+
+void thumbnail_clicked(struct s_img_history *hist, t_img_history_e *hist_e)
+{
+  autoscale_set_image(hist->user_data, hist_e->pixbuf);
+}
 
 int main(int argc, char *argv[])
 {
@@ -38,36 +45,30 @@ int main(int argc, char *argv[])
   
   t_sub_bw_img *sub = alloc_sub_bw_img(bw_img, 12, 1, 42, 42);
 
-
-
   // GTK PART
 
   GtkBuilder      *builder;
-  GtkWidget       *window, *container;
-  t_img_autoscale_data *autosc_data;
+  GtkWidget       *window;
 
   gtk_init(&argc, &argv);
   window = gtk_bootstrap(&builder);
 
-  container	= _GET_WIDGET(builder, "image_scrolled_window");
 
-
-  GtkImage *gtk_img = (GtkImage*)_GET_WIDGET(builder, "image");
-
-  GdkPixbuf *pixbuf = alloc_pixbuf_from_bw_img(bw_img);
-  refresh_pixbuf_from_bw_img(pixbuf, bw_img);
-  autosc_data = autoscale_init(container, gtk_img, pixbuf);
-
+  t_img_autoscale_data *autosc_data = autoscale_init(builder);
 
   gtk_widget_show(window);
+
+  t_img_history *img_history	= history_init(builder);
+  preprocess_ui_init(builder, img_history);
+  history_add_img(img_history, COLOR_IMG, (void*)img);
+  set_history_callback(img_history, thumbnail_clicked, autosc_data);
+
   gtk_main();
 
   autoscale_free(autosc_data);
   g_object_unref(builder);
   // GTK_END
 
-  free_bw_img(bw_img);
-  free_sub_bw_img(sub);
   free_color_img(img);
   return 0;
 }

@@ -3,7 +3,7 @@
 
 DEFAULT_IMG_TYPES_APPLY(DEFINE_IMG_TOOLS, )
 
-t_bw_img *greyscale(unsigned char (*intensity)(t_color_pix), const t_color_img *orig_img)
+t_bw_img *greyscale(f_intensity intensity, const t_color_img *orig_img)
 {
   unsigned int width = orig_img->width;
   unsigned int height = orig_img->height;

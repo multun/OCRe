@@ -5,10 +5,10 @@
 
 typedef enum e_bintype
 {
-  FIXED,
-  RATIO,
-  WOLF,
-  SAUVOLA,
+  FIXED   = 0,
+  RATIO   = 1,
+  SAUVOLA = 2,
+//  WOLF,
 } t_bintype;
 
 typedef t_bw_img* (*t_binarisator)(const t_color_img *, void *);

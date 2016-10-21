@@ -4,7 +4,7 @@ CC=gcc
 
 LOG_LEVEL?=HIGH
 
-CFLAGS=-DDEBUG=$(LOG_LEVEL) -std=c99 -Wconversion -pedantic -Wall -Wextra -Wswitch-default -Wformat=2 -Wswitch-enum -Wcast-align -Wpointer-arith -Wbad-function-cast -Wstrict-overflow=4 -Wstrict-prototypes -Winline -Wundef -Wnested-externs -Wcast-qual -Wshadow -Wunreachable-code -Wlogical-op -Wfloat-equal -Wstrict-aliasing=2 -Wredundant-decls -Wold-style-definition -Werror -ggdb3 -O0 -fno-omit-frame-pointer -fstrict-aliasing -lm
+CFLAGS=-DDEBUG=$(LOG_LEVEL) -std=c99 -Wconversion -pedantic -Wall -Wextra -Wformat=2 -Wswitch-enum -Wcast-align -Wpointer-arith -Wbad-function-cast -Wstrict-overflow=4 -Wstrict-prototypes -Winline -Wundef -Wnested-externs -Wcast-qual -Wshadow -Wunreachable-code -Wlogical-op -Wfloat-equal -Wstrict-aliasing=2 -Wredundant-decls -Wold-style-definition -Werror -ggdb3 -O0 -fno-omit-frame-pointer -fstrict-aliasing -lm
 
 FLAGS_BUILD=-O3 -Wall -pedantic -std=c99 -Wextra -fomit-frame-pointer
 

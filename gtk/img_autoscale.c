@@ -44,27 +44,33 @@ void autoscale_free(t_img_autoscale_data *data)
 }
 
 
-t_img_autoscale_data *autoscale_init(
-  GtkWidget *container,
-  GtkImage *gtk_img,
-  GdkPixbuf *pixbuf)
+t_img_autoscale_data *autoscale_init(GtkBuilder *builder)
 {
   t_img_autoscale_data *data = malloc(sizeof(t_img_autoscale_data));
-  data->img    = gtk_img;
-  data->pixbuf = pixbuf;
 
-  get_alloc(container, &data->alloc);
-
-
-  GdkPixbuf *npixbuf = resize_image(pixbuf,
-				    data->alloc.width,
-				    data->alloc.height);
-
-  gtk_image_set_from_pixbuf(gtk_img, npixbuf);
-  gtk_widget_queue_draw(container);
-
-  _GTK_CONNECT(container, "size-allocate", auto_resize_image, data);
+  data->img		= (GtkImage*)_GET_WIDGET(builder, "image");
+  data->container	= _GET_WIDGET(builder, "image_scrolled_window");
+  data->pixbuf = NULL;
+  _GTK_CONNECT(data->container, "size-allocate", auto_resize_image, data);
   return data;
+}
+
+
+void autoscale_set_image(t_img_autoscale_data *img_data, GdkPixbuf *nbuf)
+{
+  img_data->pixbuf = nbuf;
+  GdkPixbuf *oldbuf = gtk_image_get_pixbuf(img_data->img);
+  get_alloc(img_data->container, &img_data->alloc);
+  GdkPixbuf *sized_pixbuf = resize_image(nbuf,
+					 img_data->alloc.width,
+					 img_data->alloc.height);
+
+  gtk_image_set_from_pixbuf(img_data->img, sized_pixbuf);
+
+  if (oldbuf)
+    g_object_unref(oldbuf);
+
+  gtk_widget_queue_draw(img_data->container);
 }
 
 
@@ -73,6 +79,10 @@ gboolean auto_resize_image(GtkWidget *container,
 			   t_img_autoscale_data *img_data)
 {
   UNUSED(event);
+
+  if (!img_data->pixbuf)
+    return FALSE;
+
   GdkPixbuf *orig_buf = img_data->pixbuf;
 
   GtkAllocation alloc;
