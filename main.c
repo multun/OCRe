@@ -12,6 +12,7 @@
 #include "gtk/helpers.h"
 #include "gtk/pixbuf.h"
 #include "boxing/morpho.h"
+#include "boxing/boxing.h"
 
 int main(int argc, char *argv[])
 {
@@ -21,7 +22,20 @@ int main(int argc, char *argv[])
 
   t_bin_sauvola_opts bin_opts = {.window=5, .k=0.05f};
   t_bw_img *bw_img = binarise(SAUVOLA, img, &bin_opts);
-  bw_img = close_morph(bw_img, 16);
+
+  uint iter = (bw_img->height + bw_img->width)/200;
+
+  bw_img = close_morph(bw_img, iter);
+  bw_img = open_morph(bw_img, iter/4);
+
+  box new_box;
+  new_box.bottom = 30;
+  new_box.top  = 10;
+  new_box.left = 3;
+  new_box.right = 50;
+
+  draw_box(bw_img, new_box);
+  
   t_sub_bw_img *sub = alloc_sub_bw_img(bw_img, 12, 1, 42, 42);
 
 
