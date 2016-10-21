@@ -60,5 +60,5 @@ void preprocess_ui_run(t_img_history *img_history, t_img_history_e *hist_e)
     return;
   }
   t_bw_img *bw_img = binarise(type, (t_color_img*)hist_e->img, (void*)&opts);
-  history_add_img(img_history, BW, (void*)bw_img);
+  history_add_img(img_history, BW, (void*)bw_img, NULL);
 }

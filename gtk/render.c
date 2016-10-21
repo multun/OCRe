@@ -1,8 +1,8 @@
 #include <gtk-3.0/gtk/gtk.h>
 #include "pixbuf.h"
-#include "../base_structs/vector.h"
 #include "../tdefs.h"
 #include "img_history.h"
+#include "render.h"
 
 // snippet from the gdkpixbuf documentation
 static void put_red(GdkPixbuf *pixbuf, size_t ux, size_t uy)
@@ -28,9 +28,6 @@ static void put_red(GdkPixbuf *pixbuf, size_t ux, size_t uy)
   p[2] = 0;
   p[3] = 0;
 }
-
-DECL_NAMED_VECTOR(t_l_color_img*, l_color_img);
-DECL_NAMED_VECTOR(t_l_bw_img*, l_bw_img);
 
 #define DEFINE_RENDER_L_IMG(TYPE) \
   static void render_l_ ## TYPE ## _img(GdkPixbuf *pixbuf,		\
@@ -68,18 +65,17 @@ GdkPixbuf *pixbuf_render(t_img_type type, void *img)
     break;
   case L_COLOR_VECTOR:
     vimg.color = (t_l_color_img_vect*)img;
-    // for now, assume they all have the same father
-    pixbuf = pixbuf_render(type - 1, VECT_GET(vimg.color, 0)->father);
+    pixbuf = pixbuf_render(COLOR, VECT_GET(vimg.color, 0)->father);
     for(size_t i = 0; i < VECT_GET_SIZE(vimg.color); i++)
       render_l_color_img(pixbuf, VECT_GET(vimg.color, i));
+    break;
   case BW:
     pixbuf = alloc_pixbuf_from_bw_img((t_bw_img*)img);
     refresh_pixbuf_from_bw_img(pixbuf, (t_bw_img*)img);
     break;
   case L_BW_VECTOR:
     vimg.bw = (t_l_bw_img_vect*)img;
-    // for now, assume they all have the same father
-    pixbuf = pixbuf_render(type - 1, VECT_GET(vimg.bw, 0)->father);
+    pixbuf = pixbuf_render(BW, VECT_GET(vimg.bw, 0)->father);
     for(size_t i = 0; i < VECT_GET_SIZE(vimg.bw); i++)
       render_l_bw_img(pixbuf, VECT_GET(vimg.bw, i));
   }

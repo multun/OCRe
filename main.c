@@ -13,12 +13,15 @@
 #include "gtk/pixbuf.h"
 #include "gtk/img_history.h"
 #include "gtk/preproc.h"
+#include "test_l_imgs.h"
 
-void thumbnail_clicked(struct s_img_history *hist, t_img_history_e *hist_e)
+void thumbnail_clicked(struct s_img_history *hist,
+		       t_img_history_e *hist_e,
+		       void *user_data)
 {
-  autoscale_set_image(hist->user_data, hist_e->pixbuf);
+  UNUSED(hist);
+  autoscale_set_image(user_data, hist_e->pixbuf);
 }
-
 
 int main(int argc, char *argv[])
 {
@@ -41,8 +44,12 @@ int main(int argc, char *argv[])
 
   t_img_history *img_history	= history_init(builder);
   preprocess_ui_init(builder, img_history);
-  history_add_img(img_history, COLOR, (void*)img);
-  set_history_callback(img_history, thumbnail_clicked, autosc_data);
+
+  set_history_add_callback(img_history, thumbnail_clicked, autosc_data);
+  set_history_click_callback(img_history, thumbnail_clicked, autosc_data);
+
+  history_add_img(img_history, COLOR, (void*)img, NULL);
+  history_add_img(img_history, L_COLOR_VECTOR, test_block_segmentation(img), NULL);
 
   gtk_main();
 
