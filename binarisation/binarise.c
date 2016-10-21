@@ -11,7 +11,6 @@
 t_binarisator binarisators[] = {
   bin_fixed,
   bin_ratio,
-  bin_wolf,
   bin_sauvola,
 };
 

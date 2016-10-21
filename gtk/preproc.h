@@ -19,7 +19,14 @@ typedef union u_bin_opts
 typedef struct s_preprocess_ui
 {
   GtkStack	*stack;
+
   GtkSpinButton	*fixed_treshold;
+
+  GtkSpinButton	*ratio_field;
+  GtkSpinButton	*ratio_factor_field;
+
+  GtkSpinButton	*sauvola_coef;
+  GtkSpinButton	*sauvola_window_size;
 } t_preprocess_ui;
 
 void preprocess_ui_init(GtkBuilder *builder, t_img_history *img_history);
