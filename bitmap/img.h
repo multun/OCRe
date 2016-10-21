@@ -110,6 +110,33 @@ DEFAULT_IMG_TYPES_APPLY(IMAGE_DECLARE,)
     return ret;								\
   }
 
+// L IMAGE RELINKING //////////////////////
+#define RELINK_L_IMAGE_DECLARE(PIX_TYPE, TYPE)				\
+  t_l_ ## TYPE * relink_l_ ## TYPE (					\
+    t_l_ ## TYPE * uplink,						\
+    unsigned int xoff,							\
+    unsigned int yoff,							\
+    unsigned int width,							\
+    unsigned int height)
+#define RELINK_L_IMAGE_DEFINE(PIX_TYPE, TYPE)				\
+  RELINK_L_IMAGE_DECLARE(PIX_TYPE, TYPE)				\
+  {									\
+    t_l_ ## TYPE *ret	= malloc(					\
+      sizeof(t_l_ ## TYPE ) + sizeof(PIX_TYPE) * width * height);	\
+    t_ ## TYPE *father = uplink->father;				\
+    ret->father = father;						\
+    xoff += uplink->xoff;						\
+    ret->xoff	=  xoff;						\
+    yoff += uplink->yoff;						\
+    ret->yoff	= yoff;							\
+    ret->width	= width;						\
+    ret->height	= height;						\
+    for(size_t y = 0; y < height; y++)					\
+      for(size_t x = 0; x < width; x++)					\
+	L_AT(ret, x, y) = AT(father, xoff + x, yoff + y);		\
+    return ret;								\
+  }
+
 // IMAGE FREEING //////////////////////
 #define FREE_IMAGE_DECLARE(PIX_TYPE, TYPE)	\
   void free_ ## TYPE (t_ ## TYPE *img)
@@ -150,6 +177,7 @@ DEFAULT_IMG_TYPES_APPLY(IMAGE_DECLARE,)
   ALLOC_IMAGE_DEFINE(PIX_TYPE, TYPE)				\
   ALLOC_SUB_IMAGE_DEFINE(PIX_TYPE, TYPE)			\
   ALLOC_L_IMAGE_DEFINE(PIX_TYPE, TYPE)				\
+  RELINK_L_IMAGE_DEFINE(PIX_TYPE, TYPE)				\
   FREE_IMAGE_DEFINE(PIX_TYPE, TYPE)				\
   FREE_SUB_IMAGE_DEFINE(PIX_TYPE, TYPE)				\
   FREE_L_IMAGE_DEFINE(PIX_TYPE, TYPE)				\
@@ -158,6 +186,7 @@ DEFAULT_IMG_TYPES_APPLY(IMAGE_DECLARE,)
 DEFAULT_IMG_TYPES_APPLY(ALLOC_IMAGE_DECLARE, ;)
 DEFAULT_IMG_TYPES_APPLY(ALLOC_SUB_IMAGE_DECLARE, ;)
 DEFAULT_IMG_TYPES_APPLY(ALLOC_L_IMAGE_DECLARE, ;)
+DEFAULT_IMG_TYPES_APPLY(RELINK_L_IMAGE_DECLARE, ;)
 DEFAULT_IMG_TYPES_APPLY(FREE_IMAGE_DECLARE, ;)
 DEFAULT_IMG_TYPES_APPLY(FREE_SUB_IMAGE_DECLARE, ;)
 DEFAULT_IMG_TYPES_APPLY(FREE_L_IMAGE_DECLARE, ;)
