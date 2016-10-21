@@ -104,6 +104,9 @@ DEFAULT_IMG_TYPES_APPLY(IMAGE_DECLARE,)
     ret->yoff	= yoff;							\
     ret->width	= width;						\
     ret->height	= height;						\
+    for(size_t y = 0; y < height; y++)					\
+      for(size_t x = 0; x < width; x++)					\
+	L_AT(ret, x, y) = AT(father, xoff + x, yoff + y);		\
     return ret;								\
   }
 
