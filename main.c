@@ -30,21 +30,17 @@ int main(int argc, char *argv[])
   t_bin_sauvola_opts bin_opts = {.window=5, .k=0.05f};
   t_bw_img *bw_img = binarise(SAUVOLA, img, &bin_opts);
 
+  printf("%u", bw_img->height);
+
   uint iter = (bw_img->height + bw_img->width)/200;
 
   bw_img = close_morph(bw_img, iter);
   bw_img = open_morph(bw_img, iter/4);
 
-  box new_box;
-  new_box.bottom = 30;
-  new_box.top  = 10;
-  new_box.left = 3;
-  new_box.right = 50;
-
-  draw_box(bw_img, new_box);
+  draw_boxes(bw_img, list_boxes(bw_img));
   
-  t_sub_bw_img *sub = alloc_sub_bw_img(bw_img, 12, 1, 42, 42);
-
+  //t_sub_bw_img *sub = alloc_sub_bw_img(bw_img, 12, 1, 42, 42);
+  
   // GTK PART
 
   GtkBuilder      *builder;
