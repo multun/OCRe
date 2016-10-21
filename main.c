@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 
   t_img_history *img_history	= history_init(builder);
   preprocess_ui_init(builder, img_history);
-  history_add_img(img_history, COLOR_IMG, (void*)img);
+  history_add_img(img_history, COLOR, (void*)img);
   set_history_callback(img_history, thumbnail_clicked, autosc_data);
 
   gtk_main();

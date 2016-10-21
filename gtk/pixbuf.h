@@ -2,6 +2,7 @@
 #define PIXBUF_H
 
 #include <gtk/gtk.h>
+#include "../bitmap/img.h"
 
 void pixbuf_color_img_destroy(guchar *pixels, gpointer img);
 void refresh_pixbuf_from_color_img(GdkPixbuf *gimg, t_color_img *img);

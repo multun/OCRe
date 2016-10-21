@@ -5,8 +5,8 @@
 #include "../error.h"
 #include "helpers.h"
 #include "../base_structs/vector.h"
-#include "img_history.h"
 #include "../tdefs.h"
+#include "render.h"
 
 #define THUMBNAILS_WIDTH 60
 
@@ -63,17 +63,7 @@ void history_add_img(t_img_history *hist,
   if (hist->selected == NULL)
     hist->selected = hist_elem;
 
-  switch(type)
-  {
-  case COLOR_IMG:
-    pixbuf = alloc_pixbuf_from_color_img((t_color_img*)img);
-    refresh_pixbuf_from_color_img(pixbuf, (t_color_img*)img);
-    break;
-  case BW_IMG:
-    pixbuf = alloc_pixbuf_from_bw_img((t_bw_img*)img);
-    refresh_pixbuf_from_bw_img(pixbuf, (t_bw_img*)img);
-    break;
-  }
+  pixbuf = pixbuf_render(type, img);
   GtkImage *wimg = GTK_IMAGE(
     gtk_image_new_from_pixbuf(
       resize_image(pixbuf, hist->width, hist->width)));
