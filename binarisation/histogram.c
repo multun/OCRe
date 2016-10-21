@@ -5,34 +5,30 @@
 
 void fill_histogram(t_bw_img *image, t_histogram *hist)
 {
+  //UNCHECKED
+  memset(hist, 0, sizeof(t_histogram));
   hist->count = image->width * image->height;
-  memset(hist, 0, sizeof(unsigned int) * 256); //UNCHECKED
-  for(unsigned int i = 0; i < image->width * image->height; i++)
+  for(size_t i = 0; i < image->width * image->height; i++)
     hist->cells[image->pixels[i]]++;
 }
 
-// TODO: do a sister function with quartiles / ratios
-unsigned int histogram_median(const t_histogram *hist)
+size_t histogram_ratio(float ratio, const t_histogram *hist)
 {
-  return histogram_ratio(0.5f, hist);
-}
-
-unsigned int histogram_ratio(float ratio, const t_histogram *hist)
-{
-  unsigned int ncount = 0;
-  for (unsigned int i = 0; i < sizeof(hist->cells); i++)
+  size_t ncount = 0;
+  size_t treshold = (size_t)((long double)hist->count * ratio);
+  for (size_t i = 0; i < sizeof(hist->cells); i++)
   {
     ncount += hist->cells[i];
-    if (ncount > (unsigned int)((long double)hist->count * ratio))
+    if (ncount > treshold)
       return i;
   }
   FAIL0("invalid histogram");
 }
 
-unsigned int histogram_average(const t_histogram *hist)
+size_t histogram_average(const t_histogram *hist)
 {
-  unsigned int total = 0;
-  for (unsigned int i = 0; i < sizeof(hist->cells); i++)
+  size_t total = 0;
+  for (size_t i = 0; i < sizeof(hist->cells); i++)
     total += hist->cells[i] * i;
   return total / hist->count;
 }
