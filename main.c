@@ -30,20 +30,6 @@ int main(int argc, char *argv[])
   if (argc < 2)
     FAIL("use: %s image", argv[argc - 1]);
   t_color_img *img = color_img_from_file(argv[(argc--) - 1]);
-
-  t_bin_sauvola_opts bin_opts = {.window=5, .k=0.05f};
-  t_bw_img *bw_img = binarise(SAUVOLA, img, &bin_opts);
-
-  printf("%u", bw_img->height);
-
-  uint iter = (bw_img->height + bw_img->width)/200;
-
-  bw_img = close_morph(bw_img, iter);
-  bw_img = open_morph(bw_img, iter/4);
-
-  draw_boxes(bw_img, list_boxes(bw_img));
-  
-  //t_sub_bw_img *sub = alloc_sub_bw_img(bw_img, 12, 1, 42, 42);
   
   // GTK PART
 

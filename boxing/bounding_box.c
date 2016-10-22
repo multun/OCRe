@@ -124,7 +124,3 @@ void draw_boxes(t_bw_img *bw_img, t_box_vect *box_list)
 }
 
 
-bw_img *box_to_img(box input_box)
-{
-  
-}
