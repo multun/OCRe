@@ -45,12 +45,12 @@ typedef t_bw_pix (*f_intensity)(t_color_pix);
 DEFAULT_IMG_TYPES_APPLY(IMAGE_DECLARE,)
 
 #define AT(img, x, y) \
-  (img->pixels[y * img->width + x])
+  (img->pixels[(y) * img->width + (x)])
 
 #define L_AT AT
 
 #define SUB_AT(img, x, y)				\
-  (img->father->pixels[(y + img->yoff) * img->father->width + x + img->xoff])
+  (img->father->pixels[((y) + img->yoff) * img->father->width + (x) + img->xoff])
 
 
 // IMAGE DECLARATION //////////////////////
