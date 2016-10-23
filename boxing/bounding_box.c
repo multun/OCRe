@@ -111,18 +111,20 @@ t_box_vect *list_boxes(t_bw_img *input_img)
   char array[input_img->width * input_img->height];
   for(size_t i = 0; i<input_img->width * input_img->height; i++)
     array[i] = -1;
+
+  printf("%u",array->si
   
   for(uint y = 1; y < input_img->height/2 - 1; y++)
     for(uint x = 1; x < input_img->width/2 - 1; x++)
-      if (AT(input_img, x, y) == 0 && is_in_box_list(box_list, x, y) == 0){
+      if (AT(input_img, x, y) == 0 && (array[x + (y) * input_img->width] == -1)){
 	box *temp_box;
 	temp_box = malloc(20);
 	*temp_box = init_box(x, y);
-	box_print(*temp_box);
+	//box_print(*temp_box);
 	connect_neigh(input_img, temp_box, x, y, array, input_img->width);
-	box_print(*temp_box);
+	//box_print(*temp_box);
 	VECT_PUSH(box_list, *temp_box);
-	VECT_PRINT(box_list);		
+	//VECT_PRINT(box_list);		
       }
   return box_list;
 }

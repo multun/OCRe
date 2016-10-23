@@ -7,8 +7,8 @@
 t_l_bw_img_vect *block_segment(t_bw_img *input_img)
 {
   t_bw_img *temp;
-  //uint iter = (temp->height + temp->width)/200;
-  temp = close_morph(input_img, 5);
+  //uint iter = (input_img->height + input_img->width)/200;
+  temp = close_morph(input_img, 10);
 
   t_box_vect *block_list;
   block_list = list_boxes(temp);
