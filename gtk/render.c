@@ -29,13 +29,11 @@ static void put_red(GdkPixbuf *pixbuf, size_t ux, size_t uy)
   p[3] = 0;
 }
 
-#define DEFINE_RENDER_L_IMG(TYPE) \
-  static void render_l_ ## TYPE ## _img(GdkPixbuf *pixbuf,		\
-					t_l_ ## TYPE ## _img *img)	\
+#define RENDER_SUB_BODY							\
   {									\
     for(size_t y = 0; y < img->height; y++)				\
     {									\
-      put_red(pixbuf, img->xoff		 , img->yoff + y);	\
+      put_red(pixbuf, img->xoff		 , img->yoff + y);		\
       put_red(pixbuf, img->xoff + img->width - 1, img->yoff + y);	\
     }									\
     for(size_t x = 0; x < img->width; x++)				\
@@ -45,16 +43,33 @@ static void put_red(GdkPixbuf *pixbuf, size_t ux, size_t uy)
     }									\
   }
 
+
+#define DEFINE_RENDER_L_IMG(TYPE) \
+  static void render_l_ ## TYPE ## _img(GdkPixbuf *pixbuf,		\
+					t_l_ ## TYPE ## _img *img)	\
+  RENDER_SUB_BODY
+
 DEFINE_RENDER_L_IMG(color)
 DEFINE_RENDER_L_IMG(bw)
+
+#define DEFINE_RENDER_SUB_IMG(TYPE)					\
+  static void render_sub_ ## TYPE ## _img(GdkPixbuf *pixbuf,		\
+					  t_sub_ ## TYPE ## _img *img)	\
+  RENDER_SUB_BODY
+
+DEFINE_RENDER_SUB_IMG(color)
+DEFINE_RENDER_SUB_IMG(bw)
+
 
 GdkPixbuf *pixbuf_render(t_img_type type, void *img)
 {
   GdkPixbuf *pixbuf;
   union
   {
-    t_l_color_img_vect	*color;
-    t_l_bw_img_vect	*bw;
+    t_l_color_img_vect		*color;
+    t_l_bw_img_vect		*bw;
+    t_sub_color_img_vect	*scolor;
+    t_sub_bw_img_vect		*sbw;
   } vimg;
 
   switch(type)
@@ -63,21 +78,33 @@ GdkPixbuf *pixbuf_render(t_img_type type, void *img)
     pixbuf = alloc_pixbuf_from_color_img((t_color_img*)img);
     refresh_pixbuf_from_color_img(pixbuf, (t_color_img*)img);
     break;
-  case L_COLOR_VECTOR:
+  case L_COLOR_VECT:
     vimg.color = (t_l_color_img_vect*)img;
     pixbuf = pixbuf_render(COLOR, VECT_GET(vimg.color, 0)->father);
     for(size_t i = 0; i < VECT_GET_SIZE(vimg.color); i++)
       render_l_color_img(pixbuf, VECT_GET(vimg.color, i));
     break;
+  case SUB_COLOR_VECT:
+    vimg.scolor = (t_sub_color_img_vect*)img;
+    pixbuf = pixbuf_render(COLOR, VECT_GET(vimg.scolor, 0)->father);
+    for(size_t i = 0; i < VECT_GET_SIZE(vimg.scolor); i++)
+      render_sub_color_img(pixbuf, VECT_GET(vimg.scolor, i));
+    break;
   case BW:
     pixbuf = alloc_pixbuf_from_bw_img((t_bw_img*)img);
     refresh_pixbuf_from_bw_img(pixbuf, (t_bw_img*)img);
     break;
-  case L_BW_VECTOR:
+  case L_BW_VECT:
     vimg.bw = (t_l_bw_img_vect*)img;
     pixbuf = pixbuf_render(BW, VECT_GET(vimg.bw, 0)->father);
     for(size_t i = 0; i < VECT_GET_SIZE(vimg.bw); i++)
       render_l_bw_img(pixbuf, VECT_GET(vimg.bw, i));
+  case SUB_BW_VECT:
+    vimg.sbw = (t_sub_bw_img_vect*)img;
+    pixbuf = pixbuf_render(COLOR, VECT_GET(vimg.sbw, 0)->father);
+    for(size_t i = 0; i < VECT_GET_SIZE(vimg.sbw); i++)
+      render_sub_bw_img(pixbuf, VECT_GET(vimg.sbw, i));
+    break;
   }
   return pixbuf;
 }
