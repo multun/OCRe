@@ -29,4 +29,6 @@ t_box_vect *list_boxes(t_bw_img *input_img);
 
 void draw_boxes(t_bw_img *bw_img, t_box_vect *box_list);
 
+void box_print(box input_box);
+
 #endif

@@ -4,3 +4,4 @@ ocre
 *.d
 *.bmpGNOME.supp
 gtk.suppression
+window_main.glade

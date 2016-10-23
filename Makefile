@@ -65,5 +65,5 @@ SUPPRS = $(addprefix --suppressions=, gtk-cairo-custom.supp gtk.suppression $(sh
 gtkdbg:
 	G_DEBUG=all GTK_DEBUG=interactive make gdbrun
 
-valgrind: $(EXEC) suppr
+valgrind: $(EXEC)
 	G_DEBUG=resident-modules G_SLICE=always-malloc valgrind --gen-suppressions=all $(SUPPRS) --dsymutil=yes --tool=memcheck  --leak-check=full --track-origins=yes ./$(EXEC) $(ARGS)

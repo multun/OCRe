@@ -10,7 +10,7 @@ t_bw_img *dilate(t_bw_img *input){
 
   for(uint y = 0; y < result->height; ++y)
     for(uint x = 0; x < result->width; ++x)
-      AT(result,x,y) = AT(input,x,y);  
+      AT(result,x,y) = 1;  
 
   
   for(uint y = 1; y < result->height - 1; ++y)
@@ -159,11 +159,12 @@ uint pix_diff(t_bw_img *input1, t_bw_img *input2){
 
 t_bw_img *close_morph(t_bw_img *img, uint iterations){
   t_bw_img *result;
+  result = alloc_bw_img_twin(img);
   result = dilate(img);
 
-  for(uint i = 1; i < iterations; ++i)
+  for(uint i = 1; i < iterations; i++)
     result = dilate(result);
-  for(uint i = 0; i < iterations; ++i)
+  for(uint i = 1; i < iterations; ++i)
     result = erode(result);
 
   return result;
