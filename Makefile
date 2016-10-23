@@ -16,6 +16,7 @@ EXEC=ocre
 
 SRC  = $(wildcard *.c)
 SRC += $(wildcard base_structs/*.c)
+SRC += $(wildcard block_to_line/*.c)
 SRC += $(wildcard binarisation/*.c)
 SRC += $(wildcard bitmap/*.c)
 SRC += $(wildcard gtk/*.c)
