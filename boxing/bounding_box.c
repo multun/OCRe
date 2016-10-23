@@ -105,14 +105,11 @@ t_box_vect *list_boxes(t_bw_img *input_img)
 {
   t_box_vect *box_list;
   box_list = VECT_ALLOC(box, 1000);
-  VECT_PRINT(box_list);
   printf("listboxes %p\n", (void*)input_img);
 
   char array[input_img->width * input_img->height];
   for(size_t i = 0; i<input_img->width * input_img->height; i++)
     array[i] = -1;
-
-  printf("%u",array->si
   
   for(uint y = 1; y < input_img->height/2 - 1; y++)
     for(uint x = 1; x < input_img->width/2 - 1; x++)
