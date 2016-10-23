@@ -10,7 +10,7 @@ FLAGS_BUILD=-O3 -Wall -pedantic -std=c99 -Wextra -fomit-frame-pointer
 
 # Ignore warnings from gtk headers
 CFLAGS += $(subst -I,-isystem,$(shell pkg-config --cflags gtk+-3.0))
-LDFLAGS = $(shell pkg-config --libs gtk+-3.0)
+LDFLAGS = $(shell pkg-config --libs gtk+-3.0) -lm
 
 EXEC=ocre
 
@@ -21,6 +21,7 @@ SRC += $(wildcard binarisation/*.c)
 SRC += $(wildcard bitmap/*.c)
 SRC += $(wildcard gtk/*.c)
 SRC += $(wildcard boxing/*.c)
+SRC += $(wildcard neural_network/*.c)
 
 OBJ = $(SRC:.c=.o)
 DEP = ${SRC:.c=.d}
