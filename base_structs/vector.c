@@ -2,26 +2,21 @@
 #include <string.h>
 #include "vector.h"
 
-#ifdef VECTOR_DEBUG
-#include <stdio.h>
-#endif
-int generic_vector_resize(size_t *size, size_t nsize, void **data)
+int generic_vector_resize(size_t *size, size_t nsize, void **data, size_t e_size)
 {
   void *ndata;
-#ifdef VECTOR_DEBUG
-  printf("resizing from %lu to %lu\n", *size, nsize);
-#endif
-  if ((ndata = realloc(*data, nsize)) == NULL)
-  {
-    void *former = *data;
-    if ((*data = malloc(nsize)) == NULL)
-      return -1;
-    else
+  size_t alloc_size = nsize * e_size;
+  if ((ndata = realloc(*data, alloc_size)) == NULL)
     {
-      memcpy(*data, former, *size);
-      free(former);
+      void *former = *data;
+      if ((*data = malloc(alloc_size)) == NULL)
+	return -1;
+      else
+      {
+	memcpy(*data, former, *size * e_size);
+	free(former);
+      }
     }
-  }
   else
     *data = ndata;
   *size = nsize;
@@ -30,14 +25,11 @@ int generic_vector_resize(size_t *size, size_t nsize, void **data)
 
 DECL_VECTOR(void);
 
-void	*generic_vector_alloc(size_t size)
+void	*generic_vector_alloc(size_t size, size_t e_size)
 {
-#ifdef VECTOR_DEBUG
-  printf("allocating %lu\n", size);
-#endif
   t_void_vect *ret;
   if ((ret = malloc(sizeof(t_void_vect))) == NULL
-      || ((ret->data.gen = malloc(size)) == NULL))
+      || ((ret->data.gen = malloc(size * e_size)) == NULL))
   {
     if (ret == NULL)
       free(ret);
