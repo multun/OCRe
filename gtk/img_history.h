@@ -8,9 +8,11 @@
 typedef enum e_img_type
 {
   COLOR = 0,
-  L_COLOR_VECTOR = 1,
-  BW = 2,
-  L_BW_VECTOR = 3,
+  L_COLOR_VECT = 1,
+  SUB_COLOR_VECT = 2,
+  BW = 3,
+  L_BW_VECT = 4,
+  SUB_BW_VECT = 5
 } t_img_type;
 
 typedef struct s_img_history_e
