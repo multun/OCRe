@@ -159,7 +159,6 @@ uint pix_diff(t_bw_img *input1, t_bw_img *input2){
 
 t_bw_img *close_morph(t_bw_img *img, uint iterations){
   t_bw_img *result;
-  result = alloc_bw_img_twin(img);
   result = dilate(img);
 
   for(uint i = 1; i < iterations; i++)

@@ -4,10 +4,7 @@
 #include "morpho.h"
 #include <stdio.h>
 #include "../base_structs/vector.h"
-typedef struct Box
-{
-  uint left, right, top, bottom, size;
-}box;
+#include "bounding_box.h"
 
 uint min(uint a, uint b){
   return ((a < b)? a : b);
@@ -17,7 +14,7 @@ uint max(uint a, uint b){
     }
 
 
-DECL_NAMED_VECTOR(struct Box, box);
+
 
 void draw_box(t_bw_img *input_img, box input_box)
 {
@@ -38,22 +35,22 @@ int is_in_box(box input_box, uint x, uint y){
 
 void update_box(box *input_box, uint x, uint y)
 {
-  if(is_in_box(*input_box, x, y) == 0){
-    input_box->size = input_box->size + 1;
-    input_box->left = min(input_box->left, x);
-    input_box->right = max(input_box->right, x);
-    input_box->top = min(input_box->top, y);
-    input_box->bottom = max(input_box->bottom, y);
-  }
+  input_box->size = input_box->size + 1;
+  input_box->left = min(input_box->left, x);
+  input_box->right = max(input_box->right, x);
+  input_box->top = min(input_box->top, y);
+  input_box->bottom = max(input_box->bottom, y);  
 }
 
-void create_box(box *input_box, uint x, uint y)
+box init_box(uint x, uint y)
 {
-  input_box->size = 1;
-  input_box->left = x;
-  input_box->right = x;
-  input_box->top = y;
-  input_box->bottom = y;
+  box output;
+  output.size = 1;
+  output.left = x;
+  output.right = x;
+  output.top = y;
+  output.bottom = y;
+  return output;
 }
 
 void box_print(box input_box)
@@ -72,53 +69,60 @@ int is_in_box_list(t_box_vect *box_list, uint x, uint y)
   return bool;
 }
 
-box connected_box(t_bw_img *input_img, box input_box, uint x, uint y){
-
-  box result;
-  result = input_box;
-  printf("%d\n", (int)AT(input_img, input_img->width-1, input_img->height - 1));
-  if(x > 1 && x < input_img->width-2 && y > 1 && y < input_img->height-2){
-    update_box(&input_box, x, y);
-    //printf("%u %u %d  ", x, y, AT(input_img, x, y));
-    //box_print(input_box);
-    if (is_in_box(input_box, x+1, y+1) == 0 && AT(input_img, x+1, y+1) == 0)
-      result = connected_box(input_img, result, x+1, y+1);
-    if (is_in_box(input_box, x+1, y) == 0 && AT(input_img, x+1, y) == 0)
-      result = connected_box(input_img, result, x+1, y);    
-    if (is_in_box(input_box, x, y+1) == 0 && AT(input_img, x, y+1) == 0)
-      result = connected_box(input_img, result, x, y+1);
-    if (is_in_box(input_box, x-1, y+1) == 0 && AT(input_img, x-1, y+1) == 0)
-      result = connected_box(input_img, result, x-1, y+1);
-    if (is_in_box(input_box, x-1, y) == 0 && AT(input_img, x-1, y) == 0)
-      result = connected_box(input_img, result, x-1, y);
-    if (is_in_box(input_box, x-1, y-1) == 0 && AT(input_img, x-1, y-1) == 0)
-      result = connected_box(input_img, result, x-1, y-1);
-    if (is_in_box(input_box, x, y-1) == 0 && AT(input_img, x, y-1) == 0)
-      result = connected_box(input_img, result, x, y-1);
-    unsigned char *paddrlol = &AT(input_img, x+1, y-1);
-    printf("%p\n", (void*)paddrlol);
-    if (is_in_box(input_box, x+1, y-1) == 0 && *paddrlol == 0)
-      result = connected_box(input_img, result, x+1, y-1);    
-  }
-  return result;
+void connect_neigh(t_bw_img *input_img, box *input_box, uint x, uint y,char *array, size_t width){
+  if (AT(input_img, x+1, y+1) == 0 && (array[x+1 + (y+1) * width] == -1))
+    connected_box(input_img, input_box, x+1, y+1, array, width);
+  if (AT(input_img, x+1, y) == 0 && (array[x+1 + (y) * width] == -1))
+    connected_box(input_img, input_box, x+1, y, array, width);    
+  if (AT(input_img, x, y+1) == 0 && (array[x + (y+1) * width] == -1))
+    connected_box(input_img, input_box, x, y+1, array, width);
+  if (AT(input_img, x-1, y+1) == 0 && (array[x-1 + (y+1) * width] == -1))
+    connected_box(input_img, input_box, x-1, y+1, array, width);
+  if (AT(input_img, x-1, y) == 0 && (array[x-1 + (y) * width] == -1))
+    connected_box(input_img, input_box, x-1, y, array, width);
+  if (AT(input_img, x, y-1) == 0 && (array[x + (y-1) * width] == -1))
+    connected_box(input_img, input_box, x, y-1, array, width);
+  if (AT(input_img, x-1, y-1) == 0 && (array[x-1 + (y-1) * width] == -1))
+    connected_box(input_img, input_box, x-1, y-1, array, width);
+  if (AT(input_img, x+1, y-1) == 0 && (array[x+1 + (y-1) * width] == -1))
+    connected_box(input_img, input_box, x+1, y-1, array, width);
+  
 }
+
+void connected_box(t_bw_img *input_img, box *input_box, uint x, uint y, char *array, size_t width){
+  if((x > 1 && x < input_img->width-2
+      && y > 1 && y < input_img->height-2)){
+    update_box(input_box, x, y);
+    array[x + y * width] = 0;
+    //printf("%u %u %d %i ", x, y, AT(input_img, x, y), is_in_box(input_box,x,y));
+    //box_print(input_box);
+    connect_neigh(input_img, input_box, x, y, array, width);   
+  }
+}
+
+
 t_box_vect *list_boxes(t_bw_img *input_img)
 {
   t_box_vect *box_list;
-  box_list = VECT_ALLOC(box, 42);
+  box_list = VECT_ALLOC(box, 1000);
   VECT_PRINT(box_list);
   printf("listboxes %p\n", (void*)input_img);
+
+  char array[input_img->width * input_img->height];
+  for(size_t i = 0; i<input_img->width * input_img->height; i++)
+    array[i] = -1;
   
-  for(uint y = 1; y < input_img->height - 1; y++)
-    for(uint x = 1; x < input_img->width - 1; x++)
+  for(uint y = 1; y < input_img->height/2 - 1; y++)
+    for(uint x = 1; x < input_img->width/2 - 1; x++)
       if (AT(input_img, x, y) == 0 && is_in_box_list(box_list, x, y) == 0){
-	box temp_box;
-	create_box(&temp_box, x, y);
-	//box_print(temp_box);
-	temp_box = connected_box(input_img, temp_box, x, y);
-	//box_print(temp_box);
-	VECT_PUSH(box_list, temp_box);
-	//VECT_PRINT(box_list);		
+	box *temp_box;
+	temp_box = malloc(20);
+	*temp_box = init_box(x, y);
+	box_print(*temp_box);
+	connect_neigh(input_img, temp_box, x, y, array, input_img->width);
+	box_print(*temp_box);
+	VECT_PUSH(box_list, *temp_box);
+	VECT_PRINT(box_list);		
       }
   return box_list;
 }

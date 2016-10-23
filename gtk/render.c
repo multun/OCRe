@@ -99,9 +99,10 @@ GdkPixbuf *pixbuf_render(t_img_type type, void *img)
     pixbuf = pixbuf_render(BW, VECT_GET(vimg.bw, 0)->father);
     for(size_t i = 0; i < VECT_GET_SIZE(vimg.bw); i++)
       render_l_bw_img(pixbuf, VECT_GET(vimg.bw, i));
+    break;
   case SUB_BW_VECT:
     vimg.sbw = (t_sub_bw_img_vect*)img;
-    pixbuf = pixbuf_render(COLOR, VECT_GET(vimg.sbw, 0)->father);
+    pixbuf = pixbuf_render(BW, VECT_GET(vimg.sbw, 0)->father);
     for(size_t i = 0; i < VECT_GET_SIZE(vimg.sbw); i++)
       render_sub_bw_img(pixbuf, VECT_GET(vimg.sbw, i));
     break;
