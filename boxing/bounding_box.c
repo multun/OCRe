@@ -39,7 +39,7 @@ void update_box(box *input_box, uint x, uint y)
   input_box->left = min(input_box->left, x);
   input_box->right = max(input_box->right, x);
   input_box->top = min(input_box->top, y);
-  input_box->bottom = max(input_box->bottom, y);  
+  input_box->bottom = max(input_box->bottom, y);
 }
 
 box init_box(uint x, uint y)
@@ -73,7 +73,7 @@ void connect_neigh(t_bw_img *input_img, box *input_box, uint x, uint y,char *arr
   if (AT(input_img, x+1, y+1) == 0 && (array[x+1 + (y+1) * width] == -1))
     connected_box(input_img, input_box, x+1, y+1, array, width);
   if (AT(input_img, x+1, y) == 0 && (array[x+1 + (y) * width] == -1))
-    connected_box(input_img, input_box, x+1, y, array, width);    
+    connected_box(input_img, input_box, x+1, y, array, width);
   if (AT(input_img, x, y+1) == 0 && (array[x + (y+1) * width] == -1))
     connected_box(input_img, input_box, x, y+1, array, width);
   if (AT(input_img, x-1, y+1) == 0 && (array[x-1 + (y+1) * width] == -1))
@@ -86,7 +86,7 @@ void connect_neigh(t_bw_img *input_img, box *input_box, uint x, uint y,char *arr
     connected_box(input_img, input_box, x-1, y-1, array, width);
   if (AT(input_img, x+1, y-1) == 0 && (array[x+1 + (y-1) * width] == -1))
     connected_box(input_img, input_box, x+1, y-1, array, width);
-  
+
 }
 
 void connected_box(t_bw_img *input_img, box *input_box, uint x, uint y, char *array, size_t width){
@@ -96,7 +96,7 @@ void connected_box(t_bw_img *input_img, box *input_box, uint x, uint y, char *ar
     array[x + y * width] = 0;
     //printf("%u %u %d %i ", x, y, AT(input_img, x, y), is_in_box(input_box,x,y));
     //box_print(input_box);
-    connect_neigh(input_img, input_box, x, y, array, width);   
+    connect_neigh(input_img, input_box, x, y, array, width);
   }
 }
 
@@ -104,14 +104,12 @@ void connected_box(t_bw_img *input_img, box *input_box, uint x, uint y, char *ar
 t_box_vect *list_boxes(t_bw_img *input_img)
 {
   t_box_vect *box_list;
-  box_list = VECT_ALLOC(box, 1000);
-  VECT_PRINT(box_list);
-  printf("listboxes %p\n", (void*)input_img);
+  box_list = VECT_ALLOC(box, 16);
 
   char array[input_img->width * input_img->height];
   for(size_t i = 0; i<input_img->width * input_img->height; i++)
     array[i] = -1;
-  
+
   for(uint y = 1; y < input_img->height/2 - 1; y++)
     for(uint x = 1; x < input_img->width/2 - 1; x++)
       if (AT(input_img, x, y) == 0 && is_in_box_list(box_list, x, y) == 0){
@@ -122,7 +120,6 @@ t_box_vect *list_boxes(t_bw_img *input_img)
 	connect_neigh(input_img, temp_box, x, y, array, input_img->width);
 	box_print(*temp_box);
 	VECT_PUSH(box_list, *temp_box);
-	VECT_PRINT(box_list);		
       }
   return box_list;
 }
@@ -132,4 +129,3 @@ void draw_boxes(t_bw_img *bw_img, t_box_vect *box_list)
   for (unsigned int i = 0; i < VECT_GET_SIZE(box_list);i++)
     draw_box(bw_img, VECT_GET(box_list, i));
 }
-
