@@ -21,6 +21,7 @@ typedef struct e_coordinates
 DECL_NAMED_VECTOR(t_coordinates, coordinates);
 DECL_NAMED_VECTOR(unsigned int, uint);
 
+t_sub_bw_img_vect *global(t_sub_bw_img *img);
 int *img_to_array(t_sub_bw_img *img);
 int array_to_average(int *array);
 t_coordinates_vect *img_to_coordinates(t_sub_bw_img *img);
