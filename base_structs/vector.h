@@ -31,9 +31,9 @@ void	*generic_vector_alloc(size_t size, size_t);
   VECT_RESIZE_ABS(VECT, (VECT->size) * 2)
 #define VECT_PUSH(VECT, VAL)					\
   ((((VECT->i+1) > VECT->size) ? (VECT_EXPAND(VECT)) : 0)	\
-   || ((VECT_GET(VECT, (VECT->i)++) = VAL), 0))
+   || ((VECT_GET(VECT, (VECT->i)++) = (VAL)), 0))
 
-#define VECT_POP(VECT) (--((VECT)->i)
+#define VECT_POP(VECT) (--((VECT)->i))
 
 #define VECT_RESIZE(VECT, SIZE)					\
   VECT_RESIZE_ABS(VECT, SIZE * sizeof(*(VECT->data.spec)))
