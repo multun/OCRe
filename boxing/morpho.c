@@ -163,7 +163,7 @@ t_bw_img *close_morph(t_bw_img *img, uint iterations){
 
   for(uint i = 1; i < iterations; i++)
     result = dilate(result);
-  for(uint i = 1; i < iterations; ++i)
+  for(uint i = 0; i < iterations; ++i)
     result = erode(result);
 
   return result;
@@ -189,7 +189,7 @@ t_bw_img *close_ver_morph(t_bw_img *img, uint iterations){
 
   for(uint i = 1; i < iterations; ++i)
     result = dilate_ver(result);
-  for(uint i = 0; i < iterations; ++i)
+  for(uint i = 1; i < iterations; ++i)
     result = erode_ver(result);
 
   return result;
@@ -203,7 +203,7 @@ t_bw_img *open_morph(t_bw_img *img, uint iterations){
     
   for(uint i = 1; i < iterations; ++i)
     result = erode(result);
-  for(uint i = 0; i < iterations; ++i)
+  for(uint i = 1; i < iterations; ++i)
     result = dilate(result);
 
   return result;

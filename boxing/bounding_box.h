@@ -28,9 +28,9 @@ void connected_box(t_bw_img *input_img, box *input_box, uint x, uint y, char *ar
 void connect_neigh(t_bw_img *input_img, box *input_box, uint x, uint y, char *array, size_t width);
 
 t_box_vect *list_boxes(t_bw_img *input_img);
-
-void draw_boxes(t_bw_img *bw_img, t_box_vect *box_list);
-
 void box_print(box input_box);
 
+t_box_vect *trim_box_list(t_box_vect *box_list, t_bw_img *input_img);
+
+t_box_vect *congregate_box_list(t_box_vect *box_list);
 #endif
