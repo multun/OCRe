@@ -11,8 +11,8 @@ double __attribute__((hot, const)) sigmoid_f(double in)
 
 double __attribute__((hot, const)) sigmoid_fd(double in, double x)
 {
-  UNUSED(in);
-  return x * (1.0 - x);
+  UNUSED(x);
+  return in * (1.0 - in);
 }
 
 

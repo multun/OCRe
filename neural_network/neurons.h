@@ -20,15 +20,16 @@ typedef struct s_layer
   size_t	size;
   double	*in;
   double	*out;
+  double	*delta;
+  double	*weights;
+  double	*weights_delta;
 } t_layer;
 
 //DECL_NAMED_VECTOR(t_layer*, layer);
 
 typedef struct s_network
 {
-  size_t	lweights_size;
   size_t	layers_count;
-  double	*weights;
   t_layer	*layers;
 } t_network;
 
