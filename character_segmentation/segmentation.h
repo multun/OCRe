@@ -8,7 +8,9 @@
 #include "../error.h"
 #include <stdio.h>
 
-int isWhiteColumn (t_sub_bw_img *img, int column);
+DECL_NAMED_VECTOR(t_sub_bw_img *, sub_bw_img);
+
+char isWhiteColumn (t_sub_bw_img *img, uint column);
 t_sub_bw_img_vect *segmentation(t_sub_bw_img *img);
 t_sub_bw_img *imgToSmallerImg(t_sub_bw_img *img, int firstColumn, int lastColumn);
 
