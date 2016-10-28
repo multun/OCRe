@@ -203,7 +203,7 @@ t_bw_img *open_morph(t_bw_img *img, uint iterations){
     
   for(uint i = 1; i < iterations; ++i)
     result = erode(result);
-  for(uint i = 1; i < iterations; ++i)
+  for(uint i = 0; i < iterations; ++i)
     result = dilate(result);
 
   return result;
@@ -213,12 +213,18 @@ void xor_morph(t_bw_img *output, t_bw_img *input){
 
   for(uint y = 1; y < output->height - 1; ++y)
     for(uint x = 1; x < output->width - 1; ++x)
-      if(AT(output,x,y) != AT(input,x,y))
+      if(AT(output,x,y) == 0)
+	if(AT(input,x,y) != 0)
+	  AT(output,x,y) = 255;
+	else
 	  AT(output,x,y) = 0;
       else
+	if(AT(output,x,y) == 0)
 	  AT(output,x,y) = 255;
+	else
+	  AT(output,x,y) = 0;
 }
 
 void border_morph(t_bw_img *img){
-  xor_morph(img, dilate(img));
+  xor_morph(dilate(img), img);
 }

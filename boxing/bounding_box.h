@@ -6,12 +6,20 @@
 #include "../tdefs.h"
 #include "../base_structs/vector.h"
 
-typedef struct Box
+typedef struct s_tuple_uint
+{
+  uint x, y;
+}t_tuple_uint;
+
+DECL_NAMED_VECTOR(struct s_tuple_uint, tuple_uint);
+
+typedef struct s_box
 {
   uint left, right, top, bottom, size;
 }box;
 
-DECL_NAMED_VECTOR(struct Box, box);
+DECL_NAMED_VECTOR(struct s_box, box);
+
 
 void draw_box(t_bw_img *input_img, box input_box);
 

@@ -8,10 +8,10 @@ t_l_bw_img_vect *block_segment(t_bw_img *input_img)
 {
   t_bw_img *temp;
 
-  temp = close_hor_morph(input_img, input_img->width/75);
+  temp = close_hor_morph(input_img, input_img->width/65);
 
   //  Comment next line for : Only Lines instead of blocks
-  temp = close_ver_morph(temp, input_img->width/120);
+  temp = close_ver_morph(temp, input_img->height/150);
   //temp = open_morph(temp, input_img->width/180);
 
   
