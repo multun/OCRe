@@ -12,10 +12,21 @@ char isWhiteColumn(t_sub_bw_img *img, uint column)
   return isWhite;
 }
 
+/*uint avgCharWidth(t_sub_bw_img_vect *vimg)
+{
+  uint avg, sum, size = VECT_GET_SIZE(vimg);
+  for(uint i = 0; i < size; i++)
+    sum += (VECT_GET(vimg, i))->width;
+  avg = sum/size;
+  return avg;
+}*/
+
 t_sub_bw_img_vect *segmentation(t_sub_bw_img *img)
 {
   t_sub_bw_img_vect *result;
+  //uint *avgCompWidth;
   result = VECT_ALLOC(sub_bw_img, 32);
+  //avgCompWidth = VECT_ALLOC(uint, 32);
   uint aux = 0;
     
   for(uint i = 0; i < img->width; i++)
@@ -28,6 +39,20 @@ t_sub_bw_img_vect *segmentation(t_sub_bw_img *img)
 
   return result;
 }
+
+/*t_tuple_sub_img_label *segmentedToProperties(t_sub_bw_img_vect *vimg)
+{
+  t_tuple_sub_img_label *result;
+  result = VECT_ALLOC(t_tuple_sub_img_label, 32);
+  for(uint i = 0; i < VECT_GET_SIZE(vimg); i++)
+  {
+    if(VECT_GET(vimg, i) > avgCharWidth)
+      VECT_PUSH(result, ((t_tuple_sub_img_label){.img = VECT_GET(vimg, i), .label = 1}));
+    else
+      VECT_PUSH(result, ((t_tuple_sub_img_label){.img = VECT_GET(vimg, i), .label = 0}));
+  }
+  return result;
+}*/
 
 /*t_sub_bw_img *imgToSmallerImg(t_sub_bw_img *img, int firstColumn, int lastColumn)
 {
