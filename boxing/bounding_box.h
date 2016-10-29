@@ -25,6 +25,8 @@ void draw_box(t_bw_img *input_img, box input_box);
 
 void update_box(box *input_box, uint x, uint y);
 
+void update_true_size(t_box_vect *input_box, t_bw_img *input_img);
+
 box init_box(uint x, uint y);
 
 int is_in_box(box input_box, uint x, uint y);
@@ -36,6 +38,9 @@ void connected_box(t_bw_img *input_img, box *input_box, uint x, uint y, char *ar
 void connect_neigh(t_bw_img *input_img, box *input_box, uint x, uint y, char *array, size_t width);
 
 t_box_vect *list_boxes(t_bw_img *input_img);
+
+void test_traversal(t_box_vect *box_list);
+
 void box_print(box input_box);
 
 t_box_vect *trim_box_list(t_box_vect *box_list, t_bw_img *input_img);

@@ -17,6 +17,12 @@ t_l_bw_img_vect *block_segment(t_bw_img *input_img)
   
   t_box_vect *block_list;
   block_list = list_boxes(temp);
+  test_traversal(block_list);
+  update_true_size(block_list, input_img);
+  test_traversal(block_list);  
+  block_list = trim_box_list(block_list, input_img);
+  test_traversal(block_list);
+  
 
   t_l_bw_img_vect *rv = VECT_ALLOC(l_bw_img, 1000);
   for (unsigned int i = 0; i < VECT_GET_SIZE(block_list); i++)
