@@ -24,7 +24,7 @@ DECL_NAMED_VECTOR(unsigned int, uint);
 
 t_sub_bw_img_vect *line_subdivision(t_sub_bw_img *img);
 int *img_to_array(t_sub_bw_img *img);
-int array_to_average(int *array);
+int array_to_average(int *array, t_sub_bw_img *img);
 t_coordinates_vect *img_to_coordinates(t_sub_bw_img *img);
 t_sub_bw_img_vect *coordinates_to_img(t_sub_bw_img *img,
 				      t_coordinates_vect *vect_of_coord);
