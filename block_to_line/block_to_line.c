@@ -2,7 +2,8 @@
 #include "block_to_line.h"
 #include "../tdefs.h"
 
-t_sub_bw_img_vect *global(t_sub_bw_img *img){
+t_sub_bw_img_vect *line_subdivision(t_sub_bw_img *img)
+{
   t_coordinates_vect* vector_of_coordinates = img_to_coordinates(img);
   t_sub_bw_img_vect* result = coordinates_to_img(img,vector_of_coordinates);
   return result;
@@ -34,7 +35,8 @@ int array_to_average(int *array)
   int nb_line = 0;
   //int nb_space = 0;
   int stack = 0;
-  for (uint i = 0; i < sizeof(array); i++)
+  uint i;
+  for (i = 0; i < sizeof(array); i++)
   {
     if (array[i] == 0){
       if (is_line == true){
@@ -58,6 +60,10 @@ int array_to_average(int *array)
         stack++;
     }
   }
+  if(nb_line == 0){
+    nb_line = 1;
+  }
+  
   avg_line = stack_line/nb_line;
   //avg_space = stack_space/nb_space;
   return avg_line;

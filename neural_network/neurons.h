@@ -25,13 +25,19 @@ typedef struct s_layer
   double	*weights_delta;
 } t_layer;
 
-//DECL_NAMED_VECTOR(t_layer*, layer);
+#define LAYER_NEURON_WSIZE(layer) ((layer) + 1)->size
+#define LAYER_WSIZE(layer) ((layer)->size * LAYER_NEURON_WSIZE(layer))
 
 typedef struct s_network
 {
+  size_t	backprop_count;
   size_t	layers_count;
   t_layer	*layers;
 } t_network;
 
+extern const t_nrn_cls sigmoid;
+extern const t_nrn_cls identity;
+
+void random_weights(t_network *net);
 
 #endif

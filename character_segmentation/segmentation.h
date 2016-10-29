@@ -6,9 +6,7 @@
 #include "../bitmap/img.h"
 #include "../tdefs.h"
 #include "../error.h"
-#include <stdio.h>
-
-DECL_NAMED_VECTOR(t_sub_bw_img *, sub_bw_img);
+#include "../gtk/vectors.h"
 
 char isWhiteColumn (t_sub_bw_img *img, uint column);
 t_sub_bw_img_vect *segmentation(t_sub_bw_img *img);

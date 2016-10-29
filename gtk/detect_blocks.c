@@ -29,6 +29,6 @@ void detect_blocks_ui_run(t_img_history *img_history, t_img_history_e *hist_e)
   if (hist_e->type != BW)
     return;
 
-  t_l_bw_img_vect *vimg = block_segment((t_bw_img*)hist_e->img);
-  history_add_img(img_history, L_BW_VECT, (void*)vimg, (void*)vimg);
+  t_sub_bw_img_vect *vimg = block_segment((t_bw_img*)hist_e->img);
+  history_add_img(img_history, SUB_BW_VECT, (void*)vimg, (void*)vimg);
 }
