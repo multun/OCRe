@@ -35,7 +35,8 @@ int array_to_average(int *array)
   int nb_line = 0;
   //int nb_space = 0;
   int stack = 0;
-  for (uint i = 0; i < sizeof(array); i++)
+  uint i;
+  for (i = 0; i < sizeof(array); i++)
   {
     if (array[i] == 0){
       if (is_line == true){
@@ -59,6 +60,10 @@ int array_to_average(int *array)
         stack++;
     }
   }
+  if(nb_line == 0){
+    nb_line = 1;
+  }
+  
   avg_line = stack_line/nb_line;
   //avg_space = stack_space/nb_space;
   return avg_line;
