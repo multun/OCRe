@@ -12,7 +12,8 @@ typedef enum e_img_type
   SUB_COLOR_VECT = 2,
   BW = 3,
   L_BW_VECT = 4,
-  SUB_BW_VECT = 5
+  SUB_BW_VECT = 5,
+  SUB_BW_VECT_VECT = 6,
 } t_img_type;
 
 typedef struct s_img_history_e

@@ -16,6 +16,7 @@
 #include "gtk/img_history.h"
 #include "gtk/preproc.h"
 #include "gtk/detect_blocks.h"
+#include "gtk/detect_chars.h"
 
 void thumbnail_clicked(struct s_img_history *hist,
 		       t_img_history_e *hist_e,
@@ -47,6 +48,7 @@ int main(int argc, char *argv[])
   t_img_history *img_history	= history_init(builder);
   preprocess_ui_init(builder, img_history);
   detect_blocks_ui_init(builder, img_history);
+  detect_chars_ui_init(builder, img_history);
 
   set_history_add_callback(img_history, thumbnail_clicked, autosc_data);
   set_history_click_callback(img_history, thumbnail_clicked, autosc_data);

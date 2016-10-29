@@ -22,6 +22,7 @@ SRC += $(wildcard bitmap/*.c)
 SRC += $(wildcard gtk/*.c)
 SRC += $(wildcard boxing/*.c)
 SRC += $(wildcard neural_network/*.c)
+SRC += $(wildcard character_segmentation/*.c)
 
 OBJ = $(SRC:.c=.o)
 DEP = ${SRC:.c=.d}
