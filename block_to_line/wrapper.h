@@ -6,3 +6,5 @@
 #include "../gtk/render.h"
 
 t_sub_bw_img_vect *line_extraction(t_sub_bw_img *img);
+
+#endif

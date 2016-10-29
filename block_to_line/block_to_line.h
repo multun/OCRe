@@ -4,6 +4,7 @@
 #include "../base_structs/vector.h"
 #include "../bitmap/bmp.h"
 #include "../bitmap/img.h"
+#include "../gtk/vectors.h"
 //#include "../gtk/render.h"
 
 typedef enum e_bool
@@ -20,7 +21,6 @@ typedef struct e_coordinates
 
 DECL_NAMED_VECTOR(t_coordinates, coordinates);
 DECL_NAMED_VECTOR(unsigned int, uint);
-DECL_NAMED_VECTOR(t_sub_bw_img *, sub_bw_img);
 
 t_sub_bw_img_vect *line_subdivision(t_sub_bw_img *img);
 int *img_to_array(t_sub_bw_img *img);
