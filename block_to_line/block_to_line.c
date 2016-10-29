@@ -2,7 +2,7 @@
 #include "block_to_line.h"
 #include "../tdefs.h"
 
-t_sub_bw_img_vect *global(t_sub_bw_img *img){
+t_sub_bw_img_vect *line_subdivision(t_sub_bw_img *img){
   t_coordinates_vect* vector_of_coordinates = img_to_coordinates(img);
   t_sub_bw_img_vect* result = coordinates_to_img(img,vector_of_coordinates);
   return result;
