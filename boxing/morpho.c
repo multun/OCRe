@@ -33,7 +33,7 @@ t_bw_img *dilate_hor(t_bw_img *input){
 
   for(uint y = 0; y < result->height; ++y)
     for(uint x = 0; x < result->width; ++x)
-      AT(result,x,y) = AT(input,x,y);  
+      AT(result,x,y) = 1;  
 
   
   for(uint y = 1; y < result->height - 1; ++y)

@@ -89,6 +89,20 @@ int is_in_box_list(t_box_vect *box_list, uint x, uint y)
   return bool;
 }
 
+void expand_box(box *input_box, uint iter)
+{
+  for(uint i = 0; i<iter;i++)
+  {
+    input_box->left--;
+    input_box->right++;
+  }
+  for(uint i = 0; i<iter;i++)
+  {
+    input_box->top--;
+    input_box->bottom++;
+  }
+}
+
 void connect_neigh(t_bw_img *input_img, box *input_box, uint x, uint y,char *array, size_t width){
   if (AT(input_img, x+1, y) == 0 && (array[x+1 + (y) * width] == -1))
     connected_box(input_img, input_box, x+1, y, array, width);
@@ -167,20 +181,6 @@ void test_traversal(t_box_vect *box_list)
   printf("end traversal : \n\n");
 }
 
-void expand_box(box *input_box)
-{
-  for(uint i = 0; i<1;i++)
-  {
-    input_box->left--;
-    input_box->right++;
-  }
-  for(uint i = 0; i<1;i++)
-  {
-    input_box->top--;
-    input_box->bottom++;
-  }
-}
-
 void update_true_size(t_box_vect *box_list, t_bw_img *input_img)
 {
   for(size_t i = 0; i< VECT_GET_SIZE(box_list); i++)
@@ -209,7 +209,7 @@ t_box_vect *list_boxes(t_bw_img *input_img)
 	temp_box = malloc(20);
 	*temp_box = init_box(x, y);
 	connected_box_iter(input_img, temp_box, x, y, array, input_img->width);
-	//connect_neigh(input_img, temp_box, x, y, array, input_img->width);
+	//expand_box(temp_box, input_img->height/750);
 	VECT_PUSH(box_list, *temp_box);
       }
   
@@ -250,6 +250,29 @@ t_box_vect *trim_box_list(t_box_vect *box_list, t_bw_img *input_img)
 	  && VECT_GET(box_list,i).size > min_size
 	  && get_width(VECT_GET(box_list,i)) > min_width && get_height(VECT_GET(box_list,i)) > min_height)
 	  || get_fullsize(VECT_GET(box_list,i))/VECT_GET(box_list,i).size == 1)
+	{
+	  VECT_PUSH(new_box_list, VECT_GET(box_list,i));
+	}
+    }
+  return new_box_list;
+}
+
+t_box_vect *trim_line_list(t_box_vect *box_list, t_bw_img *input_img)
+{
+  t_box_vect *new_box_list;
+  new_box_list = VECT_ALLOC(box, 16);
+  uint min_width = input_img->width / 100;
+  uint min_height = input_img->height / 100;
+  uint min_size = min_width*min_height;
+
+  printf("%u %u %u\n", min_width, min_height, min_size);
+
+  
+  for (unsigned int i = 0; i < VECT_GET_SIZE(box_list);i++)
+    {      
+      if (get_width(VECT_GET(box_list,i))*3 > get_height(VECT_GET(box_list,i))
+	  && get_fullsize(VECT_GET(box_list,i))/VECT_GET(box_list,i).size < 11
+	  && get_fullsize(VECT_GET(box_list,i))/VECT_GET(box_list,i).size > 1)
 	{
 	  VECT_PUSH(new_box_list, VECT_GET(box_list,i));
 	}

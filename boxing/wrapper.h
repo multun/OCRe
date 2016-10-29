@@ -6,4 +6,5 @@
 
 t_sub_bw_img_vect *block_segment(t_bw_img *input_img);
 
+t_sub_bw_img_vect *temp_line_segment(t_bw_img *input_img);
 #endif
