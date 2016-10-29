@@ -26,9 +26,9 @@ void detect_chars_ui_init(GtkBuilder *builder, t_img_history *img_history)
 void detect_chars_ui_run(t_img_history *img_history, t_img_history_e *hist_e)
 {
   UNUSED(img_history);
-  if (hist_e->type != SUB_BW_VECT)
+  if (hist_e->type != SUB_BW_VECT2)
     return;
 
   t_sub_bw_img_vect_vect *vimg = line_segment((t_sub_bw_img_vect*)hist_e->img);
-  history_add_img(img_history, SUB_BW_VECT_VECT, (void*)vimg, (void*)vimg);
+  history_add_img(img_history, SUB_BW_VECT3, (void*)vimg, (void*)vimg);
 }

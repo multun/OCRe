@@ -13,7 +13,8 @@ typedef enum e_img_type
   BW = 3,
   L_BW_VECT = 4,
   SUB_BW_VECT = 5,
-  SUB_BW_VECT_VECT = 6,
+  SUB_BW_VECT2 = 6,
+  SUB_BW_VECT3 = 6,
 } t_img_type;
 
 typedef struct s_img_history_e

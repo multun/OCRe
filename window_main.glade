@@ -474,10 +474,14 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkButton" id="detect_lines_button">
+                <property name="label" translatable="yes">Detect blocks</property>
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">label</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">center</property>
+                <property name="valign">start</property>
+                <property name="margin_top">10</property>
               </object>
               <packing>
                 <property name="position">3</property>

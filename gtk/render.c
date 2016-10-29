@@ -106,7 +106,7 @@ GdkPixbuf *pixbuf_render(t_img_type type, void *img)
     for(size_t i = 0; i < VECT_GET_SIZE(vimg.sbw); i++)
       render_sub_bw_img(pixbuf, VECT_GET(vimg.sbw, i));
     break;
-  case SUB_BW_VECT_VECT:
+  case SUB_BW_VECT2:
     vimg.sbwv = (t_sub_bw_img_vect_vect*)img;
     pixbuf = pixbuf_render(BW, VECT_GET(VECT_GET(vimg.sbwv, 0),0)->father);
     for(size_t i = 0; i < VECT_GET_SIZE(vimg.sbwv); i++)
