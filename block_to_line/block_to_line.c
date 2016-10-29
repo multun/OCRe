@@ -7,6 +7,7 @@ t_sub_bw_img_vect *line_subdivision(t_sub_bw_img *img)
   printf("Line_subdivision fnc launched\n");
   t_coordinates_vect* vector_of_coordinates = img_to_coordinates(img);
   t_sub_bw_img_vect* result = coordinates_to_img(img,vector_of_coordinates);
+  printf("Line_subdivision closed\n");
   return result;
 }
 
@@ -18,20 +19,24 @@ int* img_to_array(t_sub_bw_img *img)
   printf("image width = %d\n",img->width);
   printf("image height = %d\n",img->height);
   int *array = malloc((sizeof(int) * img->height));
-  printf("size or the array prefunction = %d\n",(uint)sizeof(array));
+  printf("before loops\n");
   for(uint k = 0; k<(img->height); k++)
   {
     for (uint l = 0; l < (img->width); l++)
     {
-      if (SUB_AT(img,k,l) != 0)
+      //printf("k = %d, l = %d",k,l);
+      if (SUB_AT(img,k,l) != 0){
+        //printf(", Pixel = %d",SUB_AT(img,k,l));
         stack += 1;
+        //printf(", stack = %d\n",stack);
+      }
     }
     array[k] = (int)(img->width) - stack;
     printf("Array[%d] = %d\n",k,array[k]);
     stack = 0;
   }
-  printf("img_to_array closed\n");
   printf("array size = %lu\n",sizeof(array));
+  printf("img_to_array closed\n");
   return array;
 }
 
@@ -39,7 +44,7 @@ int* img_to_array(t_sub_bw_img *img)
 //           retourne la hauteur moyenne d'une ligne
 int array_to_average(int *array, t_sub_bw_img *img)
 {
-  printf("array_to_average\n");
+  printf("array_to_average started\n");
   t_bool is_line = false;
   int avg_line;
   int stack_line = 0;
@@ -52,9 +57,9 @@ int array_to_average(int *array, t_sub_bw_img *img)
   printf("size of array = %d\n",array_length);
   for (i = 0; i < array_length; i++)
   {
-    printf("boucle for nbr %d\n",i);
-    if (array[i] == 0){
-      printf("array = 0 nbr %d\n",i);
+    //printf("Line nbr %d\n",i);
+    if (array[i] < 5){
+      printf("Line nbr %d is empty\n",i);
       if (is_line == true){
         is_line = false;
         stack_line += stack;
@@ -99,15 +104,19 @@ t_coordinates_vect *img_to_coordinates(t_sub_bw_img *img)
   int average = array_to_average(line_array, img);
   int low_limit = (int)((double)average * 0.66);
   int high_limit = (int)((double)average * 1.33);
+  printf("Low-limit = %d, High-Limit = %d\n", low_limit, high_limit);
   for (int i = 0; (uint)i < img->height; i++){
-    if (line_array[i] == 0){
+    if (line_array[i] < 5){
       if (is_line == true){
         is_line = false;
-        if (i - thisline.debut < (int)((double)average*0.25))
-          continue;
+        //if (i - thisline.debut < (int)((double)average*0.25))
+        //  continue;
         thisline.fin = i;
+        printf("début = %d, fin = %d\n",thisline.debut, thisline.fin);
         if ((thisline.fin - thisline.debut > low_limit) && (thisline.fin - thisline.debut < high_limit))
           VECT_PUSH(lines_results, thisline);
+        else
+          continue;
         thisline = (t_coordinates){0,0};
       }
     }
@@ -137,7 +146,7 @@ t_sub_bw_img_vect *coordinates_to_img(t_sub_bw_img *img,
   printf("Size of vect_of_coord: %lu\n",size);
   for (uint i = 0; i < size; i++)
   {
-    printf("Into the For Loop:\n");
+    printf("Into the For Loop: ");
     printf("i = %d\n",i);
     thiscoordinates = VECT_GET(vect_of_coord,i);
     thislineimg = relink_sub_bw_img(
