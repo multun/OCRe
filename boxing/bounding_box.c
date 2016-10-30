@@ -8,10 +8,10 @@
 
 uint min(uint a, uint b){
   return ((a < b)? a : b);
-    }
+}
 uint max(uint a, uint b){
   return ((a > b)? a : b);
-    }
+}
 
 
 uint get_height(box input_box){
@@ -39,7 +39,8 @@ void draw_box(t_bw_img *input_img, box input_box)
 }
 
 int is_in_box(box input_box, uint x, uint y){
-  return ((x>=input_box.left && x<=input_box.right && y>=input_box.top && y<=input_box.bottom)? 1 : 0);
+  return ((x>=input_box.left && x<=input_box.right
+	   && y>=input_box.top && y<=input_box.bottom)? 1 : 0);
 }
 
 void update_box(box *input_box, uint x, uint y)
@@ -75,7 +76,10 @@ box fus_boxes(box box_1,box box_2)
 
 void box_print(box input_box)
 {
-  printf("%u %u %u %u %u\n", input_box.left, input_box.right, input_box.top, input_box.bottom, input_box.size);
+  printf("%u %u %u %u %u\n",
+	 input_box.left, input_box.right,
+	 input_box.top, input_box.bottom,
+	 input_box.size);
 }
 
 
@@ -103,39 +107,19 @@ void expand_box(box *input_box, uint iter)
   }
 }
 
-void connect_neigh(t_bw_img *input_img, box *input_box, uint x, uint y,char *array, size_t width){
-  if (AT(input_img, x+1, y) == 0 && (array[x+1 + (y) * width] == -1))
-    connected_box(input_img, input_box, x+1, y, array, width);
-  if (AT(input_img, x-1, y) == 0 && (array[x-1 + (y) * width] == -1))
-    connected_box(input_img, input_box, x-1, y, array, width);
-  if (AT(input_img, x, y+1) == 0 && (array[x + (y+1) * width] == -1))
-    connected_box(input_img, input_box, x, y+1, array, width);  
-  if (AT(input_img, x, y-1) == 0 && (array[x + (y-1) * width] == -1))
-    connected_box(input_img, input_box, x, y-1, array, width);
-  //if (AT(input_img, x+1, y-1) == 0 && (array[x+1 + (y-1) * width] == -1))
-  //  connected_box(input_img, input_box, x+1, y-1, array, width);
-  //if (AT(input_img, x-1, y+1) == 0 && (array[x-1 + (y+1) * width] == -1))
-  //  connected_box(input_img, input_box, x-1, y+1, array, width);  
-  //if (AT(input_img, x+1, y+1) == 0 && (array[x+1 + (y+1) * width] == -1))
-  //  connected_box(input_img, input_box, x+1, y+1, array, width);
-  //if (AT(input_img, x-1, y-1) == 0 && (array[x-1 + (y-1) * width] == -1))
-  //  connected_box(input_img, input_box, x-1, y-1, array, width);
-  
-
-}
-
-void connected_box_iter(t_bw_img *input_img, box *input_box, uint init_x, uint init_y, char *array, size_t width)
+void connected_box_iter(t_bw_img *input_img, box *input_box,
+			uint init_x, uint init_y,
+			char *array, size_t width)
 {
-  
   t_tuple_uint_vect *coor_stack;
-  coor_stack = VECT_ALLOC(tuple_uint, width);  
+  coor_stack = VECT_ALLOC(tuple_uint, width);
   VECT_PUSH(coor_stack, ((t_tuple_uint){.x = init_x, .y = init_y}));
 
   while(VECT_GET_SIZE(coor_stack))
   {
     uint x, y;
     x = VECT_GET_LAST(coor_stack).x;
-    y = VECT_GET_LAST(coor_stack).y;	
+    y = VECT_GET_LAST(coor_stack).y;
     VECT_POP(coor_stack);
 
     if((x > 0 && x < input_img->width-1	&& y > 0 && y < input_img->height-1)
@@ -156,29 +140,19 @@ void connected_box_iter(t_bw_img *input_img, box *input_box, uint init_x, uint i
       VECT_PUSH(coor_stack, ((t_tuple_uint){.x = x, .y = y-1}));
   }
 
-  VECT_FREE(coor_stack);  
-}
-
-void connected_box(t_bw_img *input_img, box *input_box, uint x, uint y, char *array, size_t width)
-{
-  if((x > 1 && x < input_img->width-2
-      && y > 1 && y < input_img->height-2)){
-    update_box(input_box, x, y);
-    array[x + y * width] = 0;
-    //printf("%u %u %d %i ", x, y, AT(input_img, x, y), is_in_box(input_box,x,y));
-    //box_print(input_box);
-    connect_neigh(input_img, input_box, x, y, array, width);
-  }
+  VECT_FREE(coor_stack);
 }
 
 void test_traversal(t_box_vect *box_list)
 {
   printf("begin traversal : \n\n");
   for (unsigned int i = 0; i < VECT_GET_SIZE(box_list);i++)
-    {
-      printf("%u  %u  ratio: %f\n", VECT_GET(box_list,i).size, get_fullsize(VECT_GET(box_list,i)),
-	     (float)(int)get_fullsize(VECT_GET(box_list,i))/(float)(int)VECT_GET(box_list,i).size);
-    }
+  {
+    printf("%u  %u  ratio: %f\n",
+	   VECT_GET(box_list,i).size, get_fullsize(VECT_GET(box_list,i)),
+	   (float)(int)get_fullsize(VECT_GET(box_list,i))/
+	   (float)(int)VECT_GET(box_list,i).size);
+  }
   printf("end traversal : \n\n");
 }
 
@@ -187,12 +161,15 @@ void update_true_size(t_box_vect *box_list, t_bw_img *input_img)
   for(size_t i = 0; i< VECT_GET_SIZE(box_list); i++)
   {
     VECT_GET(box_list, i).size = 0;
-    for(uint x = VECT_GET(box_list, i).left; x <= VECT_GET(box_list, i).right;x++)
-      for(uint y = VECT_GET(box_list, i).top; y <= VECT_GET(box_list, i).bottom; y++)
+    for(uint x = VECT_GET(box_list, i).left;
+	x <= VECT_GET(box_list, i).right;x++)
+      for(uint y = VECT_GET(box_list, i).top;
+	  y <= VECT_GET(box_list, i).bottom; y++)
 	if(AT(input_img,x,y) == 0)
 	  VECT_GET(box_list, i).size++;
   }
 }
+
 t_box_vect *list_boxes(t_bw_img *input_img)
 {
   t_box_vect *box_list;
@@ -246,15 +223,17 @@ t_box_vect *trim_box_list(t_box_vect *box_list, t_bw_img *input_img)
 
   
   for (unsigned int i = 0; i < VECT_GET_SIZE(box_list);i++)
-    {      
-      if ((get_width(VECT_GET(box_list,i))*3 > get_height(VECT_GET(box_list,i))
-	  && VECT_GET(box_list,i).size > min_size
-	  && get_width(VECT_GET(box_list,i)) > min_width && get_height(VECT_GET(box_list,i)) > min_height)
-	  && get_fullsize(VECT_GET(box_list,i))/VECT_GET(box_list,i).size < 50)
-	{
-	  VECT_PUSH(new_box_list, VECT_GET(box_list,i));
-	}
+  {
+    if ((get_width(VECT_GET(box_list,i))*3 > get_height(VECT_GET(box_list,i))
+	 && VECT_GET(box_list,i).size > min_size
+	 && get_width(VECT_GET(box_list,i)) > min_width
+	 && get_height(VECT_GET(box_list,i)) > min_height)
+	&& get_fullsize(VECT_GET(box_list,i))/VECT_GET(box_list,i).size <
+      input_img->width*input_img->height/20000)
+    {
+      VECT_PUSH(new_box_list, VECT_GET(box_list,i));
     }
+  }
   return new_box_list;
 }
 
@@ -270,14 +249,14 @@ t_box_vect *trim_line_list(t_box_vect *box_list, t_bw_img *input_img)
 
   
   for (unsigned int i = 0; i < VECT_GET_SIZE(box_list);i++)
-    {      
-      if (get_width(VECT_GET(box_list,i))*3 > get_height(VECT_GET(box_list,i))
-	  && get_fullsize(VECT_GET(box_list,i))/VECT_GET(box_list,i).size < 11
-	  && get_fullsize(VECT_GET(box_list,i))/VECT_GET(box_list,i).size > 1)
-	{
-	  VECT_PUSH(new_box_list, VECT_GET(box_list,i));
-	}
+  {      
+    if (get_width(VECT_GET(box_list,i))*3 > get_height(VECT_GET(box_list,i))
+	&& get_fullsize(VECT_GET(box_list,i))/VECT_GET(box_list,i).size < 11
+	&& get_fullsize(VECT_GET(box_list,i))/VECT_GET(box_list,i).size > 1)
+    {
+      VECT_PUSH(new_box_list, VECT_GET(box_list,i));
     }
+  }
   return new_box_list;
 }
 
@@ -286,12 +265,13 @@ t_box_vect *congregate_box_list(t_box_vect *box_list)
   t_box_vect *new_box_list;
   new_box_list = VECT_ALLOC(box, 16);
   for (unsigned int i = 0; i < VECT_GET_SIZE(box_list) - 1;i++)
-    {      
-      if (VECT_GET(box_list, i).left == VECT_GET(box_list, i+1).left){
-	VECT_GET(box_list, i+1) = fus_boxes(VECT_GET(box_list,i), VECT_GET(box_list,i+1));
-      }
-      else
-	VECT_PUSH(new_box_list, VECT_GET(box_list,i));
+  {      
+    if (VECT_GET(box_list, i).left == VECT_GET(box_list, i+1).left){
+      VECT_GET(box_list, i+1) =
+	fus_boxes(VECT_GET(box_list,i), VECT_GET(box_list,i+1));
     }
+    else
+      VECT_PUSH(new_box_list, VECT_GET(box_list,i));
+  }
   return new_box_list;
 }
