@@ -47,7 +47,7 @@ void apply_delta(t_network *net, double ratio)
     t_layer *layer = &net->layers[l];
     for(size_t i = 0; i < LAYER_WSIZE(layer); i++)
     {
-      layer->weights[i] -= layer->weights_delta[i] * ratio;
+      layer->weights[i] += layer->weights_delta[i] * ratio;
       layer->weights_delta[i] = 0.0;
     }
   }
@@ -109,11 +109,12 @@ void layer_print_weights(t_layer *layer)
   if(layer->weights)
   {
     //size_t weights_count = LAYER_WSIZE(layer);
-    size_t offset = (layer+1)->size;
+    size_t offset = LAYER_NEURON_WSIZE(layer);
     double *weights = layer->weights;
     for(size_t i = 0; i < layer->size; i++)
     {
-      for(size_t con = 0; con < offset; con++)
+      printf("%4f\n", *weights);
+      for(size_t con = 1; con < offset; con++)
 	printf("%4f ", weights[con]);
       puts("");
       weights += offset;
