@@ -13,6 +13,8 @@ t_sub_bw_img_vect_vect *line_extraction(t_sub_bw_img_vect *blocks)
   {
     printf("Wrapper: blocks n° %lu\n",i);
     VECT_PUSH(rv, line_subdivision(VECT_GET(blocks, i)));
+    printf("block n°%lu pushed\n",i);
   }
+  printf("Wrapper does return\n");
   return rv;
 }
