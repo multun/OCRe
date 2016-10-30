@@ -33,7 +33,7 @@ t_sub_bw_img_vect *segmentation(t_sub_bw_img *img)
     if (isWhiteColumn(img, i) || i == img->width-1)
     {
       if(i>0 && (isWhiteColumn(img, i-1) == 0))      
-        VECT_PUSH(result,relink_sub_bw_img(img,aux,0,i-aux,img->height));                  
+        VECT_PUSH(result,relink_sub_bw_img(img,aux,0,i-aux,img->height));
       aux++;
     } 
 
