@@ -138,7 +138,8 @@ void connected_box_iter(t_bw_img *input_img, box *input_box, uint init_x, uint i
     y = VECT_GET_LAST(coor_stack).y;	
     VECT_POP(coor_stack);
 
-    if((x > 0 && x < input_img->width-1	&& y > 0 && y < input_img->height-1))
+    if((x > 0 && x < input_img->width-1	&& y > 0 && y < input_img->height-1)
+       && (array[x + (y) * width] == -1))
     {
       update_box(input_box, x, y);
       array[x + y * width] = 0;
@@ -209,7 +210,7 @@ t_box_vect *list_boxes(t_bw_img *input_img)
 	temp_box = malloc(20);
 	*temp_box = init_box(x, y);
 	connected_box_iter(input_img, temp_box, x, y, array, input_img->width);
-	//expand_box(temp_box, input_img->height/750);
+	expand_box(temp_box, 1);
 	VECT_PUSH(box_list, *temp_box);
       }
   
@@ -249,7 +250,7 @@ t_box_vect *trim_box_list(t_box_vect *box_list, t_bw_img *input_img)
       if ((get_width(VECT_GET(box_list,i))*3 > get_height(VECT_GET(box_list,i))
 	  && VECT_GET(box_list,i).size > min_size
 	  && get_width(VECT_GET(box_list,i)) > min_width && get_height(VECT_GET(box_list,i)) > min_height)
-	  || get_fullsize(VECT_GET(box_list,i))/VECT_GET(box_list,i).size == 1)
+	  && get_fullsize(VECT_GET(box_list,i))/VECT_GET(box_list,i).size < 50)
 	{
 	  VECT_PUSH(new_box_list, VECT_GET(box_list,i));
 	}

@@ -12,15 +12,15 @@ t_sub_bw_img_vect *block_segment(t_bw_img *input_img)
 
   //  Comment next line for : Only Lines instead of blocks
   temp = close_ver_morph(temp, input_img->height/150);
-  //temp = open_morph(temp, input_img->width/180);
+  temp = open_morph(temp, input_img->width/250);
 
 
   t_box_vect *block_list;
   block_list = list_boxes(temp);
   update_true_size(block_list, input_img);
   block_list = trim_box_list(block_list, input_img);
-  
 
+  
   t_sub_bw_img_vect *rv = VECT_ALLOC(sub_bw_img, 1000);
   for (unsigned int i = 0; i < VECT_GET_SIZE(block_list); i++)
   {
