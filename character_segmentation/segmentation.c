@@ -6,7 +6,7 @@ char isWhiteColumn(t_sub_bw_img *img, uint column)
   char isWhite = 1;
     
   for(uint i = 0; i< img -> height; i++)
-    if(SUB_AT(img,i,column) == 0)
+    if(SUB_AT(img,column,i) == 0)
       isWhite = 0;
     
   return isWhite;
