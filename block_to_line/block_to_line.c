@@ -58,7 +58,7 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
       bool_array[i] = true;
     }
     //printf("Array[%d] = %d, bool = %u, this_sum = %d, this_average = %d\n"
-                    ,i,array[i],bool_array[i],sum_array[i],averages_array[i]);
+                    //,i,array[i],bool_array[i],sum_array[i],averages_array[i]);
   }
 //RETOUCHE 1 de bool_array
 
