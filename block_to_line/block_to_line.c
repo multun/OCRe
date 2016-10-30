@@ -47,7 +47,7 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
   int *averages_array = malloc(sizeof(int) * img->height);
   int *sum_array = malloc(sizeof(int) * img->height);
   for(int i = 0; i < (int)img->height; i++){
-    average = 1;
+    average = 10;
     averages_array[i] = average;
     sum_array[i] = array[i];
     if (sum_array[i] < averages_array[i]){
@@ -56,25 +56,31 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
     else{
       bool_array[i] = true;
     }
-    //printf("Array[%d] = %d, bool = %u, this_sum = %d, this_average = %d\n"
-    //              ,i,array[i],bool_array[i],sum_array[i],averages_array[i]);
+    printf("Array[%d] = %d, bool = %u, this_sum = %d, this_average = %d\n"
+                  ,i,array[i],bool_array[i],sum_array[i],averages_array[i]);
 
   }
 //RETOUCHE 1 de bool_array
 
-  t_bool previous_bool = false;
+  //t_bool previous_bool = false;
   for(int i = 3; i < (int)img->height - 3; i++){
     if(bool_array[i] == false){
+      t_bool previous_bool = bool_array[i-3];
       if (previous_bool == true){
+        printf("I'm in -- n°%d\n",i);
+        previous_bool = (bool_array[i-4]+bool_array[i-3]+bool_array[i-2]+bool_array[i-1])%2;
         if((sum_array[i-3] + sum_array[i-2] + sum_array[i-1]
-                                    + sum_array[i]) > averages_array[i]*2){
+                                    + sum_array[i]) > averages_array[i]){
+          printf("rectified -- n°%d\n",i);
           bool_array[i] = true;
           continue;
         }
       }
       else{
+        previous_bool = (bool_array[i+1]+bool_array[i+2]+bool_array[i+3]+bool_array[i+4])%2;
         if((sum_array[i] + sum_array[i+1] + sum_array[i+2]
-                                  + sum_array[i+3]) > averages_array[i]*2){
+                                  + sum_array[i+3]) > averages_array[i]){
+          printf("rectified ++ n°%d\n",i);
           bool_array[i] = true;
           continue;
         }
