@@ -7,8 +7,8 @@ t_sub_bw_img_vect *line_subdivision(t_sub_bw_img *img){
   int averageperline = avgblackpxlperline(blackpixelsarray, img);
   t_bool* bool_array = bool_array_generation(averageperline,
                                                         blackpixelsarray, img);
-  t_coordinates_vect* vect_of_coor = bool_array_to_coordinates(bool_array, img);
-  t_sub_bw_img_vect* imgexport = coordinates_to_img(vect_of_coor, img);
+  t_coordinates_vect* vect_of_coo = bool_array_to_coordinates(bool_array, img);
+  t_sub_bw_img_vect* imgexport = coordinates_to_img(vect_of_coo, img);
   return imgexport;
 }
 
@@ -93,14 +93,14 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
       bool_array[i] = true;
     }
     printf("Array[%d] = %d, bool = %u, this_sum = %d, this_average = %d\n"
-                      ,i,array[i],bool_array[i],sum_array[i],averages_array[i]);
+                    ,i,array[i],bool_array[i],sum_array[i],averages_array[i]);
   }
 //RETOUCHE 1 de bool_array
 
-  t_bool this_bool = false;
+  t_bool previous_bool = false;
   for(int i = 3; i < (int)img->height - 3; i++){
     if(bool_array[i] == false){
-      if (this_bool == true){
+      if (previous_bool == true){
         if((sum_array[i-3] + sum_array[i-2] + sum_array[i-1]
                                     + sum_array[i]) > averages_array[i]*2){
           bool_array[i] = true;
@@ -115,10 +115,6 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
         }
       }
     }
-    else{
-      continue;
-    }
-
   }
 
 //RETOUCHE 2 de bool_array
@@ -128,7 +124,7 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
 }
 
 t_coordinates_vect *bool_array_to_coordinates(t_bool *bool_array,
-                                                              t_sub_bw_img *img)
+                                              t_sub_bw_img *img)
 {
   t_bool previousline = false;
   t_coordinates thislinecoordinates = {0,0};
