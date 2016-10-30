@@ -24,17 +24,11 @@ int* img_to_array(t_sub_bw_img *img)
   {
     for (uint l = 0; l < (img->width); l++)
     {
-      //printf("k = %d, l = %d",k,l);
       if (SUB_AT(img,l,k) != 0){
-        //printf(", Pixel = %d",SUB_AT(img,k,l));
         stack += 1;
-        //printf(", stack = %d\n",stack);
       }
-      //else
-        //printf("\n");
     }
     array[k] = (int)(img->width) - stack;
-    //printf("Array[%d] = %d\n",k,array[k]);
     printf("%0*d\n",array[k],0);
     stack = 0;
   }
@@ -60,29 +54,6 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
   int *averages_array = malloc(sizeof(int) * img->height);
   int *sum_array = malloc(sizeof(int) * img->height);
   for(int i = 0; i < (int)img->height; i++){
-    /*
-    if (i == 0){
-      sum_array[i] = array[i] + array[i+1] + array[i+2];
-      averages_array[i] = average*3;
-    }
-    else if (i==1){
-      sum_array[i] = array[i-1] + array[i] + array[i+1] + array[i+2];
-      averages_array[i] = average*4;
-    }
-    else if (i==(int)img->height-2){
-      sum_array[i] = array[i-2] + array[i-1] + array[i] + array[i+1];
-      averages_array[i] = average*4;
-    }
-    else if (i==(int)img->height-1){
-      sum_array[i] = array[i-2] + array[i-1] + array[i];
-      averages_array[i] = average*3;
-    }
-    else{
-      sum_array[i] = array[i-2] + array[i-1] + array[i]
-                              + array[i+1] + array[i+2];
-      averages_array[i] = average*5;
-    }
-    */
     average = 1;
     averages_array[i] = average;
     sum_array[i] = array[i];
