@@ -14,12 +14,8 @@ t_sub_bw_img_vect *line_subdivision(t_sub_bw_img *img){
 
 int* img_to_array(t_sub_bw_img *img)
 {
-  printf("img_to_array launched\n");
   int stack = 0;
-  printf("image width = %d\n",img->width);
-  printf("image height = %d\n",img->height);
   int *array = malloc((sizeof(int) * img->height));
-  printf("before loops\n");
   for(uint k = 0; k<(img->height); k++)
   {
     for (uint l = 0; l < (img->width); l++)
@@ -32,7 +28,6 @@ int* img_to_array(t_sub_bw_img *img)
     printf("%0*d\n",array[k],0);
     stack = 0;
   }
-  printf("img_to_array closed\n");
   return array;
 }
 
@@ -43,13 +38,12 @@ int avgblackpxlperline(int *array, t_sub_bw_img *img)
     for(uint i = 0; i < img->height; i++)
       stack += array[i];
     int avg = stack/(int)img->height;
-    printf("Average = %d\n",avg);
     return avg;
 }
 
 t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
 {
-  printf("bool_array_generation launched\n");
+  //printf("bool_array_generation launched\n");
   t_bool *bool_array = malloc(sizeof(t_bool) * img->height);
   int *averages_array = malloc(sizeof(int) * img->height);
   int *sum_array = malloc(sizeof(int) * img->height);
@@ -63,7 +57,7 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
     else{
       bool_array[i] = true;
     }
-    printf("Array[%d] = %d, bool = %u, this_sum = %d, this_average = %d\n"
+    //printf("Array[%d] = %d, bool = %u, this_sum = %d, this_average = %d\n"
                     ,i,array[i],bool_array[i],sum_array[i],averages_array[i]);
   }
 //RETOUCHE 1 de bool_array
@@ -90,7 +84,6 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
 
 //RETOUCHE 2 de bool_array
 
-  printf("bool_array_generation closed\n");
   return bool_array;
 }
 
@@ -126,7 +119,6 @@ t_coordinates_vect *bool_array_to_coordinates(t_bool *bool_array,
 t_sub_bw_img_vect *coordinates_to_img(t_coordinates_vect *vectorofcoordinates,
                                       t_sub_bw_img *img)
 {
-  printf("coordinates_to_img launched\n");
   t_sub_bw_img_vect *imgresults;
   size_t nboflines = VECT_GET_SIZE(vectorofcoordinates);
   imgresults = VECT_ALLOC(sub_bw_img,nboflines);
@@ -141,8 +133,6 @@ t_sub_bw_img_vect *coordinates_to_img(t_coordinates_vect *vectorofcoordinates,
       img->width,
       (uint)(thiscoordinates.fin - thiscoordinates.debut));
     VECT_PUSH(imgresults,thislineimg);
-    printf("Debut: %u - Fin: %u\n",thiscoordinates.debut, thiscoordinates.fin);
   }
-  printf("coordinates_to_img closed\n");
   return imgresults;
 }
