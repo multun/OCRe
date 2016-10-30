@@ -25,7 +25,6 @@ int* img_to_array(t_sub_bw_img *img)
       }
     }
     array[k] = (int)(img->width) - stack;
-    printf("%0*d\n",array[k],0);
     stack = 0;
   }
   return array;
