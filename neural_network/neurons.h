@@ -25,7 +25,7 @@ typedef struct s_layer
   double	*weights_delta;
 } t_layer;
 
-#define LAYER_NEURON_WSIZE(layer) ((layer) + 1)->size
+#define LAYER_NEURON_WSIZE(layer) (((layer) + 1)->size)
 #define LAYER_WSIZE(layer) ((layer)->size * LAYER_NEURON_WSIZE(layer))
 
 typedef struct s_network
@@ -39,5 +39,12 @@ extern const t_nrn_cls sigmoid;
 extern const t_nrn_cls identity;
 
 void random_weights(t_network *net);
+void apply_delta(t_network *net, double ratio);
+void print_weights_deltas(t_network *net);
+void layer_print_weights(t_layer *layer);
+void print_weights(t_network *net);
+void print_double_array(double *ar, size_t size);
+void print_net(t_network *net);
+
 
 #endif

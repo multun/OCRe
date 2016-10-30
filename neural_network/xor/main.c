@@ -2,6 +2,7 @@
 #include "../forward.h"
 #include "../backward.h"
 #include "../builder.h"
+#include <stdio.h>
 
 typedef struct s_testcase
 {
@@ -11,57 +12,23 @@ typedef struct s_testcase
 
 t_testcase tests[] =
 {
-  {{-0.5, -0.5}, -0.5},
-  {{-0.5,  0.5},  0.5},
-  {{ 0.5, -0.5},  0.5},
-  {{ 0.5,  0.5}, -0.5},
+  {{0., 0.}, 0.},
+  {{0., 1.}, 1.},
+  {{ 1., 0.},  1.},
+  {{ 1.,  1.}, 0.},
 };
 
-double weights0[] =
-{
-  0.7, // 00 -> 10
-  0.1, // 00 -> 11
-  0.2, // 01 -> 10
-  0.3, // 01 -> 11
-};
-
-double weights1[] =
-{
-  0.4, // 10 -> 20
-  -0.5, // 11 -> 20
-};
-
-
-// from http://stackoverflow.com/questions/6127503/shuffle-array-in-c
-static void shuffle(void *array, size_t n, size_t size) {
-  char tmp[size];
-  char *arr = array;
-  size_t stride = size * sizeof(char);
-
-  if (n > 1) {
-    size_t i;
-    for (i = 0; i < n - 1; ++i) {
-      size_t rnd = (size_t) rand();
-      size_t j = i + rnd / (RAND_MAX / (n - i) + 1);
-
-      memcpy(tmp, arr + j * stride, size);
-      memcpy(arr + j * stride, arr + i * stride, size);
-      memcpy(arr + i * stride, tmp, size);
-    }
-  }
-}
-
-int main()
+int main(void)
 {
   t_network net = {
     .layers_count = 3,
     .layers = (t_layer*)&(t_layer[]) {
       (t_layer){
 	.size = 2,
-	.class = identity,
+	.class = sigmoid,
       },
       (t_layer){
-	.size = 20,
+	.size = 10,
 	.class = sigmoid,
       },
       (t_layer){
@@ -72,40 +39,33 @@ int main()
   };
   srand(42);
   alloc_network(&net);
-  //random_weights(&net);
-  net.layers[0].weights = weights0;
-  net.layers[1].weights = weights1;
+  random_weights(&net);
 
   const size_t test_count = sizeof(tests)/sizeof(tests[0]);
-  puts("=> initial weights");
-  print_weights(&net);
 
-  size_t ratio = 0.1;
-  for(size_t i = 0; i < 1; i++)
+  double learning_rate = 0.06;
+  for(size_t epoch = 0;;epoch++)
   {
     double error = 0.0;
-    shuffle(tests, 4, sizeof(t_testcase));
-    for(size_t test_i = 0; test_i < 1/*test_count*/; test_i++)
+    for(size_t test_i = 0; test_i < test_count; test_i++)
     {
       t_testcase *test = &tests[test_i];
       forward_init(&net, &test->inputs[0]);
       forward(&net);
-      double er = compute_error(&net, &(double){test->result});
-      printf("%f\n", er);
-      error += 0.5*er*er;
+      double er = compute_error(&net, &(test->result));
+      error += er;
       backward(&net);
-      //print_weights(&net);
+      apply_delta(&net, learning_rate);
     }
     error /= (double)4;
-    apply_delta(&net, ratio);
 
-    //ratio *= 0.95;
-
-    printf("error: %f\n", error);
-    /*if (error < 0.25)
+    if(epoch % 1000 == 0)
+      printf("%lu\t error: %f\n", epoch, error);
+    if (error < 0.01)
     {
+      puts("error below 0.01");
       break;
-      }*/
+    }
   }
 
   for(size_t test_i = 0; test_i < test_count; test_i++)
@@ -116,4 +76,5 @@ int main()
     forward(&net);
     printf("output: %f\n", *net.layers[2].out);
   }
+  free_network(&net);
 }

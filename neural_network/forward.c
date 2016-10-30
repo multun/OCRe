@@ -7,8 +7,7 @@ static inline double forward_neuron(const t_layer *layer,
 				    double *weights,
 				    double *in)
 {
-  //printf("neuron inp: %p\n", in);
-  *in = 0.0;//weights[0]; // initialize with the bias
+  *in = 0.0;//*(weights++); // initialize with the bias
   const t_layer *p_layer = layer - 1;
   double *p_layer_out= p_layer->out;
   for(size_t i = 0; i < p_layer->size ;i++)
@@ -17,7 +16,8 @@ static inline double forward_neuron(const t_layer *layer,
     //printf("adding weight %f\n", *weights);
     //printf("previous layer output is %f\n", p_layer_out[i]);
     *in += p_layer_out[i] * *weights;
-    weights += layer->size;
+    //printf("adding %f * %f\n", p_layer_out[i], *weights);
+    weights += LAYER_NEURON_WSIZE(p_layer);
   }
 
   //printf("neuron in: %f\n", *in);
@@ -65,7 +65,7 @@ void forward(t_network *net)
   //print_layer(layers, 0);
   for(size_t i = 1; i < net->layers_count; i++)
   {
-    //printf("=> layer %lu\n", i);
+//    printf("=> layer %lu\n", i);
     t_layer *layer = layers + i;
     //print_layer(layer, i);
     forward_layer(layer);

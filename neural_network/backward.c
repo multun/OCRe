@@ -1,6 +1,14 @@
 #include "neurons.h"
 #include "../error.h"
 
+static inline double neuron_delta(const t_layer *layer,
+				  double error,
+				  double in,
+				  double out)
+{
+  return error * layer->class.activation_d(out, in);
+}
+
 double compute_error(const t_network *net, const double *target)
 {
   t_layer *o_layer = net->layers + (net->layers_count - 1);
@@ -9,36 +17,57 @@ double compute_error(const t_network *net, const double *target)
   for(size_t i = 0; i < o_layer->size; i++)
   {
     double er = target[i] - output[i];
-    o_layer->delta[i] = er;// * o_layer->class->activation_d(o_layer->out[i],
-//							  o_layer->in[i]);
-    error += er;//0.5 * er * er;
+#ifdef DEBUG
+    printf("%f - %f = %f\n", target[i], output[i], er);
+#endif
+    o_layer->delta[i] = neuron_delta(o_layer,
+				     er,
+				     o_layer->in[i],
+				     o_layer->out[i]);
+    #ifdef DEBUG
+    printf("o_delta: %f\n", o_layer->delta[i]);
+    #endif
+    error += 0.5 * er * er;
   }
   return error;
 }
+
+
 
 static inline void backward_layer(const t_layer *layer)
 {
   const t_layer *n_layer = layer + 1;
   const size_t segment_size = LAYER_NEURON_WSIZE(layer);
+  size_t woff = 0;
   double *weights   = layer->weights;
   double *weights_d = layer->weights_delta;
 
-  //printf("updating deltas on %p\n", layer->delta);
+    #ifdef DEBUG
+  printf("updating deltas on %p\n", (void*)layer->delta);
+    #endif
   for(size_t i = 0; i < layer->size; i++)
   {
     double sum = 0.0;
     for(size_t j = 0; j < n_layer->size; j++)
     {
-      double wdelta = weights[j] * n_layer->delta[j];
-      //double wdelta = n_layer->delta[j] * layer->out[i];
-      weights_d[j] += wdelta;
-      sum += wdelta;
+      double wdelta = n_layer->delta[j];
+      weights_d[woff + j] += wdelta * layer->out[i];
+    #ifdef DEBUG
+      printf("new weight: %f\n", weights[woff+j] + wdelta * layer->out[i]);
+    #endif
+      sum += wdelta * weights[woff + j];
     }
-    layer->delta[i] = sum * layer->class.activation_d(layer->out[i],
-						      layer->in[i]);
-
-    weights   += segment_size;
-    weights_d += segment_size;
+    #ifdef DEBUG
+    printf("sum: %f\n", sum);
+    #endif
+    layer->delta[i] = neuron_delta(layer,
+				   sum,
+				   layer->in[i],
+				   layer->out[i]);
+    #ifdef DEBUG
+    printf("delta: %f\n", layer->delta[i]);
+    #endif
+    woff += segment_size;
   }
 }
 

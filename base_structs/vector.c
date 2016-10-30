@@ -2,7 +2,10 @@
 #include <string.h>
 #include "vector.h"
 
-int generic_vector_resize(size_t *size, size_t nsize, void **data, size_t e_size)
+int generic_vector_resize(size_t *size,
+			  size_t nsize,
+			  void **data,
+			  size_t e_size)
 {
   void *ndata;
   size_t alloc_size = nsize * e_size;

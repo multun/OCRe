@@ -5,7 +5,6 @@
 #include "../bitmap/bmp.h"
 #include "../bitmap/img.h"
 #include "../gtk/vectors.h"
-//#include "../gtk/render.h"
 
 typedef enum e_bool
 {
@@ -23,10 +22,12 @@ DECL_NAMED_VECTOR(t_coordinates, coordinates);
 DECL_NAMED_VECTOR(unsigned int, uint);
 
 t_sub_bw_img_vect *line_subdivision(t_sub_bw_img *img);
-int *img_to_array(t_sub_bw_img *img);
-int array_to_average(int *array);
-t_coordinates_vect *img_to_coordinates(t_sub_bw_img *img);
-t_sub_bw_img_vect *coordinates_to_img(t_sub_bw_img *img,
-				      t_coordinates_vect *vect_of_coord);
+int* img_to_array(t_sub_bw_img *img);
+int avgblackpxlperline(int *array, t_sub_bw_img *img);
+t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img);
+t_coordinates_vect *bool_array_to_coordinates(t_bool *bool_array, t_sub_bw_img *img);
+t_sub_bw_img_vect *coordinates_to_img(t_coordinates_vect *vectorofcoordinates,
+                                      t_sub_bw_img *img);
+
 
 #endif
