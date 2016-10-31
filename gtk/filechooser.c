@@ -12,8 +12,10 @@ GtkWidget *create_filechooser_dialog(GtkBuilder *builder)
 					       "Cancel", GTK_RESPONSE_CANCEL,
 					       "Open", GTK_RESPONSE_OK,
 					       NULL);
-  GtkWidget *filter = _GET_WIDGET(builder, "bitmap_filter");
-  gtk_file_chooser_add_filter((GtkFileChooser*)wdg,
-			      (GtkFileFilter*)filter);
+  gtk_file_chooser_add_filter(GTK_FILE_CHOOSER(wdg),
+			      GTK_FILE_FILTER(
+				gtk_builder_get_object(
+				  builder,
+				  "bitmap_filter")));
   return wdg;
 }

@@ -129,7 +129,7 @@ void connected_box_iter(t_bw_img *input_img, box *input_box,
       array[x + y * width] = 0;
     }
 
-    
+
     if (AT(input_img, x+1, y) == 0 && (array[x+1 + (y) * width] == -1))
       VECT_PUSH(coor_stack, ((t_tuple_uint){.x = x+1, .y = y}));
     if (AT(input_img, x-1, y) == 0 && (array[x-1 + (y) * width] == -1))
@@ -138,6 +138,14 @@ void connected_box_iter(t_bw_img *input_img, box *input_box,
       VECT_PUSH(coor_stack, ((t_tuple_uint){.x = x, .y = y+1}));
     if (AT(input_img, x, y-1) == 0 && (array[x + (y-1) * width] == -1))
       VECT_PUSH(coor_stack, ((t_tuple_uint){.x = x, .y = y-1}));
+    if (AT(input_img, x+1, y+1) == 0 && (array[x+1 + (y+1) * width] == -1))
+      VECT_PUSH(coor_stack, ((t_tuple_uint){.x = x+1, .y = y+1}));
+    if (AT(input_img, x-1, y+1) == 0 && (array[x-1 + (y+1) * width] == -1))
+      VECT_PUSH(coor_stack, ((t_tuple_uint){.x = x-1, .y = y+1}));
+    if (AT(input_img, x+1, y-1) == 0 && (array[x+1 + (y-1) * width] == -1))
+      VECT_PUSH(coor_stack, ((t_tuple_uint){.x = x+1, .y = y-1}));
+    if (AT(input_img, x-1, y-1) == 0 && (array[x-1 + (y-1) * width] == -1))
+      VECT_PUSH(coor_stack, ((t_tuple_uint){.x = x-1, .y = y-1}));
   }
 
   VECT_FREE(coor_stack);
@@ -190,7 +198,7 @@ t_box_vect *list_boxes(t_bw_img *input_img)
 	expand_box(temp_box, 1);
 	VECT_PUSH(box_list, *temp_box);
       }
-  
+
   return box_list;
 }
 
@@ -221,7 +229,7 @@ t_box_vect *trim_box_list(t_box_vect *box_list, t_bw_img *input_img)
 
   printf("%u %u %u\n", min_width, min_height, min_size);
 
-  
+
   for (unsigned int i = 0; i < VECT_GET_SIZE(box_list);i++)
   {
     if ((get_width(VECT_GET(box_list,i))*3 > get_height(VECT_GET(box_list,i))
@@ -247,9 +255,9 @@ t_box_vect *trim_line_list(t_box_vect *box_list, t_bw_img *input_img)
 
   printf("%u %u %u\n", min_width, min_height, min_size);
 
-  
+
   for (unsigned int i = 0; i < VECT_GET_SIZE(box_list);i++)
-  {      
+  {
     if (get_width(VECT_GET(box_list,i))*3 > get_height(VECT_GET(box_list,i))
 	&& get_fullsize(VECT_GET(box_list,i))/VECT_GET(box_list,i).size < 11
 	&& get_fullsize(VECT_GET(box_list,i))/VECT_GET(box_list,i).size > 1)
@@ -265,8 +273,10 @@ t_box_vect *congregate_box_list(t_box_vect *box_list)
   t_box_vect *new_box_list;
   new_box_list = VECT_ALLOC(box, 16);
   for (unsigned int i = 0; i < VECT_GET_SIZE(box_list) - 1;i++)
-  {      
-    if (VECT_GET(box_list, i).left == VECT_GET(box_list, i+1).left){
+  {
+    if (VECT_GET(box_list, i).right > VECT_GET(box_list, i+1).left
+      && VECT_GET(box_list, i).bottom > VECT_GET(box_list, i+1).top
+      && VECT_GET(box_list, i).top < VECT_GET(box_list, i+1).top){
       VECT_GET(box_list, i+1) =
 	fus_boxes(VECT_GET(box_list,i), VECT_GET(box_list,i+1));
     }

@@ -14,6 +14,7 @@
 #include "boxing/morpho.h"
 #include "boxing/bounding_box.h"
 #include "gtk/img_history.h"
+#include "gtk/open_file.h"
 #include "gtk/preproc.h"
 #include "gtk/detect_blocks.h"
 #include "gtk/detect_lines.h"
@@ -29,9 +30,6 @@ void thumbnail_clicked(struct s_img_history *hist,
 
 int main(int argc, char *argv[])
 {
-  if (argc < 2)
-    FAIL("use: %s image", argv[argc - 1]);
-  t_color_img *img = color_img_from_file(argv[(argc--) - 1]);
 
   // GTK PART
 
@@ -41,13 +39,13 @@ int main(int argc, char *argv[])
   gtk_init(&argc, &argv);
   window = gtk_bootstrap(&builder);
 
-
   t_img_autoscale_data *autosc_data = autoscale_init(builder);
 
   gtk_widget_show(window);
 
   t_img_history *img_history	= history_init(builder);
   preprocess_ui_init(builder, img_history);
+  open_file_ui_init(builder, img_history);
   detect_blocks_ui_init(builder, img_history);
   detect_lines_ui_init(builder, img_history);
   detect_chars_ui_init(builder, img_history);
@@ -55,14 +53,10 @@ int main(int argc, char *argv[])
   set_history_add_callback(img_history, thumbnail_clicked, autosc_data);
   set_history_click_callback(img_history, thumbnail_clicked, autosc_data);
 
-  history_add_img(img_history, COLOR, (void*)img, NULL);
-
   gtk_main();
 
   autoscale_free(autosc_data);
   g_object_unref(builder);
   // GTK_END
-
-  free_color_img(img);
   return 0;
 }
