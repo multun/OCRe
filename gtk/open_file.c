@@ -42,7 +42,7 @@ void open_file_ui_run(t_img_history *img_history)
 					GTK_RESPONSE_ACCEPT,
 					NULL);
   GtkFileChooser *fchooser = GTK_FILE_CHOOSER(dialog);
-  gtk_file_chooser_add_filter(fchooser, filechooser_filter);
+  gtk_file_chooser_set_filter(fchooser, filechooser_filter);
   res = gtk_dialog_run (GTK_DIALOG (dialog));
   if (res == GTK_RESPONSE_ACCEPT)
   {
