@@ -18,20 +18,7 @@ t_sub_bw_img_vect_vect_vect *line_segment(t_sub_bw_img_vect_vect *input_blocks)
     {
       t_sub_bw_img_vect *seg = segmentation(VECT_GET(input_lines, i));
       for (unsigned int j = 0; j < VECT_GET_SIZE(seg); j++)
-      {
 	t_sub_bw_img *ch = VECT_GET(seg, j);
-	printf("f: %p\n"
-	       "w: %u\n"
-	       "h: %u\n"
-	       "ox: %u\n"
-	       "oy: %u\n",
-	       (void*)ch->father,
-	       ch->width,
-	       ch->height,
-	       ch->xoff,
-	       ch->yoff);
-
-      }
       VECT_PUSH(rv, seg);
     }
     VECT_PUSH(rrv, rv);
