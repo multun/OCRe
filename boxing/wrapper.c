@@ -45,7 +45,7 @@ t_sub_bw_img_vect *temp_line_segment(t_bw_img *input_img)
   t_box_vect *block_list;
   block_list = list_boxes(temp);
   update_true_size(block_list, input_img);
-  block_list = trim_line_list(block_list, input_img);
+  block_list = trim_line_list(block_list);
 
 
   t_sub_bw_img_vect *rv = VECT_ALLOC(sub_bw_img, 1000);

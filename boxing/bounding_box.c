@@ -227,9 +227,6 @@ t_box_vect *trim_box_list(t_box_vect *box_list, t_bw_img *input_img)
   uint min_height = input_img->height / 100;
   uint min_size = min_width*min_height;
 
-  printf("%u %u %u\n", min_width, min_height, min_size);
-
-
   for (unsigned int i = 0; i < VECT_GET_SIZE(box_list);i++)
   {
     if ((get_width(VECT_GET(box_list,i))*3 > get_height(VECT_GET(box_list,i))
@@ -245,16 +242,10 @@ t_box_vect *trim_box_list(t_box_vect *box_list, t_bw_img *input_img)
   return new_box_list;
 }
 
-t_box_vect *trim_line_list(t_box_vect *box_list, t_bw_img *input_img)
+t_box_vect *trim_line_list(t_box_vect *box_list)
 {
   t_box_vect *new_box_list;
   new_box_list = VECT_ALLOC(box, 16);
-  uint min_width = input_img->width / 100;
-  uint min_height = input_img->height / 100;
-  uint min_size = min_width*min_height;
-
-  printf("%u %u %u\n", min_width, min_height, min_size);
-
 
   for (unsigned int i = 0; i < VECT_GET_SIZE(box_list);i++)
   {

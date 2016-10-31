@@ -46,7 +46,7 @@ void box_print(box input_box);
 
 t_box_vect *trim_box_list(t_box_vect *box_list, t_bw_img *input_img);
 
-t_box_vect *trim_line_list(t_box_vect *box_list, t_bw_img *input_img);
+t_box_vect *trim_line_list(t_box_vect *box_list);
 
 t_box_vect *congregate_box_list(t_box_vect *box_list);
 #endif
