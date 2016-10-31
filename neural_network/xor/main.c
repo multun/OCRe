@@ -4,6 +4,12 @@
 #include "../builder.h"
 #include <stdio.h>
 
+
+#define ERROR_TRESHOLD 0.001
+
+#define STR(x) #x
+#define XSTR(x) STR(x)
+
 typedef struct s_testcase
 {
   double	inputs[2];
@@ -21,6 +27,7 @@ t_testcase tests[] =
 int main(void)
 {
   t_network net = {
+    .name = "xor_data",
     .layers_count = 3,
     .layers = (t_layer*)&(t_layer[]) {
       (t_layer){
@@ -38,8 +45,8 @@ int main(void)
     }
   };
   srand(42);
-  alloc_network(&net);
-  random_weights(&net);
+  if(load_network(&net))
+    random_weights(&net);
 
   const size_t test_count = sizeof(tests)/sizeof(tests[0]);
 
@@ -57,13 +64,13 @@ int main(void)
       backward(&net);
       apply_delta(&net, learning_rate);
     }
-    error /= (double)4;
+    error /= (double)test_count;
 
     if(epoch % 1000 == 0)
       printf("%lu\t error: %f\n", epoch, error);
-    if (error < 0.01)
+    if (error < ERROR_TRESHOLD)
     {
-      puts("error below 0.01");
+      puts("error below " XSTR(ERROR_TRESHOLD));
       break;
     }
   }

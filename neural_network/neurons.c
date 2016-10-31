@@ -53,10 +53,10 @@ void apply_delta(t_network *net, double ratio)
   }
 }
 
-static void fill_random(double *array, size_t size)
+static void fill_random(double *array, size_t size, double min, double max)
 {
   for(size_t i = 0; i < size; i++)
-    array[i] = normalized_random();
+    array[i] = normalized_random(min, max);
 }
 
 static void fill_constant(double *array, size_t size, double constant)
@@ -70,11 +70,11 @@ void random_weights(t_network *net)
   for(size_t layer_i = 0; layer_i < net->layers_count; layer_i++)
   {
     t_layer *layer = &net->layers[layer_i];
-    fill_random(layer->delta, layer->size);
+    fill_random(layer->delta, layer->size, -1., 1.);
     if(layer->weights)
     {
       size_t weights_count = LAYER_WSIZE(layer);
-      fill_random(layer->weights, weights_count);
+      fill_random(layer->weights, weights_count, -1., 1.);
       fill_constant(layer->weights_delta, weights_count, 0.0);
     }
   }

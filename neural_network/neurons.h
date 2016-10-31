@@ -30,6 +30,7 @@ typedef struct s_layer
 
 typedef struct s_network
 {
+  const char	*name;
   size_t	backprop_count;
   size_t	layers_count;
   t_layer	*layers;

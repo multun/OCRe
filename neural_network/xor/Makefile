@@ -34,4 +34,5 @@ $(EXEC): $(OBJ)
 clean:
 	rm -f $(EXEC) $(DEP) $(OBJ)
 run: all
+	@mkdir -p xor_data
 	./$(EXEC) $(ARGS)

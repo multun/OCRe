@@ -1,7 +1,8 @@
 #include <stdlib.h>
 
-double normalized_random(void)
+double normalized_random(double mi, double ma)
 {
   int rnd = rand();
-  return ((double)rnd / (double)RAND_MAX);
+  double scale = ma - mi;
+  return mi + ((double)rnd * scale / (double)RAND_MAX);
 }
