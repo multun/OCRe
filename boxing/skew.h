@@ -15,4 +15,6 @@ t_box_vect *filter_box_list(t_box_vect *box_list, t_bw_img *input_img);
 
 t_box_vect *get_rows(t_box_vect *box_list);
 
+double get_angle(t_box_vect *row_list);
+
 #endif

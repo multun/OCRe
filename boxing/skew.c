@@ -82,8 +82,10 @@ void filter_box_list(t_box_vect *box_list, t_bw_img *input_img)
 
   for (unsigned int i = 0; i < VECT_GET_SIZE(box_list);i++)
   {
-    if ((get_box_width(VECT_GET(box_list,i))*2 > get_box_height(VECT_GET(box_list,i))
-	 && get_box_width(VECT_GET(box_list,i)) < get_box_height(VECT_GET(box_list,i))*2
+    if ((get_box_width(VECT_GET(box_list,i))*2 >
+	 get_box_height(VECT_GET(box_list,i))
+	 && get_box_width(VECT_GET(box_list,i)) <
+	 get_box_height(VECT_GET(box_list,i))*2
 	 && get_box_height(VECT_GET(box_list,i)) > min_height))
       VECT_PUSH(new_box_list, VECT_GET(box_list,i));
   }
@@ -141,4 +143,10 @@ t_box_vect *get_rows(t_box_vect *box_list)
     }
   }
   return row_list;
+}
+
+double get_angle(t_box_vect *row_list)
+{
+  return atan(get_box_height(VECT_GET(row_list,0)) /
+		get_box_width(VECT_GET(row_list,0)));
 }
