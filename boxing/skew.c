@@ -6,6 +6,16 @@
 #include "bounding_box.h"
 #include <math.h>
 
+uint get_box_height(box input_box){
+  return input_box.bottom - input_box.top + 1;
+}
+uint get_box_width(box input_box){
+  return input_box.right - input_box.left + 1;
+}
+uint get_box_fullsize(box input_box){
+  return get_box_height(input_box) * get_box_width(input_box);
+}
+
 t_bw_img *rotate_img(t_bw_img *input, double angle)
 {
   int newHeight, newWidth, oldHeight, oldWidth;
@@ -62,4 +72,33 @@ t_bw_img *rotate_img(t_bw_img *input, double angle)
   }
   return output;
 
+}
+
+void filter_box_list(t_box_vect *box_list, t_bw_img *input_img)
+{
+  t_box_vect *new_box_list;
+  new_box_list = VECT_ALLOC(box, 16);
+  uint min_height = input_img->height / 400;
+
+  for (unsigned int i = 0; i < VECT_GET_SIZE(box_list);i++)
+  {
+    if ((get_box_width(VECT_GET(box_list,i))*2 > get_box_height(VECT_GET(box_list,i))
+	 && get_box_width(VECT_GET(box_list,i)) < get_box_height(VECT_GET(box_list,i))*2
+	 && get_box_height(VECT_GET(box_list,i)) > min_height))
+      VECT_PUSH(new_box_list, VECT_GET(box_list,i));
+  }
+  box_list = new_box_list;
+}
+
+uint ver_overlap(box box1, box box2)
+{
+  uint overlap = 0;
+  if(box2.top > box1.top && box2.top < box1.bottom)
+  {
+    if(box2.bottom < box1.bottom)
+      overlap = box2.bottom - box2.top;
+    else
+      overlap = box1.bottom - box2.top;
+  }
+  return overlap;
 }
