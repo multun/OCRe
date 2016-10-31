@@ -20,11 +20,11 @@ int* img_to_array(t_sub_bw_img *img)
   {
     for (uint l = 0; l < (img->width); l++)
     {
-      if (SUB_AT(img,l,k) != 0){
+      if (SUB_AT(img,l,k) == 0){
         stack += 1;
       }
     }
-    array[k] = (int)(img->width) - stack;
+    array[k] = stack;
     stack = 0;
   }
   return array;
@@ -66,7 +66,8 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
     if(bool_array[i] == false){
       t_bool previous_bool = bool_array[i-3];
       if (previous_bool == true){
-        previous_bool = (bool_array[i-4]+bool_array[i-3]+bool_array[i-2]+bool_array[i-1])%2;
+        previous_bool = (bool_array[i-4]+bool_array[i-3]
+                                          +bool_array[i-2]+bool_array[i-1])%2;
         if((sum_array[i-3] + sum_array[i-2] + sum_array[i-1]
                                     + sum_array[i]) > averages_array[i]){
           bool_array[i] = true;
@@ -74,7 +75,8 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
         }
       }
       else{
-        previous_bool = (bool_array[i+1]+bool_array[i+2]+bool_array[i+3]+bool_array[i+4])%2;
+        previous_bool = (bool_array[i+1]+bool_array[i+2]
+                                          +bool_array[i+3]+bool_array[i+4])%2;
         if((sum_array[i] + sum_array[i+1] + sum_array[i+2]
                                   + sum_array[i+3]) > averages_array[i]){
           bool_array[i] = true;
