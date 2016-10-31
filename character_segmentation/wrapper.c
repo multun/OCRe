@@ -17,8 +17,6 @@ t_sub_bw_img_vect_vect_vect *line_segment(t_sub_bw_img_vect_vect *input_blocks)
     for (unsigned int i = 0; i < VECT_GET_SIZE(input_lines); i++)
     {
       t_sub_bw_img_vect *seg = segmentation(VECT_GET(input_lines, i));
-      for (unsigned int j = 0; j < VECT_GET_SIZE(seg); j++)
-	t_sub_bw_img *ch = VECT_GET(seg, j);
       VECT_PUSH(rv, seg);
     }
     VECT_PUSH(rrv, rv);
