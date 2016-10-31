@@ -102,3 +102,43 @@ uint ver_overlap(box box1, box box2)
   }
   return overlap;
 }
+
+int get_biggest_overlap(t_box_vect *row_list, box input_box)
+{
+  uint index = 0;
+  uint i = 1;
+  uint max_overlap = ver_overlap(VECT_GET(row_list,0), input_box);
+  while(VECT_GET(row_list,i).top < input_box.bottom
+	&& i < VECT_GET_SIZE(row_list))
+  {
+    if(ver_overlap(VECT_GET(row_list,i), input_box)> max_overlap)
+    {
+      index = i;
+      max_overlap = ver_overlap(VECT_GET(row_list,i), input_box);
+    }
+    i++;
+  }
+  if(max_overlap == 0)
+    return -1;
+  return (int)index;
+}
+
+
+t_box_vect *get_rows(t_box_vect *box_list)
+{
+  t_box_vect *row_list;
+  row_list = VECT_ALLOC(box, 16);
+
+  for (unsigned int i = 0; i < VECT_GET_SIZE(box_list);i++)
+  {
+    int index = get_biggest_overlap(row_list, VECT_GET(box_list,i));
+    if(index == -1)
+      VECT_PUSH(row_list, VECT_GET(box_list,i));
+    else
+    {
+      VECT_GET(row_list, index) = fus_boxes(VECT_GET(row_list, index),
+					     VECT_GET(box_list,i));
+    }
+  }
+  return row_list;
+}

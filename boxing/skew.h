@@ -13,4 +13,6 @@ t_bw_img *rotate_img(t_bw_img *input, double angle);
 
 t_box_vect *filter_box_list(t_box_vect *box_list, t_bw_img *input_img);
 
+t_box_vect *get_rows(t_box_vect *box_list);
+
 #endif

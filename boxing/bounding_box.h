@@ -20,6 +20,7 @@ typedef struct s_box
 
 DECL_NAMED_VECTOR(struct s_box, box);
 
+box fus_boxes(box box_1,box box_2);
 
 void draw_box(t_bw_img *input_img, box input_box);
 
