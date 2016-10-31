@@ -7,6 +7,7 @@
 #include "pixbuf.h"
 
 GtkWindow *filechooser_parent;
+GtkFileFilter *filechooser_filter;
 
 static void open_file_button_clicked(GtkButton *button,
 					t_img_history *hist)
@@ -21,6 +22,7 @@ void open_file_ui_init(GtkBuilder *builder, t_img_history *img_history)
 {
   GtkButton *proc_button = GTK_BUTTON(_GET_WIDGET(builder, "open_file_button"));
   filechooser_parent = GTK_WINDOW(_GET_WIDGET(builder, "window_main"));
+  filechooser_filter = _GTK_GET(builder, FILE_FILTER, "bitmap_filter");
   _GTK_CONNECT(proc_button, "clicked", open_file_button_clicked, img_history);
 }
 
@@ -39,7 +41,8 @@ void open_file_ui_run(t_img_history *img_history)
 					"Open",
 					GTK_RESPONSE_ACCEPT,
 					NULL);
-
+  GtkFileChooser *fchooser = GTK_FILE_CHOOSER(dialog);
+  gtk_file_chooser_add_filter(fchooser, filechooser_filter);
   res = gtk_dialog_run (GTK_DIALOG (dialog));
   if (res == GTK_RESPONSE_ACCEPT)
   {

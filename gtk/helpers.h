@@ -7,4 +7,7 @@
 #define _GET_WIDGET(builder, name)			\
   GTK_WIDGET(gtk_builder_get_object(builder, name))
 
+#define _GTK_GET(builder, type, name)			\
+  GTK_## type (gtk_builder_get_object(builder, name))
+
 #endif
