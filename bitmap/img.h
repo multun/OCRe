@@ -49,8 +49,9 @@ DEFAULT_IMG_TYPES_APPLY(IMAGE_DECLARE,)
 
 #define L_AT AT
 
-#define SUB_AT(img, x, y)				\
-  (img->father->pixels[((y) + img->yoff) * img->father->width + (x) + img->xoff])
+#define SUB_AT(img, x, y)						\
+  (img->father->pixels[((y) + img->yoff) * img->father->width		\
+		       + (x) + img->xoff])
 
 
 // IMAGE DECLARATION //////////////////////
@@ -87,8 +88,8 @@ DEFAULT_IMG_TYPES_APPLY(IMAGE_DECLARE,)
   }
 
 // SUB IMAGE RELINKING //////////////////////
-#define RELINK_SUB_IMAGE_DECLARE(PIX_TYPE, TYPE)				\
-  t_sub_ ## TYPE * relink_sub_ ## TYPE (					\
+#define RELINK_SUB_IMAGE_DECLARE(PIX_TYPE, TYPE)	\
+  t_sub_ ## TYPE * relink_sub_ ## TYPE (		\
     t_sub_ ## TYPE * uplink,						\
     unsigned int xoff,							\
     unsigned int yoff,							\
@@ -219,6 +220,7 @@ DEFAULT_IMG_TYPES_APPLY(FREE_SUB_IMAGE_DECLARE, ;)
 DEFAULT_IMG_TYPES_APPLY(FREE_L_IMAGE_DECLARE, ;)
 DEFAULT_IMG_TYPES_APPLY(ALLOC_IMAGE_TWIN_DECLARE, ;)
 
-t_bw_img	*greyscale(unsigned char (*intensity)(t_color_pix), const t_color_img*);
+t_bw_img	*greyscale(unsigned char (*intensity)(t_color_pix),
+			   const t_color_img*);
 
 #endif

@@ -122,6 +122,7 @@ bool load_network(const t_network *net)
     if (has_weights)
       close(fd);
   }
+  free(namebuf);
   close(dirfd);
   return is_new;
 }
