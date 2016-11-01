@@ -56,7 +56,7 @@ $(EXEC): $(OBJ)
 
 -include ${DEP}
 
-.PHONY: clean valgrind gtkdbg
+.PHONY: clean valgrind gtkdbg 80cols gdbrun run
 clean:
 	rm -f $(EXEC) $(DEP) $(OBJ)
 gdbrun: all
@@ -70,10 +70,17 @@ suppr:
 	(cd GNOME.supp && make)
 	test -f gtk.suppression || curl -L -O http://www.gnome.org/~johan/gtk.suppression
 
-SUPPRS = $(addprefix --suppressions=, gtk-cairo-custom.supp gtk.suppression $(shell find GNOME.supp -type f -name '*.supp'))
+SUPPRS = $(addprefix --suppressions=, gtk-cairo-custom.supp gtk.suppression \
+	$(shell find GNOME.supp -type f -name '*.supp'))
 
 gtkdbg:
 	G_DEBUG=all GTK_DEBUG=interactive make gdbrun
 
 valgrind: $(EXEC)
-	G_DEBUG=resident-modules G_SLICE=always-malloc valgrind --gen-suppressions=all $(SUPPRS) --dsymutil=yes --tool=memcheck  --leak-check=full --track-origins=yes ./$(EXEC) $(ARGS)
+	G_DEBUG=resident-modules G_SLICE=always-malloc valgrind \
+		--gen-suppressions=all $(SUPPRS) \
+		--dsymutil=yes --tool=memcheck  --leak-check=full \
+		--track-origins=yes ./$(EXEC) $(ARGS)
+
+80cols:
+	@grep -rn '.\{80,\}' | egrep -v '(: ?==)|((\~|\.(supp|o|bak|xml|glade|txt)|#):)|\.(git|supp)|(Fichier binaire)'
