@@ -20,7 +20,8 @@ static void open_file_button_clicked(GtkButton *button,
 
 void open_file_ui_init(GtkBuilder *builder, t_img_history *img_history)
 {
-  GtkButton *proc_button = GTK_BUTTON(_GET_WIDGET(builder, "open_file_button"));
+  GtkButton *proc_button = GTK_BUTTON(_GET_WIDGET(builder,
+						  "open_file_button"));
   filechooser_parent = GTK_WINDOW(_GET_WIDGET(builder, "window_main"));
   filechooser_filter = _GTK_GET(builder, FILE_FILTER, "bitmap_filter");
   _GTK_CONNECT(proc_button, "clicked", open_file_button_clicked, img_history);

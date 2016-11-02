@@ -34,9 +34,19 @@ int is_in_box(box input_box, uint x, uint y);
 
 int is_in_box_list(t_box_vect *box_list, uint x, uint y);
 
-void connected_box(t_bw_img *input_img, box *input_box, uint x, uint y, char *array, size_t width);
+void connected_box(t_bw_img *input_img,
+		   box *input_box,
+		   uint x,
+		   uint y,
+		   char *array,
+		   size_t width);
 
-void connect_neigh(t_bw_img *input_img, box *input_box, uint x, uint y, char *array, size_t width);
+void connect_neigh(t_bw_img *input_img,
+		   box *input_box,
+		   uint x,
+		   uint y,
+		   char *array,
+		   size_t width);
 
 t_box_vect *list_boxes(t_bw_img *input_img);
 

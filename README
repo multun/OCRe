@@ -1,0 +1,27 @@
+#Compiling
+The project can be compiled using
+```sh
+make
+```
+
+#Running
+Use
+```sh
+make run
+```
+
+or
+
+```sh
+./ocre
+```
+
+to run the graphical user interface.
+
+#Neural network
+For now, the neural network has an independant testing folder.
+To run the test xor network, use:
+```sh
+cd neural_network/xor
+make clean run
+```
