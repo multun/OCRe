@@ -16,8 +16,8 @@
 #include "builder.h"
 #include "../error.h"
 
-#define OPEN_MODE (O_RDWR)
-#define OPEN_PERMS (S_IRUSR | S_IWUSR | S_IRGRP)
+#define OPEN_FLAGS (O_RDWR)
+#define OPEN_MODE  (S_IRUSR | S_IWUSR | S_IRGRP)
 
 static void fill_constant(double *array, size_t size, double constant)
 {
@@ -47,6 +47,26 @@ static void *map_fd(int fd, size_t size)
 	     ) != MAP_FAILED,
 	   "mmap");
   return ret;
+}
+
+int openat_exists(bool *is_new,
+		  int dirfd,
+		  const char *name)
+{
+  *is_new = true;
+  int fd = openat(dirfd, name, OPEN_FLAGS | O_CREAT | O_EXCL, OPEN_MODE);
+  if (fd == -1)
+  {
+    if(errno == EEXIST)
+    {
+      *is_new = false;
+      WPERROR(fd = openat(dirfd, name, OPEN_FLAGS | O_CREAT, OPEN_MODE),
+	      "open");
+    }
+    else
+      PERROR("openat");
+  }
+  return fd;
 }
 
 static inline void alloc_layer(t_layer *layer, int fd, bool is_map)
@@ -103,20 +123,7 @@ bool load_network(const t_network *net)
     char has_weights = i < net->layers_count - 1;
     int fd = -1;
     if (has_weights)
-    {
-      fd = openat(dirfd, namebuf, OPEN_MODE | O_CREAT | O_EXCL, OPEN_PERMS);
-      if (fd == -1)
-      {
-	if(errno == EEXIST)
-	{
-	  is_new = false;
-	  WPERROR(fd = openat(dirfd, namebuf, OPEN_MODE | O_CREAT, OPEN_PERMS),
-		  "open");
-	}
-	else
-	  PERROR("openat");
-      }
-    }
+      fd = openat_exists(&is_new, dirfd, namebuf);
 
     alloc_layer(&net->layers[i], fd, has_weights);
     if (has_weights)
