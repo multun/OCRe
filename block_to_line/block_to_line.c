@@ -7,6 +7,8 @@ t_sub_bw_img_vect *line_subdivision(t_sub_bw_img *img){
   int averageperline = avgblackpxlperline(blackpixelsarray, img);
   t_bool* bool_array = bool_array_generation(averageperline,
                                                         blackpixelsarray, img);
+  int lineheightaverage = line_height_avg(bool_array,img);
+  bool_array_modification(bool_array,img,lineheightaverage);
   t_coordinates_vect* vect_of_coo = bool_array_to_coordinates(bool_array, img);
   t_sub_bw_img_vect* imgexport = coordinates_to_img(vect_of_coo, img);
   return imgexport;
@@ -57,9 +59,10 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
     }
     //printf("Array[%d] = %d, bool = %u, this_sum = %d, this_average = %d\n"
                   //,i,array[i],bool_array[i],sum_array[i],averages_array[i]);
-
   }
-//RETOUCHE 1 de bool_array
+
+// RETOUCHE 1 de bool_array
+// Rattache les lignes sattelites aux lignes précédentes/suivantes
 
   //t_bool previous_bool = false;
   for(int i = 3; i < (int)img->height - 3; i++){
@@ -85,10 +88,79 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
       }
     }
   }
-
-//RETOUCHE 2 de bool_array
-
   return bool_array;
+}
+
+int line_height_avg(t_bool* bool_array, t_sub_bw_img* img){
+  t_bool previous_bool = false;
+  int totalpixellines;
+  int totaltextlines;
+  for (int i = 0; i < (int)img->height; i++){
+    if (bool_array[i] == true){
+      if (previous_bool == false){
+        previous_bool = true;
+      }
+      else
+        totalpixellines+=1;
+    }
+    else{
+      if(previous_bool == true){
+        previous_bool = false;
+        totaltextlines += 1;
+      }
+      else{
+        continue;
+      }
+    }
+  }
+  if (totaltextlines == 0)
+    totaltextlines = 1;
+  int lineheightaverage = totalpixellines/totaltextlines;
+  return lineheightaverage;
+}
+
+void bool_array_modification(t_bool* bool_array, t_sub_bw_img* img,
+                                                   int lineheightaverage){
+  t_coordinates_vect *coordinates_vect;
+  //coordinates_vect = VECT_ALLOC(coordinates,4);
+  coordinates_vect = bool_array_to_coordinates(bool_array,img);
+  int vect_size = (int)VECT_GET_SIZE(coordinates_vect);
+  t_bool has_changed = false;
+  for (int i = 1; i < vect_size; i++){
+    t_coordinates thiscoordinates = VECT_GET(coordinates_vect,i);
+    t_coordinates previouscoordinates = VECT_GET(coordinates_vect,i-1);
+    // Si la ligne est bien trop grande pour être une ligne:
+    if (thiscoordinates.fin - thiscoordinates.debut > lineheightaverage * 1.6){
+      // On efface la ligne du tableau de booléens
+      for (int j = thiscoordinates.debut; j <= thiscoordinates.fin; j++){
+        bool_array[j] = false;
+        has_changed = true;
+      }
+    }
+    // Si la ligne est bien trop petite pour être une ligne
+    if (thiscoordinates.fin - thiscoordinates.debut < lineheightaverage * 0.4){
+      // Si l'espace entre cette ligne et cette du dessus est bcp trop petit
+      if (thiscoordinates.debut - previouscoordinates.fin
+                                                  < lineheightaverage * 0.2){
+        // On étend la ligne du dessus, supprime cette ligne
+        previouscoordinates.fin = thiscoordinates.fin;
+        thiscoordinates = (t_coordinates){0,0};
+        has_changed = true;
+      }
+      // Sinon, on efface la ligne
+      else{
+        for(int k=thiscoordinates.debut; k<= thiscoordinates.fin; k++){
+          bool_array[k] = false;
+          has_changed = true;
+        }
+      }
+    }
+  }
+  //Si des changements ont été faits, on recommence
+  if(has_changed == true){
+    bool_array_modification(bool_array,img,lineheightaverage);
+  }
+  // Sinon, c'est fini
 }
 
 t_coordinates_vect *bool_array_to_coordinates(t_bool *bool_array,
