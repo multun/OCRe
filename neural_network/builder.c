@@ -16,6 +16,10 @@
 #include "builder.h"
 #include "../error.h"
 
+#ifndef O_DIRECTORY
+#define O_DIRECTORY 0
+#endif
+
 #define OPEN_FLAGS (O_RDWR)
 #define OPEN_MODE  (S_IRUSR | S_IWUSR | S_IRGRP)
 
