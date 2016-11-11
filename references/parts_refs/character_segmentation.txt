@@ -3,3 +3,6 @@ http://perso.telecom-paristech.fr/~elc/papers/pami96.pdf
 
 Tesseract DOC
 https://github.com/tesseract-ocr/docs/blob/master/tesseracticdar2007.pdf
+
+Finding the Best-Fit Bounding-Boxes
+https://pdfs.semanticscholar.org/f390/650e5d33b036baec821969adc75918940a47.pdf
