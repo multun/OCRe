@@ -460,8 +460,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="detect_blocks_button">
-                <property name="label" translatable="yes">Detect blocks</property>
+              <object class="GtkButton" id="detect_skew_button">
+                <property name="label" translatable="yes">Detect skew</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -474,13 +474,38 @@
               </packing>
             </child>
             <child type="tab">
+              <object class="GtkLabel" id="skew_detect_tab">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Skew detection</property>
+              </object>
+              <packing>
+                <property name="position">2</property>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="detect_blocks_button">
+                <property name="label" translatable="yes">Detect blocks</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">center</property>
+                <property name="valign">start</property>
+                <property name="margin_top">10</property>
+              </object>
+              <packing>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child type="tab">
               <object class="GtkLabel" id="block_detect_tab">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Block detection</property>
               </object>
               <packing>
-                <property name="position">2</property>
+                <property name="position">3</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -495,7 +520,7 @@
                 <property name="margin_top">10</property>
               </object>
               <packing>
-                <property name="position">3</property>
+                <property name="position">4</property>
               </packing>
             </child>
             <child type="tab">
@@ -505,7 +530,7 @@
                 <property name="label" translatable="yes">Line detection</property>
               </object>
               <packing>
-                <property name="position">3</property>
+                <property name="position">4</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -520,7 +545,7 @@
                 <property name="margin_top">10</property>
               </object>
               <packing>
-                <property name="position">4</property>
+                <property name="position">5</property>
               </packing>
             </child>
             <child type="tab">
@@ -530,7 +555,7 @@
                 <property name="label" translatable="yes">Character detection</property>
               </object>
               <packing>
-                <property name="position">4</property>
+                <property name="position">5</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -603,6 +628,9 @@
           </packing>
         </child>
       </object>
+    </child>
+    <child type="titlebar">
+      <placeholder/>
     </child>
   </object>
 </interface>
