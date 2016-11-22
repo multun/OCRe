@@ -20,6 +20,8 @@ t_sub_bw_img_vect *block_segment(t_bw_img *input_img)
   update_true_size(block_list, input_img);
   block_list = trim_box_list(block_list, input_img);
 
+  //quicksort_list_box(block_list,0,VECT_GET_SIZE(block_list)-1);
+  //block_list = get_rows(block_list);
 
   t_sub_bw_img_vect *rv = VECT_ALLOC(sub_bw_img, 1000);
   for (unsigned int i = 0; i < VECT_GET_SIZE(block_list); i++)

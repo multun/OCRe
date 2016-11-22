@@ -17,4 +17,10 @@ t_box_vect *get_rows(t_box_vect *box_list);
 
 double get_angle(t_box_vect *row_list);
 
+void box_swap(t_box_vect *box_list, size_t i, size_t j);
+
+size_t quick_partition(t_box_vect *A,size_t lo,size_t hi);
+
+void quicksort_list_box(t_box_vect *box_list, size_t left, size_t right);
+
 #endif
