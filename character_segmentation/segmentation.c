@@ -1,6 +1,6 @@
 #include "segmentation.h"
 
-char isWhiteColumn(t_sub_bw_img *img, uint column)
+char is_white_column(t_sub_bw_img *img, uint column)
 {
   for(uint i = 0; i< img->height; i++)
     if(SUB_AT(img,column,i) == 0)
@@ -8,7 +8,7 @@ char isWhiteColumn(t_sub_bw_img *img, uint column)
   return 1;
 }
 
-char isWhiteLine(t_sub_bw_img *img, uint line)
+char is_white_line(t_sub_bw_img *img, uint line)
 {
   for(uint i = 0; i< img->width; i++)
     if(SUB_AT(img,i,line) == 0)
@@ -16,37 +16,37 @@ char isWhiteLine(t_sub_bw_img *img, uint line)
   return 1;
 }
 
+void char_vseg(t_sub_bw_img *lsub)
+{
+  while(lsub->height && is_white_line(lsub, 0))
+  {
+    lsub->yoff++;
+    lsub->height--;
+  }
+  while(lsub->height && is_white_line(lsub, lsub->height - 1))
+    lsub->height--;
+}
+
+
 t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
 {
   t_sub_bw_img_vect *result = VECT_ALLOC(sub_bw_img, 32);
 
   for(uint aux = 0, i = 0; i < img->width; i++)
-    if (isWhiteColumn(img, i) || i == img->width-1)
+    if (is_white_column(img, i) || i == img->width-1)
     {
-      if(isWhiteColumn(img, i-1) == 0)
-        VECT_PUSH(result,relink_sub_bw_img(img,aux,0,i-aux,img->height));
+      if(is_white_column(img, i-1) == 0)
+      {
+	t_sub_bw_img *sub = relink_sub_bw_img(
+	  img,
+	  aux,
+	  0,
+	  i - aux,
+	  img->height);
+	char_vseg(sub);
+	VECT_PUSH(result, sub);
+      }
       aux = i+1;
     }
-	reformate_character(result);
   return result;
-}
-
-void reformate_character(t_sub_bw_img_vect *vect)
-{
-	t_sub_bw_img *temp;
-	unsigned int topBorder = 0;
-	unsigned int bottomBorder;
-	for(unsigned int i = 0; i < VECT_GET_SIZE(vect);i++)
-	{
-		temp = VECT_GET(vect, i);
-		for(unsigned int j = (temp->height)-1; isWhiteLine(temp, j); j--)
-		{
-			bottomBorder = j;
-		}
-		for(unsigned int k = 0; isWhiteLine(temp,k); k++)
-		{
-			topBorder = k;
-		}
-		VECT_GET(vect, i) = relink_sub_bw_img(temp,0,topBorder,temp->width,bottomBorder);
-	}
 }
