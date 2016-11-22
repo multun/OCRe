@@ -9,9 +9,8 @@
 #include "../gtk/vectors.h"
 
 char isWhiteColumn (t_sub_bw_img *img, uint column);
+char isWhiteLine(t_sub_bw_img *img, uint line);
 t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img);
-t_sub_bw_img *imgToSmallerImg(t_sub_bw_img *img,
-			      int firstColumn,
-			      int lastColumn);
+void reformate_character(t_sub_bw_img_vect *vect);
 
 #endif
