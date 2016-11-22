@@ -4,6 +4,8 @@
 #include "../boxing/morpho.h"
 #include "../base_structs/vector.h"
 #include "../boxing/skew.h"
+#include "../rescale/rescale.h"
+
 
 t_sub_bw_img_vect *block_segment(t_bw_img *input_img)
 {
