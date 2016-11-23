@@ -37,10 +37,10 @@ void interpolate(t_bw_img *input,
 
       for(int j = -(int)(mask_len/2-fy); j <= (int)(mask_len/2-ry); j++)
 	for(int i = -(int)(mask_len/2-fx); i <= (int)(mask_len/2-rx); i++)
-	  val += (float)AT(input,(uint)((int)nx + i),(uint)((int)ny + j))
+	  val += (255 - (float)AT(input,(uint)((int)nx + i),(uint)((int)ny + j)))
 	    *mask[j+(int)(mask_len/2+fy)][i+(int)(mask_len/2+fy)];
       if(val >= 255)
-	AT(output,x,y) = 255;
+	AT(output,x,y) = 0;
     }
   }
 }
@@ -56,7 +56,7 @@ t_bw_img *resize_tbw(t_bw_img *input, double factor)
 
   for(size_t y = 0; y<output->height; y++)
     for(size_t x = 0; x<output->width; x++)
-      AT(output, x, y) = 0;
+      AT(output, x, y) = 255;
 
   interpolate(input, output, 3, mask, factor);
 
@@ -93,7 +93,7 @@ t_bw_img *fill_padding(t_bw_img *input, uint width, uint height)
   for(uint y = 0; y<output->height; y++)
     for(uint x = xend; x<output->width; x++)
       AT(output, x, y) = 255;
-  for(uint y = 0; y<ystart; y++)
+  for(uint y = 0; y<ystart+1; y++)
     for(uint x = 0; x<output->width; x++)
       AT(output, x, y) = 255;
   for(uint y = yend; y<output->height; y++)
