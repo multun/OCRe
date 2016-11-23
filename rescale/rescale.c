@@ -60,8 +60,6 @@ t_bw_img *resize_tbw(t_bw_img *input, double factor)
 
   interpolate(input, output, 3, mask, factor);
 
-  free_bw_img(input);
-
   return output;
 
 }
