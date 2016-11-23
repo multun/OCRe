@@ -10,4 +10,7 @@
 #define _GTK_GET(builder, type, name)			\
   GTK_## type (gtk_builder_get_object(builder, name))
 
+#define GET_SPIN(builder, name) GTK_SPIN_BUTTON(_GET_WIDGET(builder, name))
+#define GET_BUTTON(builder, name) GTK_BUTTON(_GET_WIDGET(builder, name))
+
 #endif
