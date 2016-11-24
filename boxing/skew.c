@@ -150,3 +150,71 @@ double get_angle(t_box_vect *row_list)
   return atan(get_box_height(VECT_GET(row_list,0)) /
 		get_box_width(VECT_GET(row_list,0)));
 }
+
+void box_swap(t_box_vect *box_list, size_t i, size_t j)
+{
+  uint tleft, tright, tbottom, ttop, tsize;
+  tleft = VECT_GET(box_list, i).left;
+  tright = VECT_GET(box_list, i).right;
+  tbottom = VECT_GET(box_list, i).bottom;
+  ttop = VECT_GET(box_list, i).top;
+  tsize = VECT_GET(box_list, i).size;
+
+  VECT_GET(box_list, i).size = VECT_GET(box_list, j).size;
+  VECT_GET(box_list, i).left = VECT_GET(box_list, j).left;
+  VECT_GET(box_list, i).right = VECT_GET(box_list, j).right;
+  VECT_GET(box_list, i).top = VECT_GET(box_list, j).top;
+  VECT_GET(box_list, i).bottom = VECT_GET(box_list, j).bottom;
+
+  VECT_GET(box_list, j).size = tsize;
+  VECT_GET(box_list, j).left = tleft;
+  VECT_GET(box_list, j).right = tright;
+  VECT_GET(box_list, j).top = ttop;
+  VECT_GET(box_list, j).bottom = tbottom;
+}
+
+
+size_t quick_partition(t_box_vect *A,size_t lo,size_t hi)
+{
+  size_t mid = lo+(hi-lo)/2;
+  uint pivot = VECT_GET(A, mid).left;
+  size_t i = lo;
+  size_t j = hi+1;
+  while(i<j)
+  {
+    i++;
+    while (VECT_GET(A,i-1).left < pivot)
+      i = i + 1;
+
+    j = j - 1;
+    while (VECT_GET(A,j).left > pivot)
+      j = j - 1;
+
+    if(i<=j)
+      box_swap(A,i-1,j);
+  }
+  return j;
+}
+
+void quicksort_list_box(t_box_vect *box_list, size_t left, size_t right)
+{
+  printf("1");
+  if (left < right)
+  {
+    size_t p = quick_partition(box_list, left, right);
+    printf("\nfirst\n");
+    if(left<p)
+    {
+      for(size_t i = left; i<=p; i++)
+	printf("%u--",VECT_GET(box_list,i).left);
+      quicksort_list_box(box_list, left, p);
+    }
+    printf("\n");
+    if(p+1<right)
+    {
+      for(size_t i = p+1; i<=right; i++)
+	printf("%u--",VECT_GET(box_list,i).left);
+      quicksort_list_box(box_list, p + 1, right);
+    }
+  }
+}

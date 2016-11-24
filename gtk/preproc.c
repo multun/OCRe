@@ -13,8 +13,6 @@ static void preprocess_button_clicked(GtkButton *button,
   preprocess_ui_run(hist, hist->selected);
 }
 
-#define GET_SPIN(builder, name) GTK_SPIN_BUTTON(_GET_WIDGET(builder, name))
-
 void preprocess_ui_init(GtkBuilder *builder, t_img_history *img_history)
 {
   preprocess_ui.stack = GTK_STACK(_GET_WIDGET(builder, "bin_stack"));
@@ -23,8 +21,7 @@ void preprocess_ui_init(GtkBuilder *builder, t_img_history *img_history)
   preprocess_ui.ratio_factor_field = GET_SPIN(builder, "ratio_factor_field");
   preprocess_ui.sauvola_coef = GET_SPIN(builder, "sauvola_coef");
   preprocess_ui.sauvola_window_size = GET_SPIN(builder, "sauvola_window_size");
-  GtkButton *proc_button = GTK_BUTTON(_GET_WIDGET(
-					builder, "preprocess_button"));
+  GtkButton *proc_button = GET_BUTTON(builder, "preprocess_button");
   _GTK_CONNECT(proc_button, "clicked", preprocess_button_clicked, img_history);
 }
 
