@@ -8,13 +8,13 @@
 void interpolate(t_bw_img *input,
 		 t_bw_img *output,
 		 uint mask_len,
-		 float mask[][mask_len],
+		 double mask[][mask_len],
 		 double factor)
 {
   factor = 1/factor;
   uint nx, ny;
   uint fx, fy, rx, ry;
-  float val;
+  double val;
   for(size_t y = 0; y < output->height; y++)
   {
     fy = 0;
@@ -37,9 +37,9 @@ void interpolate(t_bw_img *input,
 
       for(int j = -(int)(mask_len/2-fy); j <= (int)(mask_len/2-ry); j++)
 	for(int i = -(int)(mask_len/2-fx); i <= (int)(mask_len/2-rx); i++)
-	  val += (255 - (float)AT(input,(uint)((int)nx + i),(uint)((int)ny + j)))
+	  val += (255 - (double)AT(input,(uint)((int)nx + i),(uint)((int)ny + j)))
 	    *mask[j+(int)(mask_len/2+fy)][i+(int)(mask_len/2+fy)];
-      if(val >= 255)
+      if(val >= 300)
 	AT(output,x,y) = 0;
     }
   }
@@ -47,9 +47,17 @@ void interpolate(t_bw_img *input,
 
 t_bw_img *resize_tbw(t_bw_img *input, double factor)
 {
-  float mask[][3] ={{1/3, 2/3, 1/3},
+  /*double mask[][3] ={{1/3, 2/3, 1/3},
 		    {2/3,   1, 2/3},
 		    {1/3, 2/3, 1/3}};
+  */
+
+  //f(x)=-2x^3+3x^2
+  double mask[][5] ={{0.1405, 0.1880, 0.2593, 0.1880, 0.1405},
+		    {0.1880, 0.2866, 0.7407, 0.2866, 0.1880},
+		    {0.2593, 0.7407, 1.0000, 0.7407, 0.2593},
+		    {0.1880, 0.2866, 0.7407, 0.2866, 0.1880},
+		    {0.1405, 0.1880, 0.2593, 0.1880, 0.1405}};
 
   t_bw_img *output = alloc_bw_img((uint)((double)input->width*factor),
 				  (uint)((double)input->height*factor));
