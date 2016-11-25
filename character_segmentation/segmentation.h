@@ -8,9 +8,10 @@
 #include "../error.h"
 #include "../gtk/vectors.h"
 
-char isWhiteColumn (t_sub_bw_img *img, uint column);
-char isWhiteLine(t_sub_bw_img *img, uint line);
+char is_white_column(t_sub_bw_img *img, uint column);
+char is_white_line(t_sub_bw_img *img, uint line);
+void char_vseg(t_sub_bw_img *lsub);
+
 t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img);
-void reformate_character(t_sub_bw_img_vect *vect);
 
 #endif
