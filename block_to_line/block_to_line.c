@@ -44,6 +44,7 @@ int avgblackpxlperline(int *array, t_sub_bw_img *img)
 
 t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
 {
+  printf("Bool Array Generation In\n");
   t_bool *bool_array = malloc(sizeof(t_bool) * img->height);
   int *averages_array = malloc(sizeof(int) * img->height);
   int *sum_array = malloc(sizeof(int) * img->height);
@@ -88,6 +89,7 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
       }
     }
   }
+  printf("Bool Array Generation Out\n");
   return bool_array;
 }
 
@@ -133,16 +135,17 @@ void bool_array_modification(t_bool* bool_array, t_sub_bw_img* img,
     t_coordinates thiscoordinates = VECT_GET(coordinates_vect,i);
     t_coordinates previouscoordinates = VECT_GET(coordinates_vect,i-1);
     // Si la ligne est bien trop grande pour être une ligne:
-    if (thiscoordinates.fin - thiscoordinates.debut > lineheightaverage * 1.7){
+    if (thiscoordinates.fin - thiscoordinates.debut > lineheightaverage * 2){
       printf("ligne n° %d trop épaisse\nMaxHeight = %lf, thisline is %d\n",i,lineheightaverage*1.7,thiscoordinates.fin - thiscoordinates.debut);
       // On efface la ligne du tableau de booléens
-      for (int j = thiscoordinates.debut; j <= thiscoordinates.fin; j++){
+      printf("Ligne effacée\n");
+      for (int j = thiscoordinates.debut - 2; j <= thiscoordinates.fin; j++){
         bool_array[j] = false;
       }
       has_changed = true;
     }
     // Si la ligne est bien trop petite pour être une ligne
-    if (thiscoordinates.fin - thiscoordinates.debut < lineheightaverage * 0.3){
+    if (thiscoordinates.fin - thiscoordinates.debut < lineheightaverage * 0.1){
       printf("ligne n° %d trop fine\nMinHeight = %lf, thisline is %d\n",i,lineheightaverage*0.3,thiscoordinates.fin - thiscoordinates.debut);
       // Si l'espace entre cette ligne et cette du dessus est bcp trop petit
       if (thiscoordinates.debut - previouscoordinates.fin
@@ -155,16 +158,17 @@ void bool_array_modification(t_bool* bool_array, t_sub_bw_img* img,
       }
       // Sinon, on efface la ligne
       else{
+        printf("ligne supprimée\n");
         for(int k=thiscoordinates.debut; k<= thiscoordinates.fin; k++){
           bool_array[k] = false;
           has_changed = true;
         }
       }
     }
-    printf("Line n°%d succeeds\n",i);
+    printf("Line n°%d treated\n",i);
   }
   //Si des changements ont été faits, on recommence
-  if(has_changed == true){
+  if((has_changed == true) && (vect_size > 4)){
     bool_array_modification(bool_array,img,lineheightaverage);
   }
   printf("Bool Array Modif: Exit\n");// Sinon, c'est fini
