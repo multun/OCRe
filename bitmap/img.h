@@ -22,6 +22,9 @@
   } t_l_ ##NAME;
 
 
+#define IMG_SIZE(TYPE, WIDTH, HEIGHT)			\
+  (sizeof(TYPE) + (WIDTH) * (HEIGHT) * sizeof((TYPE*)0)->pixels[0])
+
 typedef struct
 __attribute__((__packed__))
 s_color_pix
@@ -60,8 +63,7 @@ DEFAULT_IMG_TYPES_APPLY(IMAGE_DECLARE,)
 #define ALLOC_IMAGE_DEFINE(PIX_TYPE, TYPE)				\
   ALLOC_IMAGE_DECLARE(PIX_TYPE, TYPE)					\
   {									\
-    t_ ## TYPE *ret	= malloc(					\
-      sizeof(t_ ## TYPE ) + sizeof(PIX_TYPE) * width * height);		\
+    t_ ## TYPE *ret	= malloc(IMG_SIZE(t_ ## TYPE, width, height));	\
     ret->width	= width;						\
     ret->height	= height;						\
     return ret;								\
@@ -123,8 +125,7 @@ DEFAULT_IMG_TYPES_APPLY(IMAGE_DECLARE,)
 #define ALLOC_L_IMAGE_DEFINE(PIX_TYPE, TYPE)				\
   ALLOC_L_IMAGE_DECLARE(PIX_TYPE, TYPE)					\
   {									\
-    t_l_ ## TYPE *ret	= malloc(					\
-      sizeof(t_l_ ## TYPE ) + sizeof(PIX_TYPE) * width * height);	\
+    t_l_ ## TYPE *ret = malloc(IMG_SIZE(t_l_ ## TYPE, width, height));	\
     ret->father = father;						\
     ret->xoff	= xoff;							\
     ret->yoff	= yoff;							\
@@ -147,8 +148,7 @@ DEFAULT_IMG_TYPES_APPLY(IMAGE_DECLARE,)
 #define RELINK_L_IMAGE_DEFINE(PIX_TYPE, TYPE)				\
   RELINK_L_IMAGE_DECLARE(PIX_TYPE, TYPE)				\
   {									\
-    t_l_ ## TYPE *ret	= malloc(					\
-      sizeof(t_l_ ## TYPE ) + sizeof(PIX_TYPE) * width * height);	\
+    t_l_ ## TYPE *ret = malloc(IMG_SIZE(t_l_ ## TYPE, width, height));	\
     t_ ## TYPE *father = uplink->father;				\
     ret->father = father;						\
     xoff += uplink->xoff;						\
