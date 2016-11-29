@@ -2,7 +2,13 @@
 #include "../tdefs.h"
 #include "../error.h"
 #include "neurons.h"
+
+#ifndef FUCKIT
 #include "random.h"
+#else
+#include "random.c"
+#endif
+
 
 double __attribute__((hot, const)) sigmoid_f(double in)
 {
@@ -59,22 +65,22 @@ static void fill_random(double *array, size_t size, double min, double max)
     array[i] = normalized_random(min, max);
 }
 
-static void fill_constant(double *array, size_t size, double constant)
+void fill_constant(double *array, size_t size, double constant)
 {
   for(size_t i = 0; i < size; i++)
     array[i] = constant;
 }
 
-void random_weights(t_network *net)
+void random_weights(t_network *net, double min, double max)
 {
   for(size_t layer_i = 0; layer_i < net->layers_count; layer_i++)
   {
     t_layer *layer = &net->layers[layer_i];
-    fill_random(layer->delta, layer->size, -1., 1.);
+    fill_random(layer->delta, layer->size, min, max);
     if(layer->weights)
     {
       size_t weights_count = LAYER_WSIZE(layer);
-      fill_random(layer->weights, weights_count, -1., 1.);
+      fill_random(layer->weights, weights_count, min, max);
       fill_constant(layer->weights_delta, weights_count, 0.0);
     }
   }

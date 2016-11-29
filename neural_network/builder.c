@@ -1,5 +1,9 @@
+#undef  _XOPEN_SOURCE
 #define _XOPEN_SOURCE 500
+#undef  _POSIX_C_SOURCE
 #define _POSIX_C_SOURCE 201610L
+
+#include <unistd.h>
 
 #include "neurons.h"
 #include "../tdefs.h"
@@ -22,12 +26,6 @@
 
 #define OPEN_FLAGS (O_RDWR)
 #define OPEN_MODE  (S_IRUSR | S_IWUSR | S_IRGRP)
-
-static void fill_constant(double *array, size_t size, double constant)
-{
-  for(size_t i = 0; i < size; i++)
-    array[i] = constant;
-}
 
 static size_t digits_count(size_t n)
 {

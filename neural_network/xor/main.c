@@ -1,14 +1,26 @@
+
+#ifndef FUCKIT
 #include "../neurons.h"
 #include "../forward.h"
 #include "../backward.h"
 #include "../builder.h"
-#include <stdio.h>
+# else
+#define _XOPEN_SOURCE 500
+#define _POSIX_C_SOURCE 201610L
 
+#include "../neurons.c"
+#include "../builder.c"
+#include "../forward.c"
+#include "../backward.c"
+#endif
+
+#include <stdio.h>
+#include <signal.h>
+#include <assert.h>
+#include "../../tdefs.h"
 
 #define ERROR_TRESHOLD 0.001
-
-#define STR(x) #x
-#define XSTR(x) STR(x)
+#define LEARNING_RATE  0.05
 
 typedef struct s_testcase
 {
@@ -16,13 +28,46 @@ typedef struct s_testcase
   double	result;
 } t_testcase;
 
+
+#define XOR_0 0.
+#define XOR_1 1.
+
 t_testcase tests[] =
 {
-  {{0., 0.}, 0.},
-  {{0., 1.}, 1.},
-  {{ 1., 0.},  1.},
-  {{ 1.,  1.}, 0.},
+  {{XOR_0, XOR_0}, XOR_0},
+  {{XOR_0, XOR_1}, XOR_1},
+  {{XOR_1, XOR_0}, XOR_1},
+  {{XOR_1, XOR_1}, XOR_0},
 };
+
+
+void shuffle(uint *array, size_t n)
+{
+  if (n > 1)
+    for (size_t i = 0; i < n - 1; i++)
+    {
+      size_t j = i + (size_t)rand() / (RAND_MAX / (n - i) + 1);
+      uint t = array[j];
+      array[j] = array[i];
+      array[i] = t;
+    }
+}
+
+char running = 1;
+
+static void catch_function(int signo)
+{
+  switch(signo)
+  {
+  case SIGTERM:
+  case SIGINT:
+    puts("caught signal");
+    running = 0;
+    break;
+  default:
+    raise(signo);
+  }
+}
 
 int main(void)
 {
@@ -44,19 +89,24 @@ int main(void)
       }
     }
   };
+
+  assert(signal(SIGINT, catch_function) != SIG_ERR);
+
   srand(42);
   if(load_network(&net))
-    random_weights(&net);
+    random_weights(&net, -1., 1.);
 
   const size_t test_count = sizeof(tests)/sizeof(tests[0]);
 
-  double learning_rate = 0.06;
+  double learning_rate = LEARNING_RATE;
+  uint indexes[4] = {0,1,2,3};
   for(size_t epoch = 0;;epoch++)
   {
     double error = 0.0;
+    shuffle(indexes, 4);
     for(size_t test_i = 0; test_i < test_count; test_i++)
     {
-      t_testcase *test = &tests[test_i];
+      t_testcase *test = &tests[indexes[test_i]];
       forward_init(&net, &test->inputs[0]);
       forward(&net);
       double er = compute_error(&net, &(test->result));
@@ -66,11 +116,17 @@ int main(void)
     }
     error /= (double)test_count;
 
-    if(epoch % 1000 == 0)
+    if(epoch % 10000 == 0)
       printf("%lu\t error: %f\n", epoch, error);
+
+    if (!running)
+      break;
+
     if (error < ERROR_TRESHOLD)
     {
-      puts("error below " XSTR(ERROR_TRESHOLD));
+#define STR(x) #x
+#define XSTR(x) STR(x)
+      printf("%lu\t error below " XSTR(ERROR_TRESHOLD)"\n", epoch);
       break;
     }
   }

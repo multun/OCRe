@@ -24,9 +24,10 @@ double compute_error(const t_network *net, const double *target)
 				     er,
 				     o_layer->in[i],
 				     o_layer->out[i]);
-    #ifdef DEBUG
+
+#ifdef DEBUG
     printf("o_delta: %f\n", o_layer->delta[i]);
-    #endif
+#endif
     error += 0.5 * er * er;
   }
   return error;
@@ -42,9 +43,6 @@ static inline void backward_layer(const t_layer *layer)
   double *weights   = layer->weights;
   double *weights_d = layer->weights_delta;
 
-    #ifdef DEBUG
-  printf("updating deltas on %p\n", (void*)layer->delta);
-    #endif
   for(size_t i = 0; i < layer->size; i++)
   {
     double sum = 0.0;
@@ -52,21 +50,13 @@ static inline void backward_layer(const t_layer *layer)
     {
       double wdelta = n_layer->delta[j];
       weights_d[woff + j] += wdelta * layer->out[i];
-    #ifdef DEBUG
-      printf("new weight: %f\n", weights[woff+j] + wdelta * layer->out[i]);
-    #endif
       sum += wdelta * weights[woff + j];
     }
-    #ifdef DEBUG
-    printf("sum: %f\n", sum);
-    #endif
+
     layer->delta[i] = neuron_delta(layer,
 				   sum,
 				   layer->in[i],
 				   layer->out[i]);
-    #ifdef DEBUG
-    printf("delta: %f\n", layer->delta[i]);
-    #endif
     woff += segment_size;
   }
 }
