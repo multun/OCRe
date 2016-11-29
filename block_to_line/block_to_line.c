@@ -44,7 +44,6 @@ int avgblackpxlperline(int *array, t_sub_bw_img *img)
 
 t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
 {
-  printf("Bool Array Generation In\n");
   t_bool *bool_array = malloc(sizeof(t_bool) * img->height);
   int *averages_array = malloc(sizeof(int) * img->height);
   int *sum_array = malloc(sizeof(int) * img->height);
@@ -64,8 +63,6 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
 
 // RETOUCHE 1 de bool_array
 // Rattache les lignes sattelites aux lignes précédentes/suivantes
-
-  //t_bool previous_bool = false;
   for(int i = 3; i < (int)img->height - 3; i++){
     if(bool_array[i] == false){
       t_bool previous_bool = bool_array[i-3];
@@ -89,7 +86,6 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
       }
     }
   }
-  printf("Bool Array Generation Out\n");
   return bool_array;
 }
 
@@ -119,59 +115,81 @@ int line_height_avg(t_bool* bool_array, t_sub_bw_img* img){
   if (totaltextlines == 0)
     totaltextlines = 1;
   int lineheightaverage = totalpixellines/totaltextlines;
-  printf("lineheightaverage is %d\n",lineheightaverage);
+  //printf("lineheightaverage is %d\n",lineheightaverage);
   return lineheightaverage;
 }
 
 void bool_array_modification(t_bool* bool_array, t_sub_bw_img* img,
                                                    int lineheightaverage){
-  printf("Bool Array Modif Enter\n");
   t_coordinates_vect *coordinates_vect;
-  //coordinates_vect = VECT_ALLOC(coordinates,4);
   coordinates_vect = bool_array_to_coordinates(bool_array,img);
   int vect_size = (int)VECT_GET_SIZE(coordinates_vect);
   t_bool has_changed = false;
+
   for (int i = 1; i < vect_size; i++){
     t_coordinates thiscoordinates = VECT_GET(coordinates_vect,i);
     t_coordinates previouscoordinates = VECT_GET(coordinates_vect,i-1);
     // Si la ligne est bien trop grande pour être une ligne:
-    if (thiscoordinates.fin - thiscoordinates.debut > lineheightaverage * 2){
-      printf("ligne n° %d trop épaisse\nMaxHeight = %lf, thisline is %d\n",i,lineheightaverage*1.7,thiscoordinates.fin - thiscoordinates.debut);
+    if (thiscoordinates.fin - thiscoordinates.debut > lineheightaverage * 3.5){
+      // printf("ligne n° %d trop épaisse\nMaxHeight = %lf, thisline is %d\n",i,lineheightaverage*3.5,thiscoordinates.fin - thiscoordinates.debut);
       // On efface la ligne du tableau de booléens
-      printf("Ligne effacée\n");
+      // printf("Ligne effacée\n");
       for (int j = thiscoordinates.debut - 2; j <= thiscoordinates.fin; j++){
         bool_array[j] = false;
       }
       has_changed = true;
     }
+
     // Si la ligne est bien trop petite pour être une ligne
-    if (thiscoordinates.fin - thiscoordinates.debut < lineheightaverage * 0.1){
-      printf("ligne n° %d trop fine\nMinHeight = %lf, thisline is %d\n",i,lineheightaverage*0.3,thiscoordinates.fin - thiscoordinates.debut);
-      // Si l'espace entre cette ligne et cette du dessus est bcp trop petit
+    if (thiscoordinates.fin - thiscoordinates.debut < lineheightaverage * 0.3){
+      // printf("ligne n° %d trop fine\nMinHeight = %lf, thisline is %d\n",i,lineheightaverage*0.3,thiscoordinates.fin - thiscoordinates.debut);
+
+      // Si l'espace entre cette ligne et celle du dessus est bcp trop petit
       if (thiscoordinates.debut - previouscoordinates.fin
-                                                  < lineheightaverage * 0.2){
+                                                  < lineheightaverage * 0.3){
         // On étend la ligne du dessus, supprime cette ligne
-        printf("ligne étendue\n");
+        // printf("ligne étendue\n");
         previouscoordinates.fin = thiscoordinates.fin;
-        thiscoordinates = (t_coordinates){0,0};
+        for(int j=previouscoordinates.debut;j < previouscoordinates.fin;j++){
+          bool_array[j] = true;
+        }
         has_changed = true;
       }
+
       // Sinon, on efface la ligne
       else{
-        printf("ligne supprimée\n");
+        // printf("ligne supprimée\n");
         for(int k=thiscoordinates.debut; k<= thiscoordinates.fin; k++){
           bool_array[k] = false;
           has_changed = true;
         }
       }
     }
-    printf("Line n°%d treated\n",i);
+    // printf("Line n°%d treated\n",i);
   }
+
+  t_coordinates linezero = VECT_GET(coordinates_vect,0);
+  t_coordinates lineone = VECT_GET(coordinates_vect,1);
+  if (linezero.fin - linezero.debut < lineheightaverage * 0.3){
+    if (lineone.debut - linezero.fin < lineheightaverage * 0.3){
+      lineone.debut = linezero.debut;
+      for(int j=lineone.debut;j < lineone.fin;j++){
+        bool_array[j] = true;
+      }
+    }
+    else{
+      for(int k=linezero.debut; k<= linezero.fin; k++){
+        bool_array[k] = false;
+      }
+    }
+    has_changed = true;
+  }
+
   //Si des changements ont été faits, on recommence
-  if((has_changed == true) && (vect_size > 4)){
+  if((has_changed == true)) /* && (vect_size > 4)) */ {
     bool_array_modification(bool_array,img,lineheightaverage);
   }
-  printf("Bool Array Modif: Exit\n");// Sinon, c'est fini
+  // printf("Bool Array Modif: Exit\n");// Sinon, c'est fini
 }
 
 t_coordinates_vect *bool_array_to_coordinates(t_bool *bool_array,
@@ -202,13 +220,13 @@ t_coordinates_vect *bool_array_to_coordinates(t_bool *bool_array,
     }
   }
   for(int j=0; j < (int)VECT_GET_SIZE(result); j++){
-    printf("Coord: début: %d, fin: %d\n",VECT_GET(result,j).debut,VECT_GET(result,j).fin);
+    // printf("Coord: début: %d, fin: %d\n",VECT_GET(result,j).debut,VECT_GET(result,j).fin);
   }
   return result;
 }
 
-t_sub_bw_img_vect *coordinates_to_img(t_coordinates_vect            *vectorofcoordinates,
-                                      t_sub_bw_img *img)
+t_sub_bw_img_vect *coordinates_to_img(t_coordinates_vect                *vectorofcoordinates
+                    ,t_sub_bw_img *img)
 {
   t_sub_bw_img_vect *imgresults;
   size_t nboflines = VECT_GET_SIZE(vectorofcoordinates);
