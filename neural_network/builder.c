@@ -80,7 +80,7 @@ static inline void alloc_layer(t_layer *layer, int fd, bool is_map)
   layer->delta	= malloc(layer_size);
   if (fd != -1)
   {
-    size_t w_size = sizeof(double) * LAYER_WSIZE(layer);
+    size_t w_size = sizeof(nfloat) * LAYER_WSIZE(layer);
     layer->weights_delta	= malloc(w_size);
     layer->weights	= (is_map) ? map_fd(fd, w_size) : malloc(w_size);
     fill_constant(layer->weights_delta, LAYER_WSIZE(layer), 0.0);
@@ -147,7 +147,7 @@ static inline void free_layer(t_layer *layer, const bool is_map)
   {
     free(layer->weights_delta);
     if(is_map)
-      munmap(layer->weights, sizeof(double) * LAYER_WSIZE(layer));
+      munmap(layer->weights, sizeof(nfloat) * LAYER_WSIZE(layer));
     else
       free(layer->weights);
   }

@@ -20,12 +20,12 @@
 #include "../../tdefs.h"
 
 #define ERROR_TRESHOLD 0.001
-#define LEARNING_RATE  0.05
+#define LEARNING_RATE  0.001
 
 typedef struct s_testcase
 {
-  double	inputs[2];
-  double	result;
+  nfloat	inputs[2];
+  nfloat	result;
 } t_testcase;
 
 
@@ -98,23 +98,23 @@ int main(void)
 
   const size_t test_count = sizeof(tests)/sizeof(tests[0]);
 
-  double learning_rate = LEARNING_RATE;
+  nfloat learning_rate = (nfloat)LEARNING_RATE;
   uint indexes[4] = {0,1,2,3};
   for(size_t epoch = 0;;epoch++)
   {
-    double error = 0.0;
+    nfloat error = 0.0;
     shuffle(indexes, 4);
     for(size_t test_i = 0; test_i < test_count; test_i++)
     {
       t_testcase *test = &tests[indexes[test_i]];
       forward_init(&net, &test->inputs[0]);
       forward(&net);
-      double er = compute_error(&net, &(test->result));
+      nfloat er = compute_error(&net, &(test->result));
       error += er;
       backward(&net);
       apply_delta(&net, learning_rate);
     }
-    error /= (double)test_count;
+    error /= (nfloat)test_count;
 
     if(epoch % 10000 == 0)
       printf("%lu\t error: %f\n", epoch, error);

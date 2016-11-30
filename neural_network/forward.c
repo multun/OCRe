@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include "neurons.h"
 
-static inline double forward_neuron(const t_layer *layer,
-				    double *weights,
-				    double *in)
+static inline nfloat forward_neuron(const t_layer *layer,
+				    nfloat *weights,
+				    nfloat *in)
 {
   const t_layer *p_layer = layer - 1;
   const size_t weights_off = LAYER_NEURON_WSIZE(p_layer);
@@ -20,7 +20,7 @@ static inline double forward_neuron(const t_layer *layer,
 static inline void forward_layer(const t_layer *layer)
 {
   const t_layer *p_layer = layer - 1;
-  double *weights = p_layer->weights;
+  nfloat *weights = p_layer->weights;
   for(size_t i = 0; i < layer->size; i++)
     layer->out[i] = forward_neuron(layer,
 				   &weights[i],
@@ -52,10 +52,10 @@ void forward(t_network *net)
     forward_layer(net->layers + i);
 }
 
-void forward_init(const t_network *net, double *inputs)
+void forward_init(const t_network *net, nfloat *inputs)
 {
   t_layer *f_layer = &net->layers[0];
-  double *net_in = f_layer->out;
+  nfloat *net_in = f_layer->out;
   for(size_t s = 0; s < f_layer->size; s++)
     *(net_in++) = *(inputs++);
 }
