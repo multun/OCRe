@@ -4,7 +4,11 @@
 IMAGE_DECLARE(int, int_mat)
 ALLOC_IMAGE_DEFINE(int, int_mat)
 
-/* // not used for now
+typedef struct s_off_c
+{
+  int x, y;
+} t_off_c;
+
 static void update_shape(t_shape *shapes, uint x, uint y)
 {
   shapes->Xmin = MIN(shapes->Xmin, x);
@@ -12,15 +16,10 @@ static void update_shape(t_shape *shapes, uint x, uint y)
   shapes->Ymin = MIN(shapes->Ymin, y);
   shapes->Ymax = MAX(shapes->Ymax, y);
 }
-*/
 
-typedef struct s_off_c
+static void taint(t_shape *shape, t_int_mat *mat, uint x, uint y, int label)
 {
-  int x, y;
-} t_off_c;
-
-static void taint(t_int_mat *mat, uint x, uint y, int label)
-{
+  update_shape(shape, x, y);
   t_off_c neighbours[] = {
     {-1, -1},
     {-1, 0},
@@ -40,8 +39,10 @@ static void taint(t_int_mat *mat, uint x, uint y, int label)
     npos.x += (int)x;
     npos.y += (int)y;
     if(npos.x > 0 && npos.y > 0 && \
-       npos.x < (int)mat->width && npos.y < (int)mat->height)
-      taint(mat, (uint)npos.x, (uint)npos.y, label);
+       npos.x < (int)mat->width && npos.y < (int)mat->height){
+      update_shape(shape, (uint)npos.x, (uint)npos.y);
+      taint(shape, mat, (uint)npos.x, (uint)npos.y, label);
+    }
   }
 }
 
@@ -49,7 +50,7 @@ static void add_shape(t_int_mat *mat,uint x,uint y,t_shape_vect *shapes)
 {
   t_shape *ret = malloc(sizeof(t_shape));
   VECT_PUSH(shapes, ret);
-  taint(mat, x, y, (int)VECT_GET_SIZE(shapes) - 1);
+  taint(VECT_GET_LAST(shapes), mat, x, y, (int)VECT_GET_SIZE(shapes) - 1);
 }
 
 t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
