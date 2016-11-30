@@ -47,6 +47,10 @@ static void taint(t_shape *shape, t_int_mat *mat, uint x, uint y, int label)
     if(npos.x > 0 && npos.y > 0 && \
        npos.x < (int)mat->width && npos.y < (int)mat->height){
       update_shape(shape, (uint)npos.x, (uint)npos.y);
+      /*printf("Xmin : %d\n", shape->Xmin);
+      printf("Xmax : %d\n", shape->Xmax);
+      printf("Ymin : %d\n", shape->Ymin);
+      printf("Ymax : %d\n", shape->Ymax);*/
       taint(shape, mat, (uint)npos.x, (uint)npos.y, label);
     }
   }
@@ -82,10 +86,10 @@ t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
   for (unsigned int i = 0; i < VECT_GET_SIZE(shapes);i++)
   {
     t_shape *tempShape = VECT_GET(shapes, i);
-    printf("Xmin : %d\n", tempShape->Xmin);
+    /*printf("Xmin : %d\n", tempShape->Xmin);
     printf("Xmax : %d\n", tempShape->Xmax);
     printf("Ymin : %d\n", tempShape->Ymin);
-    printf("Ymax : %d\n", tempShape->Ymax);
+    printf("Ymax : %d\n", tempShape->Ymax);*/
     t_sub_bw_img *sub = relink_sub_bw_img(
       img,
       tempShape->Xmin,
