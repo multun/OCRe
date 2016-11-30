@@ -1,8 +1,9 @@
 #include <stdlib.h>
+#include "neurons.h"
 
-double normalized_random(double mi, double ma)
+nfloat normalized_random(nfloat mi, nfloat ma)
 {
   int rnd = rand();
-  double scale = ma - mi;
-  return mi + ((double)rnd * scale / (double)RAND_MAX);
+  nfloat scale = ma - mi;
+  return mi + ((nfloat)rnd * scale / (nfloat)RAND_MAX);
 }

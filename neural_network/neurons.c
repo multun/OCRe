@@ -2,17 +2,23 @@
 #include "../tdefs.h"
 #include "../error.h"
 #include "neurons.h"
-#include "random.h"
 
-double __attribute__((hot, const)) sigmoid_f(double in)
+#ifndef FUCKIT
+#include "random.h"
+#else
+#include "random.c"
+#endif
+
+
+nfloat __attribute__((hot, const)) sigmoid_f(nfloat in)
 {
-  return 1.0/(1.0 + exp(-in));
+  return CF(1.0)/(CF(1.0) + EXP(-in));
 }
 
-double __attribute__((hot, const)) sigmoid_fd(double out, double x)
+nfloat __attribute__((hot, const)) sigmoid_fd(nfloat out, nfloat x)
 {
   UNUSED(x);
-  return out * (1.0 - out);
+  return out * (CF(1.0) - out);
 }
 
 
@@ -21,12 +27,12 @@ const t_nrn_cls sigmoid = {
     .activation_d = sigmoid_fd,
 };
 
-double __attribute__((hot, const)) identity_f(double in)
+nfloat __attribute__((hot, const)) identity_f(nfloat in)
 {
   return in;
 }
 
-double __attribute__((hot, const)) identity_fd(double in, double x)
+nfloat __attribute__((hot, const)) identity_fd(nfloat in, nfloat x)
 {
   UNUSED(x);
   UNUSED(in);
@@ -38,9 +44,9 @@ const t_nrn_cls identity = {
     .activation_d = identity_fd,
 };
 
-void apply_delta(t_network *net, double ratio)
+void apply_delta(t_network *net, nfloat ratio)
 {
-  ratio *= 1/(double)net->backprop_count;
+  ratio *= 1/(nfloat)net->backprop_count;
   net->backprop_count = 0;
   for(size_t l = 0; l < net->layers_count - 1; l++)
   {
@@ -53,28 +59,28 @@ void apply_delta(t_network *net, double ratio)
   }
 }
 
-static void fill_random(double *array, size_t size, double min, double max)
+static void fill_random(nfloat *array, size_t size, nfloat min, nfloat max)
 {
   for(size_t i = 0; i < size; i++)
     array[i] = normalized_random(min, max);
 }
 
-static void fill_constant(double *array, size_t size, double constant)
+void fill_constant(nfloat *array, size_t size, nfloat constant)
 {
   for(size_t i = 0; i < size; i++)
     array[i] = constant;
 }
 
-void random_weights(t_network *net)
+void random_weights(t_network *net, nfloat min, nfloat max)
 {
   for(size_t layer_i = 0; layer_i < net->layers_count; layer_i++)
   {
     t_layer *layer = &net->layers[layer_i];
-    fill_random(layer->delta, layer->size, -1., 1.);
+    fill_random(layer->delta, layer->size, min, max);
     if(layer->weights)
     {
       size_t weights_count = LAYER_WSIZE(layer);
-      fill_random(layer->weights, weights_count, -1., 1.);
+      fill_random(layer->weights, weights_count, min, max);
       fill_constant(layer->weights_delta, weights_count, 0.0);
     }
   }
@@ -91,7 +97,7 @@ void print_weights_deltas(t_network *net)
     {
       //size_t weights_count = LAYER_WSIZE(layer);
       size_t offset = (layer+1)->size;
-      double *weights = layer->weights_delta;
+      nfloat *weights = layer->weights_delta;
       printf("layer %lu's deltas\n", layer_i);
       for(size_t i = 0; i < layer->size; i++)
       {
@@ -110,7 +116,7 @@ void layer_print_weights(t_layer *layer)
   {
     //size_t weights_count = LAYER_WSIZE(layer);
     size_t offset = LAYER_NEURON_WSIZE(layer);
-    double *weights = layer->weights;
+    nfloat *weights = layer->weights;
     for(size_t i = 0; i < layer->size; i++)
     {
       printf("%4f\n", *weights);
@@ -131,7 +137,7 @@ void print_weights(t_network *net)
   }
 }
 
-void print_double_array(double *ar, size_t size)
+void print_nfloat_array(nfloat *ar, size_t size)
 {
   for(size_t i = 0; i < size; i++)
     printf("%3f\t", ar[i]);
@@ -146,9 +152,9 @@ void print_net(t_network *net)
     t_layer *layer = &net->layers[layer_i];
     printf("######## layer %lu ########\n", layer_i);
     puts("=> IN");
-    print_double_array(layer->in, layer->size);
+    print_nfloat_array(layer->in, layer->size);
     puts("=> OUT");
-    print_double_array(layer->out, layer->size);
+    print_nfloat_array(layer->out, layer->size);
     print_weights(net);
   }
 }
