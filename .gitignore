@@ -2,6 +2,7 @@ ocre
 *.*~
 *.o
 *.d
+*.gcda
 *.bmpGNOME.supp
 gtk.suppression
 window_main.glade
