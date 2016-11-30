@@ -19,7 +19,6 @@ static void update_shape(t_shape *shapes, uint x, uint y)
 
 static void taint(t_shape *shape, t_int_mat *mat, uint x, uint y, int label)
 {
-  update_shape(shape, x, y);
   t_off_c neighbours[] = {
     {-1, -1},
     {-1, 0},
@@ -30,9 +29,11 @@ static void taint(t_shape *shape, t_int_mat *mat, uint x, uint y, int label)
     {1, 0},
     {1, 1},
   };
-  if(AT(mat, x, y) == -1)
-    AT(mat, x, y) = label;
 
+  if(AT(mat, x, y) != -1)
+    return;
+
+  AT(mat, x, y) = label;
   for (uint i = 0; i < sizeof(neighbours)/sizeof(neighbours[0]); i++)
   {
     t_off_c npos = neighbours[i];
@@ -50,7 +51,7 @@ static void add_shape(t_int_mat *mat,uint x,uint y,t_shape_vect *shapes)
 {
   t_shape *ret = malloc(sizeof(t_shape));
   VECT_PUSH(shapes, ret);
-  taint(VECT_GET_LAST(shapes), mat, x, y, (int)VECT_GET_SIZE(shapes) - 1);
+  taint(VECT_GET_LAST(shapes), mat, x, y, (int)VECT_GET_SIZE(shapes));
 }
 
 t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
