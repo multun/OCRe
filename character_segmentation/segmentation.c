@@ -30,7 +30,12 @@ static void taint(t_shape *shape, t_int_mat *mat, uint x, uint y, int label)
     {1, 1},
   };
 
-  if(AT(mat, x, y) != -1)
+  switch(AT(mat, x, y))
+  {
+    case 0:
+    case -1:
+        return;
+  }
     return;
 
   AT(mat, x, y) = label;
@@ -50,6 +55,10 @@ static void taint(t_shape *shape, t_int_mat *mat, uint x, uint y, int label)
 static void add_shape(t_int_mat *mat,uint x,uint y,t_shape_vect *shapes)
 {
   t_shape *ret = malloc(sizeof(t_shape));
+  ret->Xmin = x;
+  ret->Xmax = x;
+  ret->Ymin = y;
+  ret->Ymax = y;
   VECT_PUSH(shapes, ret);
   taint(VECT_GET_LAST(shapes), mat, x, y, (int)VECT_GET_SIZE(shapes));
 }
@@ -73,6 +82,10 @@ t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
   for (unsigned int i = 0; i < VECT_GET_SIZE(shapes);i++)
   {
     t_shape *tempShape = VECT_GET(shapes, i);
+    printf("Xmin : %d\n", tempShape->Xmin);
+    printf("Xmax : %d\n", tempShape->Xmax);
+    printf("Ymin : %d\n", tempShape->Ymin);
+    printf("Ymax : %d\n", tempShape->Ymax);
     t_sub_bw_img *sub = relink_sub_bw_img(
       img,
       tempShape->Xmin,
