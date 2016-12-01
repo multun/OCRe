@@ -1,21 +1,38 @@
-#include "noise_reduction.h"
+#include<stdio.h>
+#include"noise_reduction.h"
+#include "../tdefs.h"
 
-t_bw_img* reduce_noise(t_bw_img img){
-  for(int i = 1; i < img->height - 1; i++){
-    for(int j = 1; j < img->width - 1; j++){
+int ibw(int a, int b, int c){
+  if (b < a){
+    return a;
+  }
+  if (b > c){
+    return c;
+  }
+  return b;
+}
+
+
+t_bw_img* reduce_noise(t_bw_img *img){
+  t_bw_img *img2 = img;
+  int hgt = img->height;
+  int wdt = img->width;
+  for(int i = 0; i < hgt; i++){
+    for(int j = 0; j < wdt; j++){
       int sum =
-         SUB_AT(img,j-1,i-1)
-        +SUB_AT(img,j-1,i)
-        +SUB_AT(img,j-1,i+1)
-        +SUB_AT(img,j,i-1)
-        +SUB_AT(img,j,i+1)
-        +SUB_AT(img,j+1,i-1)
-        +SUB_AT(img,j+1,i)
-        +SUB_AT(img,j+1,i+1);
-      if (sum = 0)
+         AT(img,ibw(0,j-1,wdt),ibw(0,i-1,hgt))
+        +AT(img,ibw(0,j-1,wdt),ibw(0,i,hgt))
+        +AT(img,ibw(0,j-1,wdt),ibw(0,i+1,hgt))
+        +AT(img,ibw(0,j,wdt),ibw(0,i-1,hgt))
+        +AT(img,ibw(0,j,wdt),ibw(0,i+1,hgt))
+        +AT(img,ibw(0,j+1,wdt),ibw(0,i-1,hgt))
+        +AT(img,ibw(0,j+1,wdt),ibw(0,i,hgt))
+        +AT(img,ibw(0,j+1,wdt),ibw(0,i+1,hgt));
+      if (sum == 0)
         sum = 1;
       int average = sum/8;
-      SUB_AT(img,j,i) = average;
+      AT(img2,j,i) = average;
     }
   }
+  return img2;
 }

@@ -15,9 +15,7 @@ typedef struct s_shape
   uint Ymin;
   uint Xmax;
   uint Ymax;
-
-  uint Xsize;
-  uint Ysize;
+  uint size;
 } t_shape;
 
 DECL_NAMED_VECTOR(t_shape*, shape);
