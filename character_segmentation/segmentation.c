@@ -97,13 +97,10 @@ static void check_merge(t_shape_vect *shapes)
   }
 }
 
-t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
+static void build_shape_vect(t_sub_bw_img *img,    \
+                             t_shape_vect *shapes, \
+                             t_int_mat *mat)
 {
-  t_sub_bw_img_vect *result = VECT_ALLOC(sub_bw_img, 32);
-  t_shape_vect *shapes = VECT_ALLOC(shape, 16);
-
-  t_int_mat *mat = alloc_int_mat(img->width, img->height);
-
   for (uint i = 0; i < img->width; i++)
     for (uint j = 0; j < img->height; j++)
       AT(mat, i, j) = (SUB_AT(img, i, j) == 0) ? -1 : 0;
@@ -114,6 +111,38 @@ t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
 	add_shape(mat, x, y, shapes);
 
   check_merge(shapes);
+}
+
+t_l_bw_img_vect *char_segmentation_l(t_sub_bw_img *img)
+{
+  t_l_bw_img_vect *result = VECT_ALLOC(l_bw_img, 64);
+  t_shape_vect *shapes = VECT_ALLOC(shape, 128);
+  t_int_mat *mat = alloc_int_mat(img->width, img->height);
+
+  build_shape_vect(img, shapes, mat);
+
+  for (unsigned int i = 0; i < VECT_GET_SIZE(shapes);i++)
+  {
+    t_shape *tempShape = VECT_GET(shapes, i);
+    t_l_bw_img *sub = relink_sub_to_l_bw_img(
+      img,
+      tempShape->Xmin,
+      tempShape->Ymin,
+      tempShape->Xmax - tempShape->Xmin,
+      tempShape->Ymax - tempShape->Ymin);
+    VECT_PUSH(result, sub);
+  }
+  free(mat);
+  return result;
+}
+
+t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
+{
+  t_sub_bw_img_vect *result = VECT_ALLOC(sub_bw_img, 64);
+  t_shape_vect *shapes = VECT_ALLOC(shape, 128);
+  t_int_mat *mat = alloc_int_mat(img->width, img->height);
+
+  build_shape_vect(img, shapes, mat);
 
   for (unsigned int i = 0; i < VECT_GET_SIZE(shapes);i++)
   {
