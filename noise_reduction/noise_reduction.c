@@ -1,6 +1,7 @@
 #include "noise_reduction.h"
 
-t_bw_img* reduce_noise(t_bw_img img){
+void reduce_noise(t_bw_img *img){
+  t_bw_img *img2 = img;
   for(int i = 1; i < img->height - 1; i++){
     for(int j = 1; j < img->width - 1; j++){
       int sum =
@@ -15,7 +16,8 @@ t_bw_img* reduce_noise(t_bw_img img){
       if (sum = 0)
         sum = 1;
       int average = sum/8;
-      SUB_AT(img,j,i) = average;
+      SUB_AT(img2,j,i) = average;
     }
   }
+  return img2;
 }
