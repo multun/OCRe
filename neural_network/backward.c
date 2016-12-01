@@ -1,5 +1,6 @@
 #include "neurons.h"
 #include "../error.h"
+#include <stdbool.h>
 
 static inline nfloat neuron_delta(const t_layer *layer,
 				  nfloat error,
@@ -35,7 +36,7 @@ nfloat compute_error(const t_network *net, const nfloat *target)
 
 
 
-static inline void backward_layer(const t_layer *layer)
+static inline void backward_layer(const t_layer *layer, bool is_first)
 {
   const t_layer *n_layer = layer + 1;
   const size_t segment_size = LAYER_NEURON_WSIZE(layer);
@@ -52,11 +53,11 @@ static inline void backward_layer(const t_layer *layer)
       weights_d[woff + j] += wdelta * layer->out[i];
       sum += wdelta * weights[woff + j];
     }
-
-    layer->delta[i] = neuron_delta(layer,
-				   sum,
-				   layer->in[i],
-				   layer->out[i]);
+    if(!is_first)
+      layer->delta[i] = neuron_delta(layer,
+				     sum,
+				     layer->in[i],
+				     layer->out[i]);
     woff += segment_size;
   }
 }
@@ -66,8 +67,5 @@ void backward(t_network *net)
   t_layer *layers = net->layers;
   net->backprop_count += 1;
   for(int i = (int)net->layers_count - 2; i >= 0; i--)
-  {
-    //printf("backward on layer %d\n", i);
-    backward_layer(layers + i);
-  }
+    backward_layer(layers + i, i == 0);
 }

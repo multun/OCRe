@@ -8,8 +8,7 @@ static inline nfloat forward_neuron(const t_layer *layer,
   const t_layer *p_layer = layer - 1;
   const size_t weights_off = LAYER_NEURON_WSIZE(p_layer);
 
-  *in = 0;//*weights;
-  //weights += weights_off;
+  *in = 0.0;
 
   for(size_t i = 0; i < p_layer->size ;i++, weights += weights_off)
     *in += p_layer->out[i] * *weights;
