@@ -34,7 +34,7 @@ void new_dilate(t_bw_img *input,
       else if(nx < mask_width/2)
 	fx = mask_width/2 - nx;
 
-      AT(output,x,y) = (unsigned char)(255 - is_erode);
+      AT(output,x,y) = AT(input,x,y);
 
       for(int j = -(int)(mask_height/2-fy); j <= (int)(mask_height/2-ry); j++)
 	for(int i = -(int)(mask_width/2-fx); i <= (int)(mask_width/2-rx); i++)
