@@ -1,6 +1,6 @@
 #include "noise_reduction.h"
 
-void reduce_noise(t_bw_img *img){
+t_bw_img* reduce_noise(t_bw_img *img){
   t_bw_img *img2 = img;
   for(int i = 1; i < img->height - 1; i++){
     for(int j = 1; j < img->width - 1; j++){
