@@ -29,4 +29,6 @@ double get_ray(t_bw_img *input, uint y, double angle);
 
 double get_variance(t_bw_img *input, double angle);
 
+t_bw_img *wrapper_skew(t_bw_img *input_img);
+
 #endif
