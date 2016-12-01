@@ -63,6 +63,40 @@ static void add_shape(t_int_mat *mat,uint x,uint y,t_shape_vect *shapes)
   taint(VECT_GET_LAST(shapes), mat, x, y, (int)VECT_GET_SIZE(shapes));
 }
 
+static t_shape *merge_shape(t_shape *shape1, t_shape *shape2)
+{
+  shape1->Xmin = MIN(shape1->Xmin, shape2->Xmin);
+  shape1->Ymin = MIN(shape1->Ymin, shape2->Ymin);
+  shape1->Xmax = MAX(shape1->Xmax, shape2->Xmax);
+  shape1->Ymax = MAX(shape1->Ymax, shape2->Ymax);
+  free(shape2);
+  return shape1;
+}
+
+static char are_mergeable(t_shape *shape1, t_shape *shape2)
+{
+  if((shape1->Xmin<shape2->Xmin && shape1->Xmax>shape2->Xmin && \
+(float)(shape1->Xmax-shape2->Xmin)>=0.5*(float)(shape2->Xmax-shape2->Xmin)) || \
+     (shape2->Xmin<shape1->Xmin && shape2->Xmax>shape1->Xmin && \
+(float)(shape2->Xmax-shape1->Xmin) >= 0.5*(float)(shape1->Xmax-shape1->Xmin)))
+    return 1;
+  return 0;
+}
+
+static void check_merge(t_shape_vect *shapes)
+{
+  for (unsigned int i = 0; i < (VECT_GET_SIZE(shapes))-1;i++)
+  {
+    t_shape *shape1 = VECT_GET(shapes, i);
+    t_shape *shape2 = VECT_GET(shapes, i+1);
+    if(are_mergeable(shape1, shape2))
+    {
+      VECT_GET(shapes, i) = merge_shape(shape1, shape2);
+      VECT_GET(shapes, i+1) = VECT_GET(shapes, i);
+    }
+  }
+}
+
 t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
 {
   t_sub_bw_img_vect *result = VECT_ALLOC(sub_bw_img, 32);
@@ -79,6 +113,8 @@ t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
       if(AT(mat, x, y) == -1)
 	add_shape(mat, x, y, shapes);
 
+  check_merge(shapes);
+
   for (unsigned int i = 0; i < VECT_GET_SIZE(shapes);i++)
   {
     t_shape *tempShape = VECT_GET(shapes, i);
@@ -90,5 +126,6 @@ t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
       tempShape->Ymax - tempShape->Ymin);
     VECT_PUSH(result, sub);
   }
+  free(mat);
   return result;
 }
