@@ -4,6 +4,7 @@
 #include "../error.h"
 #include "detect_skew.h"
 #include "../boxing/wrapper.h"
+#include "../boxing/skew.h"
 
 static void detect_skew_button_clicked(GtkButton *button,
 					 t_img_history *hist)
@@ -30,6 +31,6 @@ void detect_skew_ui_run(t_img_history *img_history, t_img_history_e *hist_e)
   if (hist_e->type != BW)
     return;
 
-  t_bw_img *vimg = (t_bw_img*)hist_e->img;
+  t_bw_img *vimg = wrapper_skew((t_bw_img*)hist_e->img);
   history_add_img(img_history, BW, (void*)vimg, (void*)vimg);
 }
