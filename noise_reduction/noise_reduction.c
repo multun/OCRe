@@ -1,18 +1,31 @@
 #include "noise_reduction.h"
 
+int ibw(int a, int b, int c){
+  if (b < a){
+    return a;
+  }
+  if (b > c){
+    return c;
+  }
+  return b;
+}
+
+
 t_bw_img* reduce_noise(t_bw_img *img){
   t_bw_img *img2 = img;
-  for(int i = 1; i < img->height - 1; i++){
-    for(int j = 1; j < img->width - 1; j++){
+  int hgt = img->height;
+  int wdt = img->width
+  for(int i = 0; i < hgt; i++){
+    for(int j = 0; j < wdt; j++){
       int sum =
-         SUB_AT(img,j-1,i-1)
-        +SUB_AT(img,j-1,i)
-        +SUB_AT(img,j-1,i+1)
-        +SUB_AT(img,j,i-1)
-        +SUB_AT(img,j,i+1)
-        +SUB_AT(img,j+1,i-1)
-        +SUB_AT(img,j+1,i)
-        +SUB_AT(img,j+1,i+1);
+         SUB_AT(img,ibw(0,j-1,wdt),ibw(0,i-1,hgt))
+        +SUB_AT(img,ibw(0,j-1,wdt),ibw(0,i,hgt))
+        +SUB_AT(img,ibw(0,j-1,wdt),ibw(0,i+1,hgt))
+        +SUB_AT(img,ibw(0,j,wdt),ibw(0,i-1,hgt))
+        +SUB_AT(img,ibw(0,j,wdt),ibw(0,i+1,hgt))
+        +SUB_AT(img,ibw(0,j+1,wdt),ibw(0,i-1,hgt))
+        +SUB_AT(img,ibw(0,j+1,wdt),ibw(0,i,hgt))
+        +SUB_AT(img,ibw(0,j+1,wdt),ibw(0,i+1,hgt));
       if (sum = 0)
         sum = 1;
       int average = sum/8;
