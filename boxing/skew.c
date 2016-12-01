@@ -218,3 +218,88 @@ void quicksort_list_box(t_box_vect *box_list, size_t left, size_t right)
     }
   }
 }
+
+double get_ray(t_bw_img *input, uint y, double angle)
+{
+  double sum = 0;
+  int ny;
+  int ray = (int)(cos(angle)*(double)input->width);
+  if(ray<0)
+    ray = -ray;
+  uint xstart = (input->width - (uint)ray)/2;
+  //printf("  %u --> %u\n", xstart, xstart+(uint)ray);
+  for(uint x = xstart; x<xstart+(uint)ray; x++)
+  {
+    ny = (int)y + (int)((double)x*tan(angle));
+    if(ny < (int)input->height
+       && ny >= 0
+       && !AT(input, x, (uint)ny))
+      sum += 1;
+  }
+  //printf("\n   sum = %f\n", sum);
+
+  return sum;
+}
+
+void trace_ray(t_bw_img *input, uint y, double angle)
+{
+  int ny;
+  int ray = (int)(cos(angle)*(double)input->width);
+  if(ray<0)
+    ray = -ray;
+  uint xstart = (input->width - (uint)ray)/2;
+
+  for(uint x = xstart; x<xstart+(uint)ray; x++)
+  {
+    ny = (int)y + (int)((double)x*tan(angle));
+    if(ny < (int)input->height
+       && ny >= 0)
+      AT(input, x, (uint)ny) = 0;
+  }
+}
+
+
+double get_variance(t_bw_img *input, double angle)
+{
+  uint ystart = input->height/8;
+  uint ylen = (7*input->height)/8;
+  double x;
+  double sum = 0;
+  double sqsum = 0;
+  double k = input->width/15;
+
+  for(uint y = ystart; y < ystart+ylen; y++)
+  {
+    x = (double)get_ray(input, y, angle);
+    sum += x-k;
+    sqsum += (x-k)*(x-k);
+  }
+
+  return (sqsum - (sum)/(double)ylen)/((double)ylen-1);
+}
+
+double get_rotation(t_bw_img *input, double precision)
+{
+  double angle = 0;
+  double vari = 0;
+  precision = precision/(180/3.14159);
+
+  for(double ang = (-15)/(180/3.14159); ang <= (15)/(180/3.14159); ang += precision)
+  {
+    double varia = get_variance(input, ang);
+
+    if(vari < varia)
+    {
+      angle = ang;
+      vari = varia;
+    }
+  }
+
+  return angle*180/3.14159;
+}
+
+
+t_bw_img *wrapper_skew(t_bw_img *input_img)
+{
+  return rotate_img(input_img, get_rotation(input_img, 1));
+}

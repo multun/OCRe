@@ -4,6 +4,7 @@
 #include "../error.h"
 #include "../tdefs.h"
 #include "rescale.h"
+#include "../boxing/morpho.h"
 
 void interpolate(t_bw_img *input,
 		 t_bw_img *output,
@@ -74,6 +75,8 @@ t_bw_img *resize_tbw(t_bw_img *input, double factor)
 
 t_bw_img *resize(t_bw_img *input, uint width, uint height)
 {
+
+
   double yratio, xratio, factor;
   xratio = (double)width/(double)input->width;
   yratio = (double)height/(double)input->height;

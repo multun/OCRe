@@ -23,4 +23,12 @@ size_t quick_partition(t_box_vect *A,size_t lo,size_t hi);
 
 void quicksort_list_box(t_box_vect *box_list, size_t left, size_t right);
 
+double get_rotation(t_bw_img *input, double precision);
+
+double get_ray(t_bw_img *input, uint y, double angle);
+
+double get_variance(t_bw_img *input, double angle);
+
+t_bw_img *wrapper_skew(t_bw_img *input_img);
+
 #endif
