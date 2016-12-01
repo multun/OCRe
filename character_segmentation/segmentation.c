@@ -97,10 +97,10 @@ static void check_merge(t_shape_vect *shapes)
   }
 }
 
-static void build_shape_vect(t_sub_bw_img *img,    \
-                             t_shape_vect *shapes, \
-                             t_int_mat *mat)
+static t_int_mat *build_shape_vect(t_sub_bw_img *img, t_shape_vect **shapes)
 {
+  t_int_mat *mat = alloc_int_mat(img->width, img->height);
+  *shapes = VECT_ALLOC(shape, 128);
   for (uint i = 0; i < img->width; i++)
     for (uint j = 0; j < img->height; j++)
       AT(mat, i, j) = (SUB_AT(img, i, j) == 0) ? -1 : 0;
@@ -108,28 +108,35 @@ static void build_shape_vect(t_sub_bw_img *img,    \
   for(uint x = 0; x < img->width; x++)
     for(uint y = 0; y < img->height; y++)
       if(AT(mat, x, y) == -1)
-	add_shape(mat, x, y, shapes);
+	add_shape(mat, x, y, *shapes);
 
-  check_merge(shapes);
+  check_merge(*shapes);
+  return mat;
 }
 
 t_l_bw_img_vect *char_segmentation_l(t_sub_bw_img *img)
 {
   t_l_bw_img_vect *result = VECT_ALLOC(l_bw_img, 64);
-  t_shape_vect *shapes = VECT_ALLOC(shape, 128);
-  t_int_mat *mat = alloc_int_mat(img->width, img->height);
 
-  build_shape_vect(img, shapes, mat);
+  t_shape_vect *shapes;
+  t_int_mat *mat = build_shape_vect(img, &shapes);
 
   for (unsigned int i = 0; i < VECT_GET_SIZE(shapes);i++)
   {
-    t_shape *tempShape = VECT_GET(shapes, i);
+    t_shape *tshp = VECT_GET(shapes, i);
     t_l_bw_img *sub = relink_sub_to_l_bw_img(
       img,
-      tempShape->Xmin,
-      tempShape->Ymin,
-      tempShape->Xmax - tempShape->Xmin,
-      tempShape->Ymax - tempShape->Ymin);
+      tshp->Xmin,
+      tshp->Ymin,
+      tshp->Xmax - tshp->Xmin,
+      tshp->Ymax - tshp->Ymin);
+      for(uint x = 0; x < sub->width; x++)
+        for(uint y = 0; y < sub->height; y++)
+        {
+          int cp = AT(mat, tshp->Xmin + x, tshp->Ymin + y);
+          if(VECT_GET(shapes, cp - 1) != tshp)
+            L_AT(sub, x, y) = 255;
+        }
     VECT_PUSH(result, sub);
   }
   free(mat);
@@ -139,10 +146,9 @@ t_l_bw_img_vect *char_segmentation_l(t_sub_bw_img *img)
 t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
 {
   t_sub_bw_img_vect *result = VECT_ALLOC(sub_bw_img, 64);
-  t_shape_vect *shapes = VECT_ALLOC(shape, 128);
-  t_int_mat *mat = alloc_int_mat(img->width, img->height);
 
-  build_shape_vect(img, shapes, mat);
+  t_shape_vect *shapes;
+  t_int_mat *mat = build_shape_vect(img, &shapes);
 
   for (unsigned int i = 0; i < VECT_GET_SIZE(shapes);i++)
   {
