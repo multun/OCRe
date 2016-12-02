@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <unistd.h>
+#include <libgen.h>
 #include <gtk-3.0/gtk/gtk.h>
 #include "bitmap/img.h"
 #include "bitmap/bmp.h"
@@ -34,6 +36,8 @@ int main(int argc, char *argv[])
 {
   GtkBuilder      *builder;
   GtkWidget       *window;
+
+  WPERROR(chdir(dirname(argv[0])), "chdir");
 
   gtk_init(&argc, &argv);
   window = gtk_bootstrap(&builder);
