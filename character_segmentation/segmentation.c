@@ -97,6 +97,24 @@ static void check_merge(t_shape_vect *shapes)
   }
 }
 
+static void check_spaces(t_shape_vect *shapes)
+{
+  t_shape_vect *finalShapes = VECT_ALLOC(shape, 128);
+  uint allSpaces = 0;
+  for (uint i = 0; i < (VECT_GET_SIZE(shapes))-1; i++)
+    allSpaces += VECT_GET(shapes, i+1)->Xmin-VECT_GET(shapes, i)->Xmax;
+  float avgSpace = (float)allSpaces/(float)(VECT_GET_SIZE(shapes)-1);
+  for (uint j = 0; j < (VECT_GET_SIZE(shapes))-1; j++) {
+    VECT_PUSH(finalShapes, VECT_GET(shapes, j));
+    if ((float)(VECT_GET(shapes, j+1)->Xmin) -
+        (float)(VECT_GET(shapes, j)->Xmax) > avgSpace)
+      VECT_PUSH(finalShapes, NULL);
+    VECT_PUSH(finalShapes, VECT_GET(shapes, j));
+  }
+  shapes = finalShapes;
+  free(finalShapes);
+}
+
 static t_int_mat *build_shape_vect(t_sub_bw_img *img, t_shape_vect **shapes)
 {
   t_int_mat *mat = alloc_int_mat(img->width, img->height);
@@ -111,6 +129,7 @@ static t_int_mat *build_shape_vect(t_sub_bw_img *img, t_shape_vect **shapes)
 	add_shape(mat, x, y, *shapes);
 
   check_merge(*shapes);
+  check_spaces(*shapes);
   return mat;
 }
 
