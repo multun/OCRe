@@ -16,7 +16,7 @@ const double mask[][5] ={{0.019720, 0.026388, 0.036396, 0.026388, 0.019720},
 int compute_value(t_bw_img *input, uint x, uint y)
 {
   int jstart = (y<2)?(-(int)y):(-2);
-  int jend = (y<2)?((y==input->height-1)?0:1):2;
+  int jend = (y>input->height-3)?((y==input->height-1)?0:1):2;
   int istart = (x<2)?(-(int)x):(-2);
   int iend = (x>input->width-3)?((x==input->width-1)?0:1):2;
   double value = 0;
