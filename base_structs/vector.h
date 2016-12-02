@@ -45,7 +45,10 @@ void	*generic_vector_alloc(size_t size, size_t);
   (VECT_NAME(t, TYPE)*)generic_vector_alloc(				\
     SIZE, sizeof(*(((VECT_NAME(t, TYPE)*)0)->data.spec)))
 #define VECT_GET_SIZE(VECT) (VECT->i)
+#define VECT_SIZE(VECT) VECT_GET_SIZE(VECT)
 #define VECT_GET_ALLOC(VECT) (VECT->size / sizeof(*(VECT->data.spec)))
 #define VECT_FREE(VECT) (free(VECT->data.gen), free(VECT))
+#define VECT_RAND(VECTOR) \
+  VECT_GET(VECTOR, ((size_t)rand()) % VECT_GET_SIZE(VECTOR))
 
 #endif
