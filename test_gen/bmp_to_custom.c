@@ -41,7 +41,21 @@ int main(int argc, char *argv[])
     0
   };
 
+  for(uint x = 0; x < bw_img->width; x++)
+    if (!(AT(bw_img, x, 0) || AT(bw_img, x, bw_img->height - 1)))
+      goto faillol;
+
+  for(uint y = 0; y < bw_img->height; y++)
+    if (!(AT(bw_img, 0, y) || AT(bw_img, bw_img->width - 1, y)))
+      goto faillol;
+
   t_sub_bw_img_vect *chars = simple_char_segmentation(&sub_bw_img);
+  if(!VECT_GET_SIZE(chars))
+  {
+    puts("No character detected");
+    return 0;
+  }
+
   t_sub_bw_img *res = VECT_GET(chars, 0);
 
   t_bw_img *bwret = alloc_bw_img(res->width, res->height);
@@ -51,6 +65,19 @@ int main(int argc, char *argv[])
       AT(bwret, j, i) = SUB_AT(res, j, i);
 
   t_bw_img *sized_res = resize(bwret, res_size, res_size);
+  /*
+  for(uint y = 0; y < sized_res->height; y++)
+  {
+    for(uint x = 0; x < sized_res->width; x++)
+    {
+      uint pix = (uint)AT(sized_res, x, y);
+      if(pix)
+	printf("%3d", pix);
+      else
+	printf("   ");
+    }
+    puts("");
+    }*/
 
   t_nfloat_mat * fres = alloc_nfloat_mat(res_size, res_size);
 
@@ -60,5 +87,9 @@ int main(int argc, char *argv[])
   int fd = open(argv[3], O_WRONLY | O_CREAT, 0644);
   write(fd, fres, IMG_SIZE(t_nfloat_mat, fres->width, fres->height));
   close(fd);
+  return 0;
+
+faillol:
+  puts("overflowing character");
   return 0;
 }
