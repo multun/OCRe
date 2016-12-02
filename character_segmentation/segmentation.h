@@ -21,5 +21,6 @@ typedef struct s_shape
 DECL_NAMED_VECTOR(t_shape*, shape);
 
 t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img);
+t_l_bw_img_vect *char_segmentation_l(t_sub_bw_img *img);
 
 #endif
