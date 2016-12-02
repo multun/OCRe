@@ -71,18 +71,21 @@ void fill_constant(nfloat *array, size_t size, nfloat constant)
     array[i] = constant;
 }
 
-void random_weights(t_network *net, nfloat min, nfloat max)
+void random_weights(t_network *net,
+		    nfloat min, nfloat max,
+		    nfloat bmin, nfloat bmax)
 {
   for(size_t layer_i = 0; layer_i < net->layers_count; layer_i++)
   {
     t_layer *layer = &net->layers[layer_i];
+    const size_t noff = LAYER_NEURON_WSIZE(layer);
     fill_constant(layer->delta, layer->size, CF(0.0));
     if(layer->weights)
     {
       size_t weights_count = LAYER_WSIZE(layer);
       fill_random(layer->weights, weights_count, min, max);
       for(size_t i = 0; i < layer->size; i++)
-	layer->weights[LAYER_NEURON_WSIZE(layer) * i] = CF(0.0);
+	layer->weights[noff * i] = normalized_random(bmin, bmax);
       fill_constant(layer->weights_delta, weights_count, CF(0.0));
     }
   }

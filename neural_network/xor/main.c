@@ -20,7 +20,7 @@
 #include "../../tdefs.h"
 
 #define ERROR_TRESHOLD 0.001
-#define LEARNING_RATE  0.001
+#define LEARNING_RATE  3.
 
 typedef struct s_testcase
 {
@@ -94,7 +94,7 @@ int main(void)
 
   srand(42);
   if(load_network(&net))
-    random_weights(&net, -1., 1.);
+    random_weights(&net, -1., 1., -2., 2.);
 
   const size_t test_count = sizeof(tests)/sizeof(tests[0]);
 

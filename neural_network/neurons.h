@@ -46,7 +46,10 @@ typedef struct s_network
 extern const t_nrn_cls sigmoid;
 extern const t_nrn_cls identity;
 
-void random_weights(t_network *net, nfloat min, nfloat max);
+void random_weights(t_network *net,
+		    nfloat min, nfloat max,
+		    nfloat bmin, nfloat bmax);
+
 void apply_delta(t_network *net, nfloat ratio);
 void print_weights_deltas(t_network *net);
 void layer_print_weights(t_layer *layer);
