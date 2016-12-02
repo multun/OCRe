@@ -1,15 +1,6 @@
 #ifndef RESCALE_H_
 #define RESCALE_H_
 
-/*
-
-*/
-void interpolate(t_bw_img *input,
-		 t_bw_img *output,
-		 uint mask_len,
-		 double mask[][mask_len],
-		 double factor);
-
 
 /*
 Return an scaled image according to a ratio.
