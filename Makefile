@@ -21,6 +21,7 @@ LDFLAGS = $(shell pkg-config --libs gtk+-3.0) -lm
 EXEC=ocre
 
 SRC  = $(wildcard *.c)
+SRC += $(wildcard string/*.c)
 SRC += $(wildcard base_structs/*.c)
 SRC += $(wildcard block_to_line/*.c)
 SRC += $(wildcard binarisation/*.c)
@@ -29,6 +30,7 @@ SRC += $(wildcard gtk/*.c)
 SRC += $(wildcard boxing/*.c)
 SRC += $(wildcard neural_network/*.c)
 SRC += $(wildcard character_segmentation/*.c)
+SRC += $(wildcard noise_reduction/*.c)
 SRC += $(wildcard rescale/*.c)
 
 OBJ = $(SRC:.c=.o)
