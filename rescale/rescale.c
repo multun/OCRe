@@ -22,7 +22,8 @@ int compute_value(t_bw_img *input, uint x, uint y)
     {
       int ay = ((int)y + j);
       int ax = ((int)x + i);
-      if(ay < 0 || ax < 0 || ax >= input->width || ay >= input->height)
+      if(ay < 0 || ax < 0 ||
+	 (uint)ax >= input->width || (uint)ay >= input->height)
 	continue;
 
       double mask_v = mask[j+2][i+2];
