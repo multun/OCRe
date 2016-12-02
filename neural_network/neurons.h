@@ -30,8 +30,10 @@ typedef struct s_layer
   nfloat	*weights_delta;
 } t_layer;
 
-#define LAYER_NEURON_WSIZE(layer) (((layer) + 1)->size)
+#define LAYER_NEURON_WSIZE(layer) (((layer) - 1)->size + 1)
 #define LAYER_WSIZE(layer) ((layer)->size * (LAYER_NEURON_WSIZE(layer)))
+#define WEIGHT(w, l, i, j) (*((w) + (j) * ((l)->size + 1) + (i) + 1))
+#define BIAS(w, l, j) (*((w) + (j) * ((l)->size + 1)))
 
 typedef struct s_network
 {

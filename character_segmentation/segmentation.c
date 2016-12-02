@@ -63,13 +63,44 @@ static void add_shape(t_int_mat *mat,uint x,uint y,t_shape_vect *shapes)
   taint(VECT_GET_LAST(shapes), mat, x, y, (int)VECT_GET_SIZE(shapes));
 }
 
-t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
+static t_shape *merge_shape(t_shape *shape1, t_shape *shape2)
 {
-  t_sub_bw_img_vect *result = VECT_ALLOC(sub_bw_img, 32);
-  t_shape_vect *shapes = VECT_ALLOC(shape, 16);
+  shape1->Xmin = MIN(shape1->Xmin, shape2->Xmin);
+  shape1->Ymin = MIN(shape1->Ymin, shape2->Ymin);
+  shape1->Xmax = MAX(shape1->Xmax, shape2->Xmax);
+  shape1->Ymax = MAX(shape1->Ymax, shape2->Ymax);
+  free(shape2);
+  return shape1;
+}
 
+static char are_mergeable(t_shape *shape1, t_shape *shape2)
+{
+  if((shape1->Xmin<shape2->Xmin && shape1->Xmax>shape2->Xmin && \
+(float)(shape1->Xmax-shape2->Xmin)>=0.5*(float)(shape2->Xmax-shape2->Xmin)) || \
+     (shape2->Xmin<shape1->Xmin && shape2->Xmax>shape1->Xmin && \
+(float)(shape2->Xmax-shape1->Xmin) >= 0.5*(float)(shape1->Xmax-shape1->Xmin)))
+    return 1;
+  return 0;
+}
+
+static void check_merge(t_shape_vect *shapes)
+{
+  for (unsigned int i = 0; i < (VECT_GET_SIZE(shapes))-1;i++)
+  {
+    t_shape *shape1 = VECT_GET(shapes, i);
+    t_shape *shape2 = VECT_GET(shapes, i+1);
+    if(are_mergeable(shape1, shape2))
+    {
+      VECT_GET(shapes, i) = merge_shape(shape1, shape2);
+      VECT_GET(shapes, i+1) = VECT_GET(shapes, i);
+    }
+  }
+}
+
+static t_int_mat *build_shape_vect(t_sub_bw_img *img, t_shape_vect **shapes)
+{
   t_int_mat *mat = alloc_int_mat(img->width, img->height);
-
+  *shapes = VECT_ALLOC(shape, 128);
   for (uint i = 0; i < img->width; i++)
     for (uint j = 0; j < img->height; j++)
       AT(mat, i, j) = (SUB_AT(img, i, j) == 0) ? -1 : 0;
@@ -77,7 +108,47 @@ t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
   for(uint x = 0; x < img->width; x++)
     for(uint y = 0; y < img->height; y++)
       if(AT(mat, x, y) == -1)
-	add_shape(mat, x, y, shapes);
+	add_shape(mat, x, y, *shapes);
+
+  check_merge(*shapes);
+  return mat;
+}
+
+t_l_bw_img_vect *char_segmentation_l(t_sub_bw_img *img)
+{
+  t_l_bw_img_vect *result = VECT_ALLOC(l_bw_img, 64);
+
+  t_shape_vect *shapes;
+  t_int_mat *mat = build_shape_vect(img, &shapes);
+
+  for (unsigned int i = 0; i < VECT_GET_SIZE(shapes);i++)
+  {
+    t_shape *tshp = VECT_GET(shapes, i);
+    t_l_bw_img *sub = relink_sub_to_l_bw_img(
+      img,
+      tshp->Xmin,
+      tshp->Ymin,
+      tshp->Xmax - tshp->Xmin,
+      tshp->Ymax - tshp->Ymin);
+      for(uint x = 0; x < sub->width; x++)
+        for(uint y = 0; y < sub->height; y++)
+        {
+          int cp = AT(mat, tshp->Xmin + x, tshp->Ymin + y);
+          if(VECT_GET(shapes, cp - 1) != tshp)
+            L_AT(sub, x, y) = 255;
+        }
+    VECT_PUSH(result, sub);
+  }
+  free(mat);
+  return result;
+}
+
+t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
+{
+  t_sub_bw_img_vect *result = VECT_ALLOC(sub_bw_img, 64);
+
+  t_shape_vect *shapes;
+  t_int_mat *mat = build_shape_vect(img, &shapes);
 
   for (unsigned int i = 0; i < VECT_GET_SIZE(shapes);i++)
   {
@@ -90,5 +161,6 @@ t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
       tempShape->Ymax - tempShape->Ymin);
     VECT_PUSH(result, sub);
   }
+  free(mat);
   return result;
 }

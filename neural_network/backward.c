@@ -1,5 +1,6 @@
 #include "neurons.h"
 #include "../error.h"
+#include <stdbool.h>
 
 static inline nfloat neuron_delta(const t_layer *layer,
 				  nfloat error,
@@ -11,53 +12,38 @@ static inline nfloat neuron_delta(const t_layer *layer,
 
 nfloat compute_error(const t_network *net, const nfloat *target)
 {
-  t_layer *o_layer = net->layers + (net->layers_count - 1);
-  nfloat *output = o_layer->out;
-  nfloat error = 0.0;
-  for(size_t i = 0; i < o_layer->size; i++)
+  t_layer *o_l = net->layers + (net->layers_count - 1);
+  nfloat *output = o_l->out;
+  nfloat error = CF(0.0);
+  for(size_t i = 0; i < o_l->size; i++)
   {
     nfloat er = target[i] - output[i];
-#ifdef DEBUG
-    printf("%f - %f = %f\n", target[i], output[i], er);
-#endif
-    o_layer->delta[i] = neuron_delta(o_layer,
-				     er,
-				     o_layer->in[i],
-				     o_layer->out[i]);
-
-#ifdef DEBUG
-    printf("o_delta: %f\n", o_layer->delta[i]);
-#endif
+    o_l->delta[i] = neuron_delta(o_l, er, o_l->in[i], o_l->out[i]);
     error += CF(0.5) * er * er;
   }
   return error;
 }
 
-
-
-static inline void backward_layer(const t_layer *layer)
+static inline void backward_layer(const t_layer *l, bool is_first)
 {
-  const t_layer *n_layer = layer + 1;
-  const size_t segment_size = LAYER_NEURON_WSIZE(layer);
-  size_t woff = 0;
-  nfloat *weights   = layer->weights;
-  nfloat *weights_d = layer->weights_delta;
+  const t_layer *nl = l + 1;
+  nfloat *w   = nl->weights;
+  nfloat *w_d = nl->weights_delta;
 
-  for(size_t i = 0; i < layer->size; i++)
+  for(size_t j = 0; j < nl->size; j++)
+    BIAS(w_d, l, j) += nl->delta[j];
+
+  for(size_t i = 0; i < l->size; i++)
   {
     nfloat sum = 0.0;
-    for(size_t j = 0; j < n_layer->size; j++)
+    for(size_t j = 0; j < nl->size; j++)
     {
-      nfloat wdelta = n_layer->delta[j];
-      weights_d[woff + j] += wdelta * layer->out[i];
-      sum += wdelta * weights[woff + j];
+      nfloat wdelta = nl->delta[j];
+      WEIGHT(w_d, l, i, j) += wdelta * l->out[i];
+      sum += wdelta * WEIGHT(w, l, i, j);
     }
-
-    layer->delta[i] = neuron_delta(layer,
-				   sum,
-				   layer->in[i],
-				   layer->out[i]);
-    woff += segment_size;
+    if(!is_first)
+      l->delta[i] = neuron_delta(l, sum, l->in[i], l->out[i]);
   }
 }
 
@@ -66,8 +52,5 @@ void backward(t_network *net)
   t_layer *layers = net->layers;
   net->backprop_count += 1;
   for(int i = (int)net->layers_count - 2; i >= 0; i--)
-  {
-    //printf("backward on layer %d\n", i);
-    backward_layer(layers + i);
-  }
+    backward_layer(layers + i, i == 0);
 }
