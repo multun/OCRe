@@ -96,7 +96,7 @@ static inline void alloc_layer(t_layer *layer, int fd, bool is_map)
 static void alloc_network(const t_network *net)
 {
   for(size_t i = 0; i < net->layers_count; i++)
-    alloc_layer(&net->layers[i], (i < (net->layers_count - 1))? 1 : -1, false);
+    alloc_layer(&net->layers[i], (i > 0)? 1 : -1, false);
 }
 
 bool load_network(const t_network *net)
@@ -122,7 +122,7 @@ bool load_network(const t_network *net)
   for(size_t i = 0; i < net->layers_count; i++)
   {
     sprintf(namebuf + prefix_len, "%lu", i);
-    char has_weights = i < net->layers_count - 1;
+    char has_weights = i > 0;
     int fd = -1;
     if (has_weights)
       fd = openat_exists(&is_new, dirfd, namebuf);

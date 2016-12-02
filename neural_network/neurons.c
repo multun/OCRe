@@ -46,9 +46,9 @@ const t_nrn_cls identity = {
 
 void apply_delta(t_network *net, nfloat ratio)
 {
-  ratio *= 1/(nfloat)net->backprop_count;
+  ratio *= CF(1.0)/(nfloat)net->backprop_count;
   net->backprop_count = 0;
-  for(size_t l = 0; l < net->layers_count - 1; l++)
+  for(size_t l = 1; l < net->layers_count; l++)
   {
     t_layer *layer = &net->layers[l];
     for(size_t i = 0; i < LAYER_WSIZE(layer); i++)
@@ -76,12 +76,14 @@ void random_weights(t_network *net, nfloat min, nfloat max)
   for(size_t layer_i = 0; layer_i < net->layers_count; layer_i++)
   {
     t_layer *layer = &net->layers[layer_i];
-    fill_random(layer->delta, layer->size, min, max);
+    fill_constant(layer->delta, layer->size, CF(0.0));
     if(layer->weights)
     {
       size_t weights_count = LAYER_WSIZE(layer);
       fill_random(layer->weights, weights_count, min, max);
-      fill_constant(layer->weights_delta, weights_count, 0.0);
+      for(size_t i = 0; i < layer->size; i++)
+	layer->weights[LAYER_NEURON_WSIZE(layer) * i] = CF(0.0);
+      fill_constant(layer->weights_delta, weights_count, CF(0.0));
     }
   }
 }
