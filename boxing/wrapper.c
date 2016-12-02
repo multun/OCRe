@@ -11,15 +11,11 @@ t_sub_bw_img_vect *block_segment(t_bw_img *input_img)
 
 
   t_bw_img *temp;
-  temp = alloc_bw_img_twin(input_img);
 
-  //temp = close_hor_morph(input_img, input_img->width/65);
-
-
-  close_hor(input_img, temp, 5);
+  temp = close_hor_morph(input_img, input_img->width/65);
 
   //  Comment next line for : Only Lines instead of blocks
-  //temp = close_ver_morph(temp, input_img->height/160);
+  temp = close_ver_morph(temp, input_img->height/160);
   //temp = open_morph(temp, input_img->width/250);
 
   t_box_vect *block_list;

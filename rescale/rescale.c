@@ -5,6 +5,7 @@
 #include "../tdefs.h"
 #include "rescale.h"
 #include "../boxing/morpho.h"
+#include "../math_macros.h"
 
 void interpolate(t_bw_img *input,
 		 t_bw_img *output,
@@ -24,24 +25,31 @@ void interpolate(t_bw_img *input,
     if((int)ny < (int)mask_len/2)
       fy = (mask_len/2 - ny);
     else if(ny + mask_len/2 >= input->height)
-      ry = ny + mask_len/2 - input->height + 1;
+      ry = ny + mask_len/2 - input->height +1;
     for(size_t x = 0; x < output->width; x++)
     {
       val = 0;
       fx = 0;
       rx = 0;
       nx = (uint)((double)x*factor);
-      if(nx + mask_len >= input->width + 1)
+      if(nx + mask_len >= input->width)
 	rx = nx + mask_len/2 - input->width + 1;
       else if(nx < mask_len/2)
-	fx = mask_len/2 - nx;
+	fx = (mask_len/2) - nx;
 
+      double mask_t = 0.0;
       for(int j = -(int)(mask_len/2-fy); j <= (int)(mask_len/2-ry); j++)
 	for(int i = -(int)(mask_len/2-fx); i <= (int)(mask_len/2-rx); i++)
-	  val += (255 - (double)AT(input,(uint)((int)nx + i),(uint)((int)ny + j)))
-	    *mask[j+(int)(mask_len/2+fy)][i+(int)(mask_len/2+fy)];
-      if(val >= 300)
-	AT(output,x,y) = 0;
+	{
+
+	  double mask_v = mask[j+(int)(mask_len/2+fy)][i+(int)(mask_len/2+fx)];
+	  val += (((double)AT(input,(uint)((int)nx + i),(uint)((int)ny + j)))?255:0)
+	    * mask_v;
+	  mask_t += mask_v;
+	}
+
+      AT(output,x,y) = (unsigned char)MIN(255,(uint)(val/mask_t));
+      //AT(output,x,y) = (unsigned char)MIN(255,(uint)(val/2.01234));
     }
   }
 }
@@ -52,13 +60,20 @@ t_bw_img *resize_tbw(t_bw_img *input, double factor)
 		    {2/3,   1, 2/3},
 		    {1/3, 2/3, 1/3}};
   */
-
+/*
   //f(x)=-2x^3+3x^2
   double mask[][5] ={{0.1405, 0.1880, 0.2593, 0.1880, 0.1405},
 		    {0.1880, 0.2866, 0.7407, 0.2866, 0.1880},
 		    {0.2593, 0.7407, 1.0000, 0.7407, 0.2593},
 		    {0.1880, 0.2866, 0.7407, 0.2866, 0.1880},
 		    {0.1405, 0.1880, 0.2593, 0.1880, 0.1405}};
+*/
+  double mask[][5] ={{0.019720, 0.026388, 0.036396, 0.026388, 0.019720},
+		     {0.026388, 0.040227, 0.103966, 0.040227, 0.026388},
+		     {0.036396, 0.103966, 1.000000, 0.103966, 0.036396},
+		     {0.026388, 0.040227, 0.103966, 0.040227, 0.026388},
+		     {0.019720, 0.026388, 0.036396, 0.026388, 0.019720}};
+
 
   t_bw_img *output = alloc_bw_img((uint)((double)input->width*factor),
 				  (uint)((double)input->height*factor));
@@ -67,7 +82,7 @@ t_bw_img *resize_tbw(t_bw_img *input, double factor)
     for(size_t x = 0; x<output->width; x++)
       AT(output, x, y) = 255;
 
-  interpolate(input, output, 3, mask, factor);
+  interpolate(input, output, 5, mask, factor);
 
   return output;
 

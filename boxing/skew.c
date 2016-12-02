@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "../base_structs/vector.h"
 #include "bounding_box.h"
+#include "../noise_reduction/noise_reduction.h"
 #include <math.h>
 
 uint get_box_height(box input_box){
