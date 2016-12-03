@@ -232,6 +232,7 @@ t_box_vect *trim_box_list(t_box_vect *box_list, t_bw_img *input_img)
       VECT_PUSH(new_box_list, VECT_GET(box_list,i));
     }
   }
+  VECT_FREE(box_list);
   return new_box_list;
 }
 

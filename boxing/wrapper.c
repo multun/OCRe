@@ -18,7 +18,6 @@ t_sub_bw_img_vect *block_segment(t_bw_img *input_img)
   open_ver(temp2,temp1,input_img->height/360);
   open_hor(temp1,temp2,input_img->width/180);
 
-
   t_box_vect *block_list;
   block_list = list_boxes(temp2);
   update_true_size(block_list, input_img);
@@ -26,10 +25,11 @@ t_sub_bw_img_vect *block_segment(t_bw_img *input_img)
   //quicksort_list_box(block_list,0,VECT_GET_SIZE(block_list)-1);
   //block_list = get_rows(block_list);
 
+
+
   t_sub_bw_img_vect *rv = VECT_ALLOC(sub_bw_img, 1000);
   for (unsigned int i = 0; i < VECT_GET_SIZE(block_list); i++)
   {
-    //box_print(VECT_GET(block_list, i));
     t_sub_bw_img *linked = alloc_sub_bw_img(
       input_img,
       VECT_GET(block_list, i).left,
@@ -38,5 +38,9 @@ t_sub_bw_img_vect *block_segment(t_bw_img *input_img)
       VECT_GET(block_list, i).bottom - VECT_GET(block_list, i).top + 1);
     VECT_PUSH(rv, linked);
   }
+
+  free_bw_img(temp1);
+  free_bw_img(temp2);
+  VECT_FREE(block_list);
   return rv;
 }
