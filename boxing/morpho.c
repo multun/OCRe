@@ -3,42 +3,37 @@
 #include "../tdefs.h"
 #include "morpho.h"
 #include <stdio.h>
+#include <assert.h>
 
 void new_dilate(t_bw_img *input,
 		t_bw_img *output,
 		uint mask_width,
-		uint mask_height,
-		float mask[mask_height][mask_width])
+		uint mask_height)
 {
-  uint nx, ny;
-  uint fx, fy, rx, ry;
+  int midh = (int)mask_height/2;
+  int midw = (int)mask_width/2;
   for(size_t y = 0; y < output->height; y++)
   {
-    fy = 0;
-    ry = 0;
-    ny = (uint)y;
-    if((int)ny < (int)mask_height/2)
-      fy = (mask_height/2 - ny);
-    else if(ny + mask_height/2 >= input->height)
-      ry = ny + mask_height/2 - input->height + 1;
+    /*int jstart = (y<(uint)midh)?(-(int)y):(-midh);
+    int jend = (y>input->height-(uint)midh-1)?
+      (int)input->height-1-(int)y:midh;
+    int istart = (x<(uint)midw)?(-(int)x):(-midw);
+      int iend = (x>input->width-(uint)midw-1)?
+	(int)input->width-1-(int)x:midw;
+    */
     for(size_t x = 0; x < output->width; x++)
     {
-      fx = 0;
-      rx = 0;
-      nx = (uint)x;
-      if(nx + mask_width >= input->width + 1)
-	rx = nx + mask_width/2 - input->width + 1;
-      else if(nx < mask_width/2)
-	fx = mask_width/2 - nx;
-
       AT(output,x,y) = AT(input,x,y);
 
-      for(int j = -(int)(mask_height/2-fy); j <= (int)(mask_height/2-ry); j++)
-	for(int i = -(int)(mask_width/2-fx); i <= (int)(mask_width/2-rx); i++)
+      for(int j = (int)y-midh; j <= (int)y+midh; j++)
+	for(int i = (int)x-midw; i <= (int)x+midw; i++)
 	{
-	  if(255-(float)AT(input,(uint)((int)nx + i),(uint)((int)ny + j))
-	     *mask[j+(int)(mask_height/2+fy)][i+(int)(mask_width/2+fx)] > 250)
-	    goto set;
+	  if(j>=0 && i>=0 && i<(int)input->width && j<(int)input->height)
+	    if(AT(input,(uint)i,(uint)j) == 0)
+	    {
+	      assert(AT(input,(uint)i,(uint)j)==0);
+	      goto set;
+	    }
 	}
       continue;
     set:
@@ -50,38 +45,29 @@ void new_dilate(t_bw_img *input,
 void new_erode(t_bw_img *input,
 		t_bw_img *output,
 		uint mask_width,
-		uint mask_height,
-		float mask[mask_height][mask_width])
+		uint mask_height)
 {
-  uint nx, ny;
-  uint fx, fy, rx, ry;
+  int midh = (int)mask_height/2;
+  int midw = (int)mask_width/2;
   for(size_t y = 0; y < output->height; y++)
   {
-    fy = 0;
-    ry = 0;
-    ny = (uint)y;
-    if((int)ny < (int)mask_height/2)
-      fy = (mask_height/2 - ny);
-    else if(ny + mask_height/2 >= input->height)
-      ry = ny + mask_height/2 - input->height + 1;
+    /*int jstart = (y<(uint)midh)?(-(int)y):(-midh);
+    int jend = (y>input->height-(uint)midh-1)?
+      (int)input->height-1-(int)y:midh;
+    int istart = (x<(uint)midw)?(-(int)x):(-midw);
+      int iend = (x>input->width-(uint)midw-1)?
+	(int)input->width-1-(int)x:midw;
+    */
     for(size_t x = 0; x < output->width; x++)
     {
-      fx = 0;
-      rx = 0;
-      nx = (uint)x;
-      if(nx + mask_width >= input->width + 1)
-	rx = nx + mask_width/2 - input->width + 1;
-      else if(nx < mask_width/2)
-	fx = mask_width/2 - nx;
-
       AT(output,x,y) = AT(input,x,y);
 
-      for(int j = -(int)(mask_height/2-fy); j <= (int)(mask_height/2-ry); j++)
-	for(int i = -(int)(mask_width/2-fx); i <= (int)(mask_width/2-rx); i++)
+      for(int j = (int)y-midh; j <= (int)y+midh; j++)
+	for(int i = (int)x-midw; i <= (int)x+midw; i++)
 	{
-	  if((float)AT(input,(uint)((int)nx + i),(uint)((int)ny + j))
-	     *mask[j+(int)(mask_height/2+fy)][i+(int)(mask_width/2+fx)] > 250)
-	    goto set;
+	  if(j>=0 && i>=0 && i<(int)input->width && j<(int)input->height)
+	    if(AT(input,(uint)(i),(uint)(j)) == 255)
+	      goto set;
 	}
       continue;
     set:
@@ -94,85 +80,62 @@ void new_hor_dilate(t_bw_img *input,
 		    t_bw_img * output,
 		    uint size)
 {
-  float mask[1][size];
-  for(uint i = 0; i< size;i++)
-    mask[0][i] = 1;
-
-  new_dilate(input,output,size,1,mask);
+  new_dilate(input,output,size,1);
 }
 
 void new_ver_dilate(t_bw_img *input,
 		    t_bw_img *output,
 		    uint size)
 {
-  float mask[size][1];
-  for(uint i = 0; i< size;i++)
-    mask[i][0] = 1;
-
-  new_dilate(input,output,1,size,mask);
+  new_dilate(input,output,1,size);
 }
 
 void new_hor_erode(t_bw_img *input,
 		    t_bw_img * output,
 		    uint size)
 {
-  float mask[1][size];
-  for(uint i = 0; i< size;i++)
-    mask[0][i] = 1;
-
-  new_erode(input,output,size,1,mask);
+  new_erode(input,output,size,1);
 }
 
 void new_ver_erode(t_bw_img *input,
 		    t_bw_img *output,
 		    uint size)
 {
-  float mask[size][1];
-  for(uint i = 0; i< size;i++)
-    mask[i][0] = 1;
-
-  new_erode(input,output,1,size,mask);
+  new_erode(input,output,1,size);
 }
 
-void open_ver(t_bw_img *input, t_bw_img *output, uint size)
+void close_ver(t_bw_img *input, t_bw_img *output, uint size)
 {
-  float mask[size][1];
-  for(uint i = 0; i< size;i++)
-    mask[i][0] = 1;
-
-  new_dilate(input,output,1,size,mask);
-  new_erode(input,output,1,size,mask);
-}
-
-void open_hor(t_bw_img *input, t_bw_img *output, uint size)
-{
-  float mask[1][size];
-  for(uint i = 0; i< size;i++)
-    mask[0][i] = 1;
-
-  new_dilate(input,output,size,1,mask);
-  new_erode(input,output,size,1,mask);
+  t_bw_img *temp = alloc_bw_img_twin(input);
+  new_dilate(input,temp,1,size);
+  new_erode(temp,output,1,size);
+  free_bw_img(temp);
 }
 
 void close_hor(t_bw_img *input, t_bw_img *output, uint size)
 {
-  float mask[1][size];
-  for(uint i = 0; i< size;i++)
-    mask[0][i] = 1;
+  t_bw_img *temp = alloc_bw_img_twin(input);
+  new_dilate(input,temp,size,1);
+  new_erode(temp,output,size,1);
+  free_bw_img(temp);
+}
 
-  new_erode(input,output,size,1,mask);
-  new_dilate(input,output,size,1,mask);
+void open_hor(t_bw_img *input, t_bw_img *output, uint size)
+{
+  t_bw_img *temp = alloc_bw_img_twin(input);
+  new_erode(input,temp,size,1);
+  new_dilate(temp,output,size,1);
+  free_bw_img(temp);
+
 }
 
 
-void close_ver(t_bw_img *input, t_bw_img *output, uint size)
+void open_ver(t_bw_img *input, t_bw_img *output, uint size)
 {
-  float mask[size][1];
-  for(uint i = 0; i< size;i++)
-    mask[i][0] = 1;
-
-  new_erode(input,output,1,size,mask);
-  new_dilate(input,output,1,size,mask);
+  t_bw_img *temp = alloc_bw_img_twin(input);
+  new_erode(input,temp,1,size);
+  new_dilate(temp,output,1,size);
+  free_bw_img(temp);
 }
 
 t_bw_img *dilate(t_bw_img *input){

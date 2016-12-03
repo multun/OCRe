@@ -8,18 +8,19 @@
 
 t_sub_bw_img_vect *block_segment(t_bw_img *input_img)
 {
+  t_bw_img *temp1 = alloc_bw_img_twin(input_img);
+  t_bw_img *temp2 = alloc_bw_img_twin(input_img);
 
+  close_hor(input_img, temp1, input_img->width/30);
 
-  t_bw_img *temp;
+  close_ver(temp1, temp2, input_img->height/60);
 
-  temp = close_hor_morph(input_img, input_img->width/65);
+  open_ver(temp2,temp1,input_img->height/360);
+  open_hor(temp1,temp2,input_img->width/180);
 
-  //  Comment next line for : Only Lines instead of blocks
-  temp = close_ver_morph(temp, input_img->height/160);
-  //temp = open_morph(temp, input_img->width/250);
 
   t_box_vect *block_list;
-  block_list = list_boxes(temp);
+  block_list = list_boxes(temp2);
   update_true_size(block_list, input_img);
   block_list = trim_box_list(block_list, input_img);
   //quicksort_list_box(block_list,0,VECT_GET_SIZE(block_list)-1);

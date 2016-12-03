@@ -304,15 +304,4 @@ double get_rotation(t_bw_img *input, double precision)
 t_bw_img *wrapper_skew(t_bw_img *input_img)
 {
   return rotate_img(input_img, get_rotation(input_img, 1));
-/*
-  t_bw_img *temp1 = alloc_bw_img_twin(input_img);
-
-  close_hor(input_img, temp1, input_img->width/120);
-  //  Comment next line for : Only Lines instead of blocks
-  t_bw_img *temp2 = alloc_bw_img_twin(input_img);
-
-  close_ver(temp1, temp2, input_img->height/120);
-
-  return temp2;
-  */
 }

@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include "../base_structs/vector.h"
 #include "bounding_box.h"
+#include "../math_macros.h"
+#include <assert.h>
 
 uint min(uint a, uint b){
   return ((a < b)? a : b);
@@ -113,7 +115,11 @@ void connected_box_iter(t_bw_img *input_img, box *input_box,
 {
   t_tuple_uint_vect *coor_stack;
   coor_stack = VECT_ALLOC(tuple_uint, width);
-  VECT_PUSH(coor_stack, ((t_tuple_uint){.x = init_x, .y = init_y}));
+  t_tuple_uint first;
+  first.x = init_x;
+  first.y = init_y;
+  VECT_PUSH(coor_stack, first);
+  array[init_x + init_y * width] = 0;
 
   while(VECT_GET_SIZE(coor_stack))
   {
@@ -122,32 +128,20 @@ void connected_box_iter(t_bw_img *input_img, box *input_box,
     y = VECT_GET_LAST(coor_stack).y;
     VECT_POP(coor_stack);
 
-    if((x > 0 && x < input_img->width-1	&& y > 0 && y < input_img->height-1)
-       && (array[x + (y) * width] == -1))
-    {
-      update_box(input_box, x, y);
-      array[x + y * width] = 0;
-    }
-
-
-    if (AT(input_img, x+1, y) == 0 && (array[x+1 + (y) * width] == -1))
-      VECT_PUSH(coor_stack, ((t_tuple_uint){.x = x+1, .y = y}));
-    if (AT(input_img, x-1, y) == 0 && (array[x-1 + (y) * width] == -1))
-      VECT_PUSH(coor_stack, ((t_tuple_uint){.x = x-1, .y = y}));
-    if (AT(input_img, x, y+1) == 0 && (array[x + (y+1) * width] == -1))
-      VECT_PUSH(coor_stack, ((t_tuple_uint){.x = x, .y = y+1}));
-    if (AT(input_img, x, y-1) == 0 && (array[x + (y-1) * width] == -1))
-      VECT_PUSH(coor_stack, ((t_tuple_uint){.x = x, .y = y-1}));
-    if (AT(input_img, x+1, y+1) == 0 && (array[x+1 + (y+1) * width] == -1))
-      VECT_PUSH(coor_stack, ((t_tuple_uint){.x = x+1, .y = y+1}));
-    if (AT(input_img, x-1, y+1) == 0 && (array[x-1 + (y+1) * width] == -1))
-      VECT_PUSH(coor_stack, ((t_tuple_uint){.x = x-1, .y = y+1}));
-    if (AT(input_img, x+1, y-1) == 0 && (array[x+1 + (y-1) * width] == -1))
-      VECT_PUSH(coor_stack, ((t_tuple_uint){.x = x+1, .y = y-1}));
-    if (AT(input_img, x-1, y-1) == 0 && (array[x-1 + (y-1) * width] == -1))
-      VECT_PUSH(coor_stack, ((t_tuple_uint){.x = x-1, .y = y-1}));
+    for(uint ny = MAX(1,y-1); ny<=MIN(y+1, input_img->height-2); ny++)
+      for(uint nx = MAX(1,x-1); nx<=MIN(x+1, input_img->width-2); nx++)
+      {
+	if(AT(input_img,nx,ny) == 0 && array[nx + ny*width] == -1)
+	{
+	  t_tuple_uint elm;
+	  elm.x = nx;
+	  elm.y = ny;
+	  array[nx + ny * width] = 0;
+	  update_box(input_box, nx, ny);
+	  VECT_PUSH(coor_stack, elm);
+	}
+      }
   }
-
   VECT_FREE(coor_stack);
 }
 
@@ -181,19 +175,18 @@ void update_true_size(t_box_vect *box_list, t_bw_img *input_img)
 t_box_vect *list_boxes(t_bw_img *input_img)
 {
   t_box_vect *box_list;
-  box_list = VECT_ALLOC(box, 16);
+  box_list = VECT_ALLOC(box, 30);
 
   char array[input_img->width * input_img->height];
   for(size_t i = 0; i<input_img->width * input_img->height; i++)
     array[i] = -1;
 
-  for(uint y = 1; y < input_img->height - 1; y++)
-    for(uint x = 1; x < input_img->width - 1; x++)
+  for(uint y = 1; y < input_img->height-1; y++)
+    for(uint x = 1; x < input_img->width-1; x++)
       if (AT(input_img, x, y) == 0 && (array[x + (y) * input_img->width] == -1)
-	  && !is_in_box_list(box_list, x, y)){
-	box *temp_box;
-	temp_box = malloc(20);
-	*temp_box = init_box(x, y);
+	  && !is_in_box_list(box_list,x,y)){
+	box *temp_box = malloc(sizeof(box));
+	*temp_box = init_box( x, y);
 	connected_box_iter(input_img, temp_box, x, y, array, input_img->width);
 	expand_box(temp_box, 1);
 	VECT_PUSH(box_list, *temp_box);
