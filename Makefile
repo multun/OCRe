@@ -32,6 +32,7 @@ SRC += $(wildcard neural_network/*.c)
 SRC += $(wildcard character_segmentation/*.c)
 SRC += $(wildcard noise_reduction/*.c)
 SRC += $(wildcard rescale/*.c)
+SRC += $(wildcard recognise/*.c)
 
 OBJ = $(SRC:.c=.o)
 DEP = ${SRC:.c=.d}

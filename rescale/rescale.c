@@ -15,18 +15,19 @@ const double mask[][5] ={{0.019720, 0.026388, 0.036396, 0.026388, 0.019720},
 
 int compute_value(t_bw_img *input, uint x, uint y)
 {
-  int jstart = (y<2)?(-(int)y):(-2);
-  int jend = (y>input->height-3)?((y==input->height-1)?0:1):2;
-  int istart = (x<2)?(-(int)x):(-2);
-  int iend = (x>input->width-3)?((x==input->width-1)?0:1):2;
   double value = 0;
   double mask_t = 0.0;
-  for(int j = jstart; j <= jend; j++)
-    for(int i = istart; i <= iend; i++)
+  for(int j = -2; j <= 2; j++)
+    for(int i = -2; i <= 2; i++)
     {
+      int ay = ((int)y + j);
+      int ax = ((int)x + i);
+      if(ay < 0 || ax < 0 ||
+	 (uint)ax >= input->width || (uint)ay >= input->height)
+	continue;
 
-      double mask_v = mask[j-jstart][i-istart];
-      value += (double)AT(input,(uint)((int)x + i),(uint)((int)y + j))
+      double mask_v = mask[j+2][i+2];
+      value += (double)AT(input, (uint)ax, (uint)ay)
 	* mask_v;
       mask_t += mask_v;
     }
