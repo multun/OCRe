@@ -1,6 +1,11 @@
 #include <stdlib.h>
 #include <unistd.h>
+
+#ifdef __APPLE__
+#define PATH_PAX 2048
+#else
 #include <linux/limits.h>
+#endif
 
 #include "init.h"
 #include "../img_network/network.h"

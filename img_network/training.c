@@ -9,7 +9,12 @@
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
+
+#ifdef __APPLE__
+#define PATH_MAX 2048
+#else
 #include <linux/limits.h>
+#endif
 
 #include "training.h"
 #include "../error.h"
