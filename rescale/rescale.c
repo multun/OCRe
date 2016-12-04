@@ -56,21 +56,6 @@ void interpolate(t_bw_img *input,
 
 t_bw_img *resize_tbw(t_bw_img *input, double factor)
 {
-  /*double mask[][3] ={{1/3, 2/3, 1/3},
-		    {2/3,   1, 2/3},
-		    {1/3, 2/3, 1/3}};
-  */
-/*
-  //f(x)=-2x^3+3x^2
-  double mask[][5] ={{0.1405, 0.1880, 0.2593, 0.1880, 0.1405},
-		    {0.1880, 0.2866, 0.7407, 0.2866, 0.1880},
-		    {0.2593, 0.7407, 1.0000, 0.7407, 0.2593},
-		    {0.1880, 0.2866, 0.7407, 0.2866, 0.1880},
-		    {0.1405, 0.1880, 0.2593, 0.1880, 0.1405}};
-*/
-
-
-
   t_bw_img *output = alloc_bw_img((uint)((double)input->width*factor),
 				  (uint)((double)input->height*factor));
 

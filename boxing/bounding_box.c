@@ -177,7 +177,7 @@ t_box_vect *list_boxes(t_bw_img *input_img)
   t_box_vect *box_list;
   box_list = VECT_ALLOC(box, 30);
 
-  char array[input_img->width * input_img->height];
+  char *array = malloc(input_img->width * input_img->height*sizeof(char));
   for(size_t i = 0; i<input_img->width * input_img->height; i++)
     array[i] = -1;
 
@@ -191,6 +191,8 @@ t_box_vect *list_boxes(t_bw_img *input_img)
 	expand_box(temp_box, 1);
 	VECT_PUSH(box_list, *temp_box);
       }
+
+  free(array);
 
   return box_list;
 }

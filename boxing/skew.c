@@ -270,7 +270,7 @@ double get_variance(t_bw_img *input, double angle)
   double sqsum = 0;
   double k = input->width/15;
 
-  for(uint y = ystart; y < ystart+ylen; y++)
+  for(uint y = ystart; y < ystart+ylen; y+=3)
   {
     x = (double)get_ray(input, y, angle);
     sum += x-k;
@@ -286,7 +286,7 @@ double get_rotation(t_bw_img *input, double precision)
   double vari = 0;
   precision = precision/(180/3.14159);
 
-  for(double ang = (-15)/(180/3.14159); ang <= (15)/(180/3.14159); ang += precision)
+  for(double ang = (-25)/(180/3.14159); ang <= (25)/(180/3.14159); ang += precision)
   {
     double varia = get_variance(input, ang);
 

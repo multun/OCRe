@@ -17,7 +17,6 @@ t_sub_bw_img_vect *block_segment(t_bw_img *input_img)
 
   open_ver(temp2,temp1,input_img->height/360);
   open_hor(temp1,temp2,input_img->width/180);
-
   t_box_vect *block_list;
   block_list = list_boxes(temp2);
   update_true_size(block_list, input_img);
