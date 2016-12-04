@@ -97,7 +97,7 @@ static void check_merge(t_shape_vect *shapes)
   }
 }
 
-static void check_spaces(t_shape_vect *shapes)
+static t_shape_vect *check_spaces(t_shape_vect *shapes)
 {
   t_shape_vect *finalShapes = VECT_ALLOC(shape, 128);
   uint allSpaces = 0;
@@ -109,10 +109,9 @@ static void check_spaces(t_shape_vect *shapes)
     if ((float)(VECT_GET(shapes, j+1)->Xmin) -
         (float)(VECT_GET(shapes, j)->Xmax) > avgSpace)
       VECT_PUSH(finalShapes, NULL);
-    VECT_PUSH(finalShapes, VECT_GET(shapes, j));
   }
-  shapes = finalShapes;
-  free(finalShapes);
+  VECT_PUSH(finalShapes, VECT_GET(shapes, VECT_GET_SIZE(shapes)-1));
+  return finalShapes;
 }
 
 static t_int_mat *build_shape_vect(t_sub_bw_img *img, t_shape_vect **shapes)
@@ -126,10 +125,13 @@ static t_int_mat *build_shape_vect(t_sub_bw_img *img, t_shape_vect **shapes)
   for(uint x = 0; x < img->width; x++)
     for(uint y = 0; y < img->height; y++)
       if(AT(mat, x, y) == -1)
-        add_shape(mat, x, y, *shapes);
+	add_shape(mat, x, y, *shapes);
+
 
   check_merge(*shapes);
-  check_spaces(*shapes);
+  t_shape_vect *nshapes = check_spaces(*shapes);
+  VECT_FREE(*shapes);
+  *shapes = nshapes;
   return mat;
 }
 
@@ -143,6 +145,11 @@ t_l_bw_img_vect *char_segmentation_l(t_sub_bw_img *img)
   for (unsigned int i = 0; i < VECT_GET_SIZE(shapes);i++)
   {
     t_shape *tshp = VECT_GET(shapes, i);
+    if(!tshp)
+    {
+      VECT_PUSH(result, NULL);
+      continue;
+    }
 
     t_l_bw_img *sub = alloc_l_bw_img(img->father,
 				     img->xoff + tshp->Xmin,
@@ -175,6 +182,8 @@ t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
   for (unsigned int i = 0; i < VECT_GET_SIZE(shapes);i++)
   {
     t_shape *tshp = VECT_GET(shapes, i);
+    if(!tshp)
+      continue;
     t_sub_bw_img *sub = relink_sub_bw_img(
       img,
       tshp->Xmin,
