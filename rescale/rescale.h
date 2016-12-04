@@ -1,6 +1,8 @@
 #ifndef RESCALE_H_
 #define RESCALE_H_
 
+#include "../bitmap/img.h"
+#include "../tdefs.h"
 
 /*
 Return an scaled image according to a ratio.
