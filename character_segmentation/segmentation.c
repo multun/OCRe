@@ -47,7 +47,7 @@ static void taint(t_shape *shape, t_int_mat *mat, uint x, uint y, int label)
     t_off_c npos = neighbours[i];
     npos.x += (int)x;
     npos.y += (int)y;
-    if(npos.x > 0 && npos.y > 0 && \
+    if(npos.x >= 0 && npos.y >= 0 && \
        npos.x < (int)mat->width && npos.y < (int)mat->height)
       taint(shape, mat, (uint)npos.x, (uint)npos.y, label);
   }
@@ -160,10 +160,10 @@ t_l_bw_img_vect *char_segmentation_l(t_sub_bw_img *img)
     for(uint x = 0; x < sub->width; x++)
       for(uint y = 0; y < sub->height; y++)
       {
-        int cp = AT(mat, tshp->Xmin + x, tshp->Ymin + y);
+/*        int cp = AT(mat, tshp->Xmin + x, tshp->Ymin + y);
         if(VECT_GET(shapes, cp - 1) != tshp)
           L_AT(sub, x, y) = 255;
-	else
+	  else*/
 	  L_AT(sub, x, y) = SUB_AT(img, tshp->Xmin + x, tshp->Ymin + y);
       }
     VECT_PUSH(result, sub);
