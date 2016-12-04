@@ -65,8 +65,8 @@ int main(int argc, char *argv[])
       AT(bwret, j, i) = SUB_AT(res, j, i);
 
   t_bw_img *sized_res = resize(bwret, res_size, res_size);
-  /*
-  for(uint y = 0; y < sized_res->height; y++)
+
+  /*for(uint y = 0; y < sized_res->height; y++)
   {
     for(uint x = 0; x < sized_res->width; x++)
     {
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 	printf("   ");
     }
     puts("");
-    }*/
+  }*/
 
   t_nfloat_mat * fres = alloc_nfloat_mat(res_size, res_size);
 

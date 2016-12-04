@@ -1,3 +1,4 @@
 bmp_to_custom
-fonts
+fonts*
 training_set*
+*.cst
