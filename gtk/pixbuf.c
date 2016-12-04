@@ -40,7 +40,6 @@ t_color_img *color_img_from_pixbuf(GdkPixbuf *pixbuf)
 t_color_img *color_img_from_file(const char *path)
 {
   GError *error = NULL;
-  printf("loading from path: %s\n", path);
   GdkPixbuf *pixbuf = gdk_pixbuf_new_from_file(path, &error);
   if (!pixbuf)
   {

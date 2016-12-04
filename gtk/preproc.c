@@ -37,7 +37,6 @@ void preprocess_ui_run(t_img_history *img_history, t_img_history_e *hist_e)
   switch(type)
   {
   case FIXED:
-    puts("fixed running");
     opts.fixed = (uchar)gtk_spin_button_get_value_as_int(
       preprocess_ui.fixed_treshold);
     break;
