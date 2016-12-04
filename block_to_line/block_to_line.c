@@ -9,6 +9,7 @@ t_sub_bw_img_vect *line_subdivision(t_sub_bw_img *img){
                                                         blackpixelsarray, img);
   int lineheightaverage = line_height_avg(bool_array,img);
   bool_array_modification(bool_array,img,lineheightaverage);
+  widen_lines(bool_array,img);
   t_coordinates_vect* vect_of_coo = bool_array_to_coordinates(bool_array, img);
   t_sub_bw_img_vect* imgexport = coordinates_to_img(vect_of_coo, img);
   return imgexport;
@@ -190,6 +191,34 @@ void bool_array_modification(t_bool* bool_array, t_sub_bw_img* img,
     bool_array_modification(bool_array,img,lineheightaverage);
   }
   // printf("Bool Array Modif: Exit\n");// Sinon, c'est fini
+}
+
+void widen_lines(t_bool* bool_array, t_sub_bw_img* img){
+
+  t_coordinates_vect *coordinates_vect;
+  coordinates_vect = bool_array_to_coordinates(bool_array,img);
+  int vect_size = (int)VECT_GET_SIZE(coordinates_vect);
+
+  t_coordinates linezero = VECT_GET(coordinates_vect,0);
+  for (int j = 0; j < linezero.fin; j++){
+    bool_array[j] = true;
+  }
+
+  for(int i = 1; i < vect_size; i++){
+    t_coordinates thisline = VECT_GET(coordinates_vect,i);
+    t_coordinates previousline = VECT_GET(coordinates_vect,i-1);
+
+    thisline.debut = previousline.fin +1;
+    for (int j = thisline.debut; j < thisline.fin; j++){
+      bool_array[j] = true;
+    }
+  }
+
+  t_coordinates lastline = VECT_GET(coordinates_vect,vect_size);
+  lastline.fin = (int)img->height;
+  for (int j = lastline.debut; j < lastline.fin; j++){
+    bool_array[j] = true;
+  }
 }
 
 t_coordinates_vect *bool_array_to_coordinates(t_bool *bool_array,
