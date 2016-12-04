@@ -30,7 +30,7 @@ void recognise_ui_init(GtkBuilder *builder, t_img_history *img_h)
 
 void recognise_ui_run(t_img_history_e *hist_e)
 {
-  if (hist_e->type != BW)
+  if (!hist_e || hist_e->type != BW)
     return;
   t_string *res = recognise_bw_img(net_pool, (t_bw_img*)hist_e->img);
   gtk_text_buffer_set_text (result_buffer, string_get_c(res), -1);

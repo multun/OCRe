@@ -27,7 +27,7 @@ void detect_lines_ui_init(GtkBuilder *builder, t_img_history *img_history)
 
 void detect_lines_ui_run(t_img_history *img_history, t_img_history_e *hist_e)
 {
-  if (hist_e->type != SUB_BW_VECT)
+  if (!hist_e || hist_e->type != SUB_BW_VECT)
     return;
 
   t_sub_bw_img_vect* blocks = (t_sub_bw_img_vect*)hist_e->img;

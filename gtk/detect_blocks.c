@@ -27,7 +27,7 @@ void detect_blocks_ui_init(GtkBuilder *builder, t_img_history *img_history)
 
 void detect_blocks_ui_run(t_img_history *img_history, t_img_history_e *hist_e)
 {
-  if (hist_e->type != BW)
+  if (!hist_e || hist_e->type != BW)
     return;
 
   t_sub_bw_img_vect *vimg = block_segment((t_bw_img*)hist_e->img);

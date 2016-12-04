@@ -25,7 +25,7 @@ void detect_chars_ui_init(GtkBuilder *builder, t_img_history *img_history)
 
 void detect_chars_ui_run(t_img_history *img_history, t_img_history_e *hist_e)
 {
-  if (hist_e->type != SUB_BW_VECT2)
+  if (!hist_e || hist_e->type != SUB_BW_VECT2)
     return;
 
   t_sub_bw_img_vect_vect *vimg = line_segment((t_sub_bw_img_vect*)hist_e->img);

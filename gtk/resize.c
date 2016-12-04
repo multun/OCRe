@@ -24,7 +24,7 @@ void resize_ui_init(GtkBuilder *builder, t_img_history *img_history)
 
 void resize_ui_run(t_img_history *img_history, t_img_history_e *hist_e)
 {
-  if (hist_e->type != BW)
+  if (!hist_e || hist_e->type != BW)
     return;
 
   uint width  = (uint)gtk_spin_button_get_value_as_int(resize_ui.width_field);

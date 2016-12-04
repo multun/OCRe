@@ -28,7 +28,7 @@ void preprocess_ui_init(GtkBuilder *builder, t_img_history *img_history)
 
 void preprocess_ui_run(t_img_history *img_history, t_img_history_e *hist_e)
 {
-  if (hist_e->type != COLOR)
+  if (!hist_e || hist_e->type != COLOR)
     return;
 
   t_bin_opts opts;
