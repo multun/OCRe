@@ -1,7 +1,0 @@
-[Unit]
-Description=OCR training daemon
-
-[Service]
-Type=simple
-WorkingDirectory=${working_dir}
-ExecStart=${bin_path} %i ${training_set}

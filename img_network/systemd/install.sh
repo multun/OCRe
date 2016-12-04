@@ -1,5 +1,6 @@
 proj_root=$(realpath $(dirname $0)/../../)
-training_set="${proj_root}/test_gen/training_set"
+training_set=$(realpath ${1?missing training set})
+
 bin_path="${proj_root}/img_network/fuckit"
 working_dir="${proj_root}/img_network/units"
 cat > ~/.config/systemd/user/training_daemon@.service<<EOF
