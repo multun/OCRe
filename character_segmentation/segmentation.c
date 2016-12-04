@@ -78,7 +78,8 @@ static char are_mergeable(t_shape *shape1, t_shape *shape2)
   if((shape1->Xmin<=shape2->Xmin && shape1->Xmax>=shape2->Xmin && \
 (float)(shape1->Xmax-shape2->Xmin)>=0.5*(float)(shape2->Xmax-shape2->Xmin)) || \
      (shape2->Xmin<=shape1->Xmin && shape2->Xmax>=shape1->Xmin && \
-(float)(shape2->Xmax-shape1->Xmin) >= 0.5*(float)(shape1->Xmax-shape1->Xmin)))
+(float)(shape2->Xmax-shape1->Xmin) >= 0.5*(float)(shape1->Xmax-shape1->Xmin))||\
+    ((shape1->Xmin<=shape2->Xmin && shape1->Xmax>=shape2->Xmin)))
     return 1;
   return 0;
 }
