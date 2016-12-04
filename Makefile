@@ -33,6 +33,8 @@ SRC += $(wildcard character_segmentation/*.c)
 SRC += $(wildcard noise_reduction/*.c)
 SRC += $(wildcard rescale/*.c)
 SRC += $(wildcard recognise/*.c)
+SRC += img_network/training.c
+SRC += img_network/charset.c
 
 OBJ = $(SRC:.c=.o)
 DEP = ${SRC:.c=.d}

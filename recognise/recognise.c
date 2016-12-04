@@ -5,11 +5,10 @@
 #include "../error.h"
 // shouldn't take a network as argument, just a placeholder
 
-static t_string *recognise_block(t_network *net, t_block *block);
-static t_string *recognise_line(t_network *net, t_line *img);
-static t_string *recognise_char(t_network *net, t_char *img);
+static t_string *recognise_block(t_w_network_vect *net, t_block *block);
+static t_string *recognise_line(t_w_network_vect *net, t_line *img);
 
-t_string *recognise_bw_img(t_network *net, t_bw_img *img)
+t_string *recognise_bw_img(t_w_network_vect *net, t_bw_img *img)
 {
   t_string *res = alloc_sized_string("", 2000);
   t_sub_bw_img_vect *blocks = block_segment(img);
@@ -26,7 +25,7 @@ t_string *recognise_bw_img(t_network *net, t_bw_img *img)
   return res;
 }
 
-static t_string *recognise_block(t_network *net, t_block *block)
+static t_string *recognise_block(t_w_network_vect *net, t_block *block)
 {
   t_string *res = alloc_sized_string("", 500);
   t_sub_bw_img_vect *lines = line_subdivision(block);
@@ -43,7 +42,7 @@ static t_string *recognise_block(t_network *net, t_block *block)
   return res;
 }
 
-static t_string *recognise_line(t_network *net, t_line *line)
+static t_string *recognise_line(t_w_network_vect *net, t_line *line)
 {
   t_string *res = alloc_sized_string("", 100);
   t_l_bw_img_vect *chars = char_segmentation_l(line);
@@ -52,7 +51,7 @@ static t_string *recognise_line(t_network *net, t_line *line)
     t_char *cur = VECT_GET(chars, i);
     if(cur)
     {
-      t_string *char_content = recognise_char(net, cur);
+      t_string *char_content = char_recon(net, cur);
       string_append(res, char_content);
       string_free(char_content);
     }
@@ -62,13 +61,4 @@ static t_string *recognise_line(t_network *net, t_line *line)
   }
   VECT_FREE(chars);
   return res;
-}
-
-
-static t_string *recognise_char(t_network *net, t_char *block)
-{
-  // fixme
-  UNUSED(net);
-  UNUSED(block);
-  return alloc_string("x");
 }
