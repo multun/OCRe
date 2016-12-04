@@ -45,6 +45,10 @@ print-%:
 
 all: $(EXEC)
 
+img_network/charset.c:
+	bash img_network/generate_char_table.sh $@
+
+
 build: CFLAGS=$(CFLAGS_BUILD)
 build: clean all
 
