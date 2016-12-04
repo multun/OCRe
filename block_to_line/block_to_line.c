@@ -58,8 +58,8 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
     else{
       bool_array[i] = true;
     }
-    //printf("Array[%d] = %d, bool = %u, this_sum = %d, this_average = %d\n"
-                  //,i,array[i],bool_array[i],sum_array[i],averages_array[i]);
+    //printf("1: Array[%d] = %d, bool = %u, this_sum = %d, this_average = %d\n"
+                //,i,array[i],bool_array[i],sum_array[i],averages_array[i]);
   }
 
 // RETOUCHE 1 de bool_array
@@ -70,7 +70,7 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
       if (previous_bool == true){
         previous_bool = (bool_array[i-4]+bool_array[i-3]
                                           +bool_array[i-2]+bool_array[i-1])%2;
-        if((sum_array[i-3] + sum_array[i-2] + sum_array[i-1]
+        if((sum_array[i-2] + sum_array[i-1]
                                     + sum_array[i]) > averages_array[i]){
           bool_array[i] = true;
           continue;
@@ -79,8 +79,7 @@ t_bool *bool_array_generation(int average, int *array, t_sub_bw_img *img)
       else{
         previous_bool = (bool_array[i+1]+bool_array[i+2]
                                           +bool_array[i+3]+bool_array[i+4])%2;
-        if((sum_array[i] + sum_array[i+1] + sum_array[i+2]
-                                  + sum_array[i+3]) > averages_array[i]){
+        if((sum_array[i] + sum_array[i+1] + sum_array[i+2]) > averages_array[i]){
           bool_array[i] = true;
           continue;
         }
@@ -149,7 +148,7 @@ void bool_array_modification(t_bool* bool_array, t_sub_bw_img* img,
       if (thiscoordinates.debut - previouscoordinates.fin
                                                   < lineheightaverage * 0.3){
         // On étend la ligne du dessus, supprime cette ligne
-        // printf("ligne étendue\n");
+        //printf("ligne étendue\n");
         previouscoordinates.fin = thiscoordinates.fin;
         for(int j=previouscoordinates.debut;j < previouscoordinates.fin;j++){
           bool_array[j] = true;
@@ -159,7 +158,7 @@ void bool_array_modification(t_bool* bool_array, t_sub_bw_img* img,
 
       // Sinon, on efface la ligne
       else{
-        // printf("ligne supprimée\n");
+        //printf("ligne supprimée\n");
         for(int k=thiscoordinates.debut; k<= thiscoordinates.fin; k++){
           bool_array[k] = false;
           has_changed = true;
