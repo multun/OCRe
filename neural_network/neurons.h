@@ -35,6 +35,9 @@ typedef struct s_layer
 #define WEIGHT(w, l, i, j) (*((w) + (j) * ((l)->size + 1) + (i) + 1))
 #define BIAS(w, l, j) (*((w) + (j) * ((l)->size + 1)))
 
+#define NET_IN(net) ((net)->layers[0].in)
+#define NET_OUT(net) ((net)->layers[(net)->layers_count - 1].out)
+
 typedef struct s_network
 {
   const char	*name;

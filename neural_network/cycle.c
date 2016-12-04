@@ -3,11 +3,6 @@
 #include "forward.h"
 #include "backward.h"
 #include "builder.h"
-# else
-#include "neurons.c"
-#include "builder.c"
-#include "forward.c"
-#include "backward.c"
 #endif
 
 #include "cycle.h"

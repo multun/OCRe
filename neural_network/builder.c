@@ -71,12 +71,19 @@ int openat_exists(bool *is_new,
   return fd;
 }
 
-static inline void alloc_layer(t_layer *layer, int fd, bool is_map)
+static inline void alloc_layer(t_layer *layer,
+			       int fd,
+			       bool is_map,
+			       bool allocate_i,
+			       bool allocate_o)
 {
   size_t layer_size = sizeof(*layer->out) * layer->size;
-  layer->in	= malloc(layer_size);
 
-  layer->out	= malloc(layer_size);
+  if(allocate_i)
+    layer->in	= malloc(layer_size);
+  if(allocate_o)
+    layer->out	= malloc(layer_size);
+
   layer->delta	= malloc(layer_size);
   if (fd != -1)
   {
@@ -93,26 +100,36 @@ static inline void alloc_layer(t_layer *layer, int fd, bool is_map)
 }
 
 
-static void alloc_network(const t_network *net)
+static void alloc_network(const t_network *net, bool allocate_io)
 {
   for(size_t i = 0; i < net->layers_count; i++)
-    alloc_layer(&net->layers[i], (i > 0)? 1 : -1, false);
+    alloc_layer(&net->layers[i],
+		(i > 0) ? 1 : -1,
+		false,
+		(i == 0) ? allocate_io : true,
+		(i == (net->layers_count - 1)) ? allocate_io : true);
 }
 
-bool load_network(const t_network *net)
+bool load_network(const t_network *net, bool allocate_io)
 {
   bool is_new = true;
   const char *name = net->name;
   if(!name)
   {
-    alloc_network(net);
+    alloc_network(net, allocate_io);
     return true;
   }
 
   const char prefix[] = "layer_";
   size_t prefix_len = sizeof(prefix) - 1;
 
+  int mkdirret;
+  if((mkdirret = mkdir(name, 0755)))
+    if(errno != EEXIST)
+      PERROR("mkdir");
+
   int dirfd = open(name, O_DIRECTORY);
+
   if(dirfd == -1)
     FAIL("no such network data directory: `%s`", name);
 
@@ -127,7 +144,11 @@ bool load_network(const t_network *net)
     if (has_weights)
       fd = openat_exists(&is_new, dirfd, namebuf);
 
-    alloc_layer(&net->layers[i], fd, has_weights);
+    alloc_layer(&net->layers[i],
+		fd,
+		has_weights,
+		(i == 0) ? allocate_io : true,
+		(i == (net->layers_count - 1)) ? allocate_io : true);
     if (has_weights)
       close(fd);
   }
@@ -158,4 +179,19 @@ void free_network(const t_network *net)
   const bool is_map = net->name != NULL;
   for(size_t i = 0; i < net->layers_count; i++)
     free_layer(&net->layers[i], is_map);
+}
+
+t_network *dup_network(const t_network *net, const char *name)
+{
+  t_network *ret = malloc(sizeof(t_network));
+  const size_t layers_size = sizeof(t_layer) * net->layers_count;
+  ret->layers = malloc(layers_size);
+  ret->name = strdup(name);
+  ret->layers_count = net->layers_count;
+  for(size_t i = 0; i < ret->layers_count; i++)
+  {
+    ret->layers[i].class = net->layers[i].class;
+    ret->layers[i].size  = net->layers[i].size;
+  }
+  return ret;
 }

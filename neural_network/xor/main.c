@@ -73,7 +73,7 @@ int main(void)
 {
   t_network net = {
     .name = "xor_data",
-    .layers_count = 3,
+    .layers_count = 4,
     .layers = (t_layer*)&(t_layer[]) {
       (t_layer){
 	.size = 2,
@@ -84,6 +84,11 @@ int main(void)
 	.class = sigmoid,
       },
       (t_layer){
+	.size = 10,
+	.class = sigmoid,
+      },
+
+      (t_layer){
 	.size = 1,
 	.class = sigmoid,
       }
@@ -93,7 +98,7 @@ int main(void)
   assert(signal(SIGINT, catch_function) != SIG_ERR);
 
   srand(42);
-  if(load_network(&net))
+  if(load_network(&net, true))
     random_weights(&net, -1., 1., -2., 2.);
 
   const size_t test_count = sizeof(tests)/sizeof(tests[0]);
