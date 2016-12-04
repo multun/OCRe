@@ -23,7 +23,7 @@
 #include "network.h"
 
 #define ERROR_TRESHOLD CF(0.01)
-#define LEARNING_RATE  CF(0.006)
+#define LEARNING_RATE  CF(0.2)
 #define EVAL_SIZE 100
 
 static nfloat run_net(t_network *net, t_training_case *cas, bool is_correct)
@@ -73,8 +73,9 @@ int main(int argc, char *argv[])
   t_network net = NETWORK(name);
 
   demangle_name(name);
-  t_training_cat *cat = find_cat(set, name, false);
-  if(!cat)
+
+  t_training_cat *net_cat = find_cat(set, name, false);
+  if(!net_cat)
     FAIL("cannot find category `%s`", name);
 
   setup_signal();
@@ -83,18 +84,24 @@ int main(int argc, char *argv[])
     random_weights(&net, -1., 1., -1.5, 1.5);
 
   size_t epoch = 0;
+  nfloat err = CF(0.0);
   for(; running; epoch++)
   {
-    nfloat err = CF(0.0);
-
-    for(uint i = 0; i < 100; i++)
+#define BATCH_SIZE 10
+#define PRINT_PERIOD 400
+    for(uint i = 0; i < BATCH_SIZE; i++)
     {
-      err += run_net(&net, get_case(cat, set, !!(i % 2)), (i % 2));
-      apply_delta(&net, LEARNING_RATE);
+      t_training_cat *chosen_cat = VECT_RAND(set->cats);
+      t_training_case *chosen_case = VECT_RAND(chosen_cat->cases);
+      err += run_net(&net, chosen_case, chosen_cat == net_cat);
     }
+    apply_delta(&net, LEARNING_RATE);
 
-    if(epoch % 400 == 0)
-      fprintf(stderr, "err: %f\n", err / 100);
+    if(epoch % PRINT_PERIOD == 0)
+    {
+      fprintf(stderr, "err: %f\n", err / (BATCH_SIZE * PRINT_PERIOD));
+      err = CF(0.0);
+    }
   }
   fprintf(stderr, "trained for %lu cycles.\n", epoch);
   free_network(&net);

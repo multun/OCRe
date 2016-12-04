@@ -26,7 +26,7 @@ t_net_pool *init_recon(void)
     t_w_network *nelem = malloc(sizeof(t_w_network));
     nelem->target = cur.truename;
     nelem->net = dup_network(&draft_net, cur.dirname);
-    if(load_network(nelem->net, false))
+    if(load_network(nelem->net, true))
       FAIL("cannot find weights for network `%s`", nelem->target);
     VECT_PUSH(ret, nelem);
   }

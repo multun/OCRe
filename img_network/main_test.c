@@ -23,15 +23,12 @@
 #define LEARNING_RATE  CF(0.006)
 #define EVAL_SIZE 100
 
-const uint img_width =
-#include "img_width"
-  ;
+#include "network.h"
 
 static nfloat run_net(t_network *net, t_training_case *cas, bool is_correct)
 {
   nfloat eres = (is_correct) ? CF(1.0) : CF(0.0);
-  nfloat ret = cycle(net, &AT(cas->data, 0, 0), &eres);
-  return ret;
+  return cycle(net, &AT(cas->data, 0, 0), &eres);
 }
 
 int main(int argc, char *argv[])
@@ -42,26 +39,8 @@ int main(int argc, char *argv[])
   const char *name = argv[1];
   t_training_case *cas = get_training_case(argv[2]);
 
-  t_network net = {
-    .name = name,
-    .layers_count = 3,
-    .layers = (t_layer*)&(t_layer[]) {
-      (t_layer){
-	.size = img_width * img_width,
-	.class = sigmoid,
-      },
-      (t_layer){
-	.size = 30,
-	.class = sigmoid,
-      },
-      (t_layer){
-	.size = 1,
-	.class = sigmoid,
-      }
-    }
-  };
+  t_network net = NETWORK(name);
 
-  setup_signal();
   srand(42);
   if(load_network(&net, true))
     FAIL0("couldn't load the network");

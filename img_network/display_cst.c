@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
   for(uint y = 0; y < mat->height; y++)
   {
     for(uint x = 0; x < mat->width; x++)
-      printf("%c", '0' + MIN(9, (uint)(AT(mat, x, y) * CF(10.0))));
+      printf("%3d", (uint)(AT(mat, x, y)*255));
     puts("");
   }
 }

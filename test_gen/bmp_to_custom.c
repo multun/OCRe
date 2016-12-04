@@ -66,23 +66,10 @@ int main(int argc, char *argv[])
 
   t_bw_img *sized_res = resize(bwret, res_size, res_size);
 
-  /*for(uint y = 0; y < sized_res->height; y++)
-  {
-    for(uint x = 0; x < sized_res->width; x++)
-    {
-      uint pix = (uint)AT(sized_res, x, y);
-      if(pix)
-	printf("%3d", pix);
-      else
-	printf("   ");
-    }
-    puts("");
-  }*/
-
   t_nfloat_mat * fres = alloc_nfloat_mat(res_size, res_size);
 
   for(uint i = 0; i < res_size * res_size; i++)
-    fres->pixels[i] = ((double)sized_res->pixels[i])/255;
+    fres->pixels[i] = ((double)(255-sized_res->pixels[i]))/255;
 
   int fd = open(argv[3], O_WRONLY | O_CREAT, 0644);
   write(fd, fres, IMG_SIZE(t_nfloat_mat, fres->width, fres->height));

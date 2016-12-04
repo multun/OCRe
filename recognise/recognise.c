@@ -51,12 +51,24 @@ static t_string *recognise_line(t_w_network_vect *net, t_line *line)
     t_char *cur = VECT_GET(chars, i);
     if(cur)
     {
+      for(uint y = 0; y < cur->height; y++)
+      {
+	for(uint x = 0; x < cur->width; x++)
+	  printf("%3d", L_AT(cur, x, y));
+	puts("");
+      }
+      puts("");
+
       t_string *char_content = char_recon(net, cur);
       string_append(res, char_content);
       string_free(char_content);
     }
     else
+    {
+      puts("=============================");
       string_c_append(res, " ");
+
+    }
     free_l_bw_img(cur);
   }
   VECT_FREE(chars);

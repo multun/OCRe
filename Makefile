@@ -1,4 +1,4 @@
-ARGS?=bitmap/tests/test_art.bmp
+ARGS?=
 
 CC?=gcc
 
@@ -23,6 +23,7 @@ EXEC=ocre
 SRC  = $(wildcard *.c)
 SRC += $(wildcard string/*.c)
 SRC += $(wildcard base_structs/*.c)
+SRC += $(wildcard image_processing/*.c)
 SRC += $(wildcard block_to_line/*.c)
 SRC += $(wildcard binarisation/*.c)
 SRC += $(wildcard bitmap/*.c)
