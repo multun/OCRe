@@ -126,7 +126,7 @@ static t_int_mat *build_shape_vect(t_sub_bw_img *img, t_shape_vect **shapes)
   for(uint x = 0; x < img->width; x++)
     for(uint y = 0; y < img->height; y++)
       if(AT(mat, x, y) == -1)
-	add_shape(mat, x, y, *shapes);
+        add_shape(mat, x, y, *shapes);
 
   check_merge(*shapes);
   check_spaces(*shapes);
@@ -143,19 +143,22 @@ t_l_bw_img_vect *char_segmentation_l(t_sub_bw_img *img)
   for (unsigned int i = 0; i < VECT_GET_SIZE(shapes);i++)
   {
     t_shape *tshp = VECT_GET(shapes, i);
-    t_l_bw_img *sub = relink_sub_to_l_bw_img(
-      img,
-      tshp->Xmin,
-      tshp->Ymin,
-      tshp->Xmax - tshp->Xmin,
-      tshp->Ymax - tshp->Ymin);
-      for(uint x = 0; x < sub->width; x++)
-        for(uint y = 0; y < sub->height; y++)
-        {
-          int cp = AT(mat, tshp->Xmin + x, tshp->Ymin + y);
-          if(VECT_GET(shapes, cp - 1) != tshp)
-            L_AT(sub, x, y) = 255;
-        }
+
+    t_l_bw_img *sub = alloc_l_bw_img(img->father,
+				     img->xoff + tshp->Xmin,
+				     img->yoff + tshp->Ymin,
+				     tshp->Xmax - tshp->Xmin + 1,
+				     tshp->Ymax - tshp->Ymin + 1);
+
+    for(uint x = 0; x < sub->width; x++)
+      for(uint y = 0; y < sub->height; y++)
+      {
+        int cp = AT(mat, tshp->Xmin + x, tshp->Ymin + y);
+        if(VECT_GET(shapes, cp - 1) != tshp)
+          L_AT(sub, x, y) = 255;
+	else
+	  L_AT(sub, x, y) = SUB_AT(img, tshp->Xmin + x, tshp->Ymin + y);
+      }
     VECT_PUSH(result, sub);
   }
   free(mat);
@@ -171,13 +174,14 @@ t_sub_bw_img_vect *char_segmentation(t_sub_bw_img *img)
 
   for (unsigned int i = 0; i < VECT_GET_SIZE(shapes);i++)
   {
-    t_shape *tempShape = VECT_GET(shapes, i);
+    t_shape *tshp = VECT_GET(shapes, i);
     t_sub_bw_img *sub = relink_sub_bw_img(
       img,
-      tempShape->Xmin,
-      tempShape->Ymin,
-      tempShape->Xmax - tempShape->Xmin,
-      tempShape->Ymax - tempShape->Ymin);
+      tshp->Xmin,
+      tshp->Ymin,
+      tshp->Xmax - tshp->Xmin + 1,
+      tshp->Ymax - tshp->Ymin + 1);
+
     VECT_PUSH(result, sub);
   }
   free(mat);
