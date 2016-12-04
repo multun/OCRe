@@ -115,6 +115,20 @@ static t_shape_vect *check_spaces(t_shape_vect *shapes, t_sub_bw_img *img)
   return finalShapes;
 }
 
+static void remove_duplicates(t_shape_vect *shps)
+{
+  size_t bi, ei;
+  bi = ei = 0;
+  for(; ei < VECT_SIZE(shps); ei++, bi++)
+  {
+    while(ei > 0 && ei < VECT_SIZE(shps) &&
+	  VECT_GET(shps, ei)  == VECT_GET(shps, ei - 1))
+      ei++;
+    VECT_GET(shps, bi) = VECT_GET(shps, ei);
+  }
+  VECT_SIZE(shps) -= ei - bi;
+}
+
 static t_int_mat *build_shape_vect(t_sub_bw_img *img, t_shape_vect **shapes)
 {
   t_int_mat *mat = alloc_int_mat(img->width, img->height);
@@ -133,8 +147,10 @@ static t_int_mat *build_shape_vect(t_sub_bw_img *img, t_shape_vect **shapes)
   t_shape_vect *nshapes = check_spaces(*shapes, img);
   VECT_FREE(*shapes);
   *shapes = nshapes;
+  remove_duplicates(nshapes);
   return mat;
 }
+
 
 t_l_bw_img_vect *char_segmentation_l(t_sub_bw_img *img)
 {
@@ -151,7 +167,6 @@ t_l_bw_img_vect *char_segmentation_l(t_sub_bw_img *img)
       VECT_PUSH(result, NULL);
       continue;
     }
-
     t_l_bw_img *sub = alloc_l_bw_img(img->father,
 				     img->xoff + tshp->Xmin,
 				     img->yoff + tshp->Ymin,
