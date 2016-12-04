@@ -214,8 +214,8 @@ void widen_lines(t_bool* bool_array, t_sub_bw_img* img){
     }
   }
 
-  t_coordinates lastline = VECT_GET(coordinates_vect,vect_size);
-  lastline.fin = (int)img->height;
+  t_coordinates lastline = VECT_GET(coordinates_vect,vect_size - 1);
+  lastline.fin = (int)img->height - 1;
   for (int j = lastline.debut; j < lastline.fin; j++){
     bool_array[j] = true;
   }
