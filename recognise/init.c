@@ -2,7 +2,7 @@
 #include <unistd.h>
 
 #ifdef __APPLE__
-#define PATH_PAX 2048
+#define PATH_MAX 2048
 #else
 #include <linux/limits.h>
 #endif
