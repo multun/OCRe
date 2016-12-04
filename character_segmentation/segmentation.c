@@ -75,9 +75,9 @@ static t_shape *merge_shape(t_shape *shape1, t_shape *shape2)
 
 static char are_mergeable(t_shape *shape1, t_shape *shape2)
 {
-  if((shape1->Xmin<shape2->Xmin && shape1->Xmax>shape2->Xmin && \
+  if((shape1->Xmin<=shape2->Xmin && shape1->Xmax>=shape2->Xmin && \
 (float)(shape1->Xmax-shape2->Xmin)>=0.5*(float)(shape2->Xmax-shape2->Xmin)) || \
-     (shape2->Xmin<shape1->Xmin && shape2->Xmax>shape1->Xmin && \
+     (shape2->Xmin<=shape1->Xmin && shape2->Xmax>=shape1->Xmin && \
 (float)(shape2->Xmax-shape1->Xmin) >= 0.5*(float)(shape1->Xmax-shape1->Xmin)))
     return 1;
   return 0;
@@ -97,17 +97,17 @@ static void check_merge(t_shape_vect *shapes)
   }
 }
 
-static t_shape_vect *check_spaces(t_shape_vect *shapes)
+static t_shape_vect *check_spaces(t_shape_vect *shapes, t_sub_bw_img *img)
 {
   t_shape_vect *finalShapes = VECT_ALLOC(shape, 128);
-  uint allSpaces = 0;
-  for (uint i = 0; i < (VECT_GET_SIZE(shapes))-1; i++)
-    allSpaces += VECT_GET(shapes, i+1)->Xmin-VECT_GET(shapes, i)->Xmax;
-  float avgSpace = (float)allSpaces/(float)(VECT_GET_SIZE(shapes)-1);
+  /*uint allChars = 0;
+  for (uint i = 0; i < VECT_GET_SIZE(shapes); i++)
+    allChars += VECT_GET(shapes, i)->Ymax - VECT_GET(shapes, i)->Ymin;
+  float avgSpace = ((float)allChars/(float)VECT_GET_SIZE(shapes));*/
   for (uint j = 0; j < (VECT_GET_SIZE(shapes))-1; j++) {
     VECT_PUSH(finalShapes, VECT_GET(shapes, j));
     if ((float)(VECT_GET(shapes, j+1)->Xmin) -
-        (float)(VECT_GET(shapes, j)->Xmax) > avgSpace)
+        (float)(VECT_GET(shapes, j)->Xmax) > (float)(img->height)/3.5)
       VECT_PUSH(finalShapes, NULL);
   }
   VECT_PUSH(finalShapes, VECT_GET(shapes, VECT_GET_SIZE(shapes)-1));
@@ -129,7 +129,7 @@ static t_int_mat *build_shape_vect(t_sub_bw_img *img, t_shape_vect **shapes)
 
 
   check_merge(*shapes);
-  t_shape_vect *nshapes = check_spaces(*shapes);
+  t_shape_vect *nshapes = check_spaces(*shapes, img);
   VECT_FREE(*shapes);
   *shapes = nshapes;
   return mat;
@@ -160,7 +160,7 @@ t_l_bw_img_vect *char_segmentation_l(t_sub_bw_img *img)
     for(uint x = 0; x < sub->width; x++)
       for(uint y = 0; y < sub->height; y++)
       {
-/*        int cp = AT(mat, tshp->Xmin + x, tshp->Ymin + y);
+    /*    int cp = AT(mat, tshp->Xmin + x, tshp->Ymin + y);
         if(VECT_GET(shapes, cp - 1) != tshp)
           L_AT(sub, x, y) = 255;
 	  else*/
