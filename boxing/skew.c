@@ -280,13 +280,13 @@ double get_variance(t_bw_img *input, double angle)
   return (sqsum - (sum)/(double)ylen)/((double)ylen-1);
 }
 
-double get_rotation(t_bw_img *input, double precision)
+double get_rotation(t_bw_img *input, double precision, double down, double up)
 {
   double angle = 0;
   double vari = 0;
   precision = precision/(180/3.14159);
 
-  for(double ang = (-25)/(180/3.14159); ang <= (25)/(180/3.14159); ang += precision)
+  for(double ang = (down)/(180/3.14159); ang <= (up)/(180/3.14159); ang += precision)
   {
     double varia = get_variance(input, ang);
 
@@ -303,5 +303,7 @@ double get_rotation(t_bw_img *input, double precision)
 
 t_bw_img *wrapper_skew(t_bw_img *input_img)
 {
-  return rotate_img(input_img, get_rotation(input_img, 1));
+  double angle = get_rotation(input_img, 1, -15, 15);
+
+  return rotate_img(input_img, get_rotation(input_img, 0.1, angle-3, angle+3));
 }

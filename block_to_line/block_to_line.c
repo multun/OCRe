@@ -121,10 +121,13 @@ int line_height_avg(t_bool* bool_array, t_sub_bw_img* img){
 
 void bool_array_modification(t_bool* bool_array, t_sub_bw_img* img,
                                                    int lineheightaverage){
+  printf("%u %u %u %u\n", img->xoff, img->yoff, img->width, img->height);
+
   t_coordinates_vect *coordinates_vect;
   coordinates_vect = bool_array_to_coordinates(bool_array,img);
   int vect_size = (int)VECT_GET_SIZE(coordinates_vect);
   t_bool has_changed = false;
+  printf("%lu\n",VECT_GET_SIZE(coordinates_vect));
 
   for (int i = 1; i < vect_size; i++){
     t_coordinates thiscoordinates = VECT_GET(coordinates_vect,i);
@@ -167,6 +170,8 @@ void bool_array_modification(t_bool* bool_array, t_sub_bw_img* img,
     }
     // printf("Line n°%d treated\n",i);
   }
+
+  printf("%lu\n",VECT_GET_SIZE(coordinates_vect));
 
   t_coordinates linezero = VECT_GET(coordinates_vect,0);
   t_coordinates lineone = VECT_GET(coordinates_vect,1);
