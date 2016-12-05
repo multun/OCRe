@@ -55,8 +55,6 @@ t_string *char_recon(t_w_network_vect *context, t_l_bw_img *img)
     }
   }
 
-  printf("recognised %s\n", best->target);
-
   free_nfloat_mat(fmat);
   return alloc_string(best->target);
 }
