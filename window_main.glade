@@ -180,150 +180,6 @@
             </child>
             <child>
               <object class="GtkBox">
-                <property name="width_request">230</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">center</property>
-                <property name="margin_left">10</property>
-                <property name="margin_right">10</property>
-                <property name="margin_top">10</property>
-                <property name="margin_bottom">10</property>
-                <property name="orientation">vertical</property>
-                <child>
-                  <object class="GtkBox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <property name="hexpand">True</property>
-                        <property name="vexpand">False</property>
-                        <property name="label" translatable="yes">Width</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSpinButton" id="width_resize_field">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="hexpand">False</property>
-                        <property name="adjustment">resize_weight_adj</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkBox">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <child>
-                      <object class="GtkLabel">
-                        <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="halign">start</property>
-                        <property name="hexpand">True</property>
-                        <property name="label" translatable="yes">Height</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkSpinButton" id="height_resize_field">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="adjustment">resize_height_adj</property>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkButton" id="resize_button">
-                    <property name="label" translatable="yes">resize</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="halign">center</property>
-                    <property name="valign">center</property>
-                    <property name="margin_top">10</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Resizing</property>
-              </object>
-              <packing>
-                <property name="position">1</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="filter_noise_button">
-                <property name="label" translatable="yes">Filter noise</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="halign">center</property>
-                <property name="valign">start</property>
-                <property name="margin_top">10</property>
-              </object>
-              <packing>
-                <property name="position">2</property>
-              </packing>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Filtering</property>
-              </object>
-              <packing>
-                <property name="position">2</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_left">10</property>
@@ -337,133 +193,38 @@
                     <property name="label_xalign">0</property>
                     <property name="shadow_type">none</property>
                     <child>
-                      <object class="GtkAlignment">
+                      <object class="GtkBox">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="margin_top">5</property>
-                        <property name="left_padding">12</property>
+                        <property name="orientation">vertical</property>
                         <child>
-                          <object class="GtkBox">
+                          <object class="GtkAlignment">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="orientation">vertical</property>
+                            <property name="margin_top">5</property>
+                            <property name="left_padding">12</property>
                             <child>
-                              <object class="GtkStackSwitcher">
+                              <object class="GtkBox">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="stack">bin_stack</property>
-                              </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">0</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkStack" id="bin_stack">
-                                <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="margin_top">8</property>
+                                <property name="orientation">vertical</property>
                                 <child>
-                                  <object class="GtkBox">
+                                  <object class="GtkStackSwitcher">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="valign">start</property>
-                                    <child>
-                                      <object class="GtkLabel">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <property name="halign">start</property>
-                                        <property name="label" translatable="yes">Treshold</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">0</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkSpinButton" id="fixed_treshold">
-                                        <property name="width_request">134</property>
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="halign">end</property>
-                                        <property name="activates_default">True</property>
-                                        <property name="caps_lock_warning">False</property>
-                                        <property name="progress_pulse_step">1</property>
-                                        <property name="input_purpose">number</property>
-                                        <property name="adjustment">bin_fixed_adj</property>
-                                        <property name="snap_to_ticks">True</property>
-                                        <property name="numeric">True</property>
-                                        <property name="update_policy">if-valid</property>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">True</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">1</property>
-                                      </packing>
-                                    </child>
+                                    <property name="stack">bin_stack</property>
                                   </object>
                                   <packing>
-                                    <property name="name">0_fixed</property>
-                                    <property name="title" translatable="yes">Fixed</property>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkBox">
+                                  <object class="GtkStack" id="bin_stack">
                                     <property name="visible">True</property>
                                     <property name="can_focus">False</property>
-                                    <property name="valign">start</property>
-                                    <property name="orientation">vertical</property>
-                                    <child>
-                                      <object class="GtkBox">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <child>
-                                          <object class="GtkLabel">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="halign">start</property>
-                                            <property name="label" translatable="yes">Histogram ratio</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="ratio_field">
-                                            <property name="width_request">134</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="halign">end</property>
-                                            <property name="activates_default">True</property>
-                                            <property name="text" translatable="yes">0,50</property>
-                                            <property name="caps_lock_warning">False</property>
-                                            <property name="progress_pulse_step">1</property>
-                                            <property name="input_purpose">number</property>
-                                            <property name="adjustment">ratio_adj</property>
-                                            <property name="digits">2</property>
-                                            <property name="snap_to_ticks">True</property>
-                                            <property name="numeric">True</property>
-                                            <property name="wrap">True</property>
-                                            <property name="update_policy">if-valid</property>
-                                            <property name="value">0.5</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">True</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">0</property>
-                                      </packing>
-                                    </child>
+                                    <property name="margin_top">8</property>
                                     <child>
                                       <object class="GtkBox">
                                         <property name="visible">True</property>
@@ -474,7 +235,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">False</property>
                                             <property name="halign">start</property>
-                                            <property name="label" translatable="yes">Factor</property>
+                                            <property name="label" translatable="yes">Treshold</property>
                                           </object>
                                           <packing>
                                             <property name="expand">False</property>
@@ -483,23 +244,21 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkSpinButton" id="ratio_factor_field">
+                                          <object class="GtkSpinButton" id="fixed_treshold">
                                             <property name="width_request">134</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="halign">end</property>
                                             <property name="activates_default">True</property>
-                                            <property name="text" translatable="yes">0,50</property>
+                                            <property name="text" translatable="yes">127</property>
                                             <property name="caps_lock_warning">False</property>
                                             <property name="progress_pulse_step">1</property>
                                             <property name="input_purpose">number</property>
-                                            <property name="adjustment">ratio_ad2</property>
-                                            <property name="digits">2</property>
+                                            <property name="adjustment">bin_fixed_adj</property>
                                             <property name="snap_to_ticks">True</property>
                                             <property name="numeric">True</property>
-                                            <property name="wrap">True</property>
                                             <property name="update_policy">if-valid</property>
-                                            <property name="value">0.5</property>
+                                            <property name="value">127</property>
                                           </object>
                                           <packing>
                                             <property name="expand">True</property>
@@ -509,135 +268,260 @@
                                         </child>
                                       </object>
                                       <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
+                                        <property name="name">0_fixed</property>
+                                        <property name="title" translatable="yes">Fixed</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="valign">start</property>
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="halign">start</property>
+                                                <property name="label" translatable="yes">Histogram ratio</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkSpinButton" id="ratio_field">
+                                                <property name="width_request">134</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="halign">end</property>
+                                                <property name="activates_default">True</property>
+                                                <property name="text" translatable="yes">0.50</property>
+                                                <property name="caps_lock_warning">False</property>
+                                                <property name="progress_pulse_step">1</property>
+                                                <property name="input_purpose">number</property>
+                                                <property name="adjustment">ratio_adj</property>
+                                                <property name="digits">2</property>
+                                                <property name="snap_to_ticks">True</property>
+                                                <property name="numeric">True</property>
+                                                <property name="wrap">True</property>
+                                                <property name="update_policy">if-valid</property>
+                                                <property name="value">0.5</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <property name="valign">start</property>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="halign">start</property>
+                                                <property name="label" translatable="yes">Factor</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkSpinButton" id="ratio_factor_field">
+                                                <property name="width_request">134</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="halign">end</property>
+                                                <property name="activates_default">True</property>
+                                                <property name="text" translatable="yes">0.50</property>
+                                                <property name="caps_lock_warning">False</property>
+                                                <property name="progress_pulse_step">1</property>
+                                                <property name="input_purpose">number</property>
+                                                <property name="adjustment">ratio_ad2</property>
+                                                <property name="digits">2</property>
+                                                <property name="snap_to_ticks">True</property>
+                                                <property name="numeric">True</property>
+                                                <property name="wrap">True</property>
+                                                <property name="update_policy">if-valid</property>
+                                                <property name="value">0.5</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">1_ratio</property>
+                                        <property name="title" translatable="yes">Ratio</property>
                                         <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkBox">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">False</property>
+                                        <property name="orientation">vertical</property>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="halign">start</property>
+                                                <property name="label" translatable="yes">Sauvola Coefficient</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkSpinButton" id="sauvola_coef">
+                                                <property name="width_request">134</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="halign">end</property>
+                                                <property name="activates_default">True</property>
+                                                <property name="text" translatable="yes">0.09</property>
+                                                <property name="caps_lock_warning">False</property>
+                                                <property name="progress_pulse_step">1</property>
+                                                <property name="input_purpose">number</property>
+                                                <property name="adjustment">sauvola_coef_adj</property>
+                                                <property name="digits">2</property>
+                                                <property name="snap_to_ticks">True</property>
+                                                <property name="numeric">True</property>
+                                                <property name="wrap">True</property>
+                                                <property name="update_policy">if-valid</property>
+                                                <property name="value">0.089999999999999997</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">0</property>
+                                          </packing>
+                                        </child>
+                                        <child>
+                                          <object class="GtkBox">
+                                            <property name="visible">True</property>
+                                            <property name="can_focus">False</property>
+                                            <child>
+                                              <object class="GtkLabel">
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">False</property>
+                                                <property name="halign">start</property>
+                                                <property name="label" translatable="yes">Window size</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">False</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">0</property>
+                                              </packing>
+                                            </child>
+                                            <child>
+                                              <object class="GtkSpinButton" id="sauvola_window_size">
+                                                <property name="width_request">134</property>
+                                                <property name="visible">True</property>
+                                                <property name="can_focus">True</property>
+                                                <property name="halign">end</property>
+                                                <property name="activates_default">True</property>
+                                                <property name="text" translatable="yes">3</property>
+                                                <property name="caps_lock_warning">False</property>
+                                                <property name="progress_pulse_step">1</property>
+                                                <property name="input_purpose">number</property>
+                                                <property name="adjustment">sauvola_window_size_adj</property>
+                                                <property name="snap_to_ticks">True</property>
+                                                <property name="numeric">True</property>
+                                                <property name="wrap">True</property>
+                                                <property name="update_policy">if-valid</property>
+                                                <property name="value">3</property>
+                                              </object>
+                                              <packing>
+                                                <property name="expand">True</property>
+                                                <property name="fill">True</property>
+                                                <property name="position">1</property>
+                                              </packing>
+                                            </child>
+                                          </object>
+                                          <packing>
+                                            <property name="expand">False</property>
+                                            <property name="fill">True</property>
+                                            <property name="position">1</property>
+                                          </packing>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">2_sauvola</property>
+                                        <property name="title" translatable="yes">Sauvola</property>
+                                        <property name="position">2</property>
                                       </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="name">1_ratio</property>
-                                    <property name="title" translatable="yes">Ratio</property>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
                                     <property name="position">1</property>
                                   </packing>
                                 </child>
-                                <child>
-                                  <object class="GtkBox">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="orientation">vertical</property>
-                                    <child>
-                                      <object class="GtkBox">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <child>
-                                          <object class="GtkLabel">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="halign">start</property>
-                                            <property name="label" translatable="yes">Sauvola Coefficient</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="sauvola_coef">
-                                            <property name="width_request">134</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="halign">end</property>
-                                            <property name="activates_default">True</property>
-                                            <property name="text" translatable="yes">0,50</property>
-                                            <property name="caps_lock_warning">False</property>
-                                            <property name="progress_pulse_step">1</property>
-                                            <property name="input_purpose">number</property>
-                                            <property name="adjustment">sauvola_coef_adj</property>
-                                            <property name="digits">2</property>
-                                            <property name="snap_to_ticks">True</property>
-                                            <property name="numeric">True</property>
-                                            <property name="wrap">True</property>
-                                            <property name="update_policy">if-valid</property>
-                                            <property name="value">0.089999999999999997</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">True</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">0</property>
-                                      </packing>
-                                    </child>
-                                    <child>
-                                      <object class="GtkBox">
-                                        <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
-                                        <child>
-                                          <object class="GtkLabel">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
-                                            <property name="halign">start</property>
-                                            <property name="label" translatable="yes">Window size</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">False</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">0</property>
-                                          </packing>
-                                        </child>
-                                        <child>
-                                          <object class="GtkSpinButton" id="sauvola_window_size">
-                                            <property name="width_request">134</property>
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="halign">end</property>
-                                            <property name="activates_default">True</property>
-                                            <property name="text" translatable="yes">0,50</property>
-                                            <property name="caps_lock_warning">False</property>
-                                            <property name="progress_pulse_step">1</property>
-                                            <property name="input_purpose">number</property>
-                                            <property name="adjustment">sauvola_window_size_adj</property>
-                                            <property name="snap_to_ticks">True</property>
-                                            <property name="numeric">True</property>
-                                            <property name="wrap">True</property>
-                                            <property name="update_policy">if-valid</property>
-                                            <property name="value">3</property>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">True</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
-                                        </child>
-                                      </object>
-                                      <packing>
-                                        <property name="expand">False</property>
-                                        <property name="fill">True</property>
-                                        <property name="position">1</property>
-                                      </packing>
-                                    </child>
-                                  </object>
-                                  <packing>
-                                    <property name="name">2_sauvola</property>
-                                    <property name="title" translatable="yes">Sauvola</property>
-                                    <property name="position">2</property>
-                                  </packing>
-                                </child>
                               </object>
-                              <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
-                              </packing>
                             </child>
                           </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="preprocess_button">
+                            <property name="label" translatable="yes">Binarise</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="halign">center</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
                         </child>
                       </object>
                     </child>
@@ -657,13 +541,131 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkButton" id="preprocess_button">
-                    <property name="label" translatable="yes">Preprocess</property>
+                  <object class="GtkFrame">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">True</property>
-                    <property name="halign">center</property>
+                    <property name="can_focus">False</property>
                     <property name="margin_top">20</property>
+                    <property name="label_xalign">0</property>
+                    <property name="shadow_type">none</property>
+                    <child>
+                      <object class="GtkAlignment">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="left_padding">12</property>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="width_request">230</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">center</property>
+                            <property name="margin_top">10</property>
+                            <property name="margin_bottom">10</property>
+                            <property name="orientation">vertical</property>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="vexpand">False</property>
+                                    <property name="label" translatable="yes">Width</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="width_resize_field">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="hexpand">False</property>
+                                    <property name="text" translatable="yes">0</property>
+                                    <property name="adjustment">resize_weight_adj</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="hexpand">True</property>
+                                    <property name="label" translatable="yes">Height</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkSpinButton" id="height_resize_field">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="text" translatable="yes">0</property>
+                                    <property name="adjustment">resize_height_adj</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="resize_button">
+                                <property name="label" translatable="yes">resize</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="halign">center</property>
+                                <property name="valign">center</property>
+                                <property name="margin_top">10</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                    </child>
+                    <child type="label">
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Resizing</property>
+                      </object>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -671,9 +673,105 @@
                     <property name="position">1</property>
                   </packing>
                 </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_top">10</property>
+                    <property name="margin_bottom">10</property>
+                    <child>
+                      <object class="GtkFrame">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="label_xalign">0</property>
+                        <property name="shadow_type">none</property>
+                        <child>
+                          <object class="GtkAlignment">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="left_padding">12</property>
+                            <child>
+                              <object class="GtkButton" id="detect_skew_button">
+                                <property name="label" translatable="yes">Detect skew</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="halign">center</property>
+                                <property name="valign">start</property>
+                                <property name="margin_right">10</property>
+                                <property name="margin_top">10</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="margin_left">10</property>
+                            <property name="label" translatable="yes">Skew detection</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkFrame">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">True</property>
+                        <property name="label_xalign">0</property>
+                        <property name="shadow_type">none</property>
+                        <child>
+                          <object class="GtkAlignment">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="left_padding">12</property>
+                            <child>
+                              <object class="GtkButton" id="filter_noise_button">
+                                <property name="label" translatable="yes">Filter noise</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="halign">center</property>
+                                <property name="valign">start</property>
+                                <property name="margin_right">10</property>
+                                <property name="margin_top">10</property>
+                              </object>
+                            </child>
+                          </object>
+                        </child>
+                        <child type="label">
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="margin_left">10</property>
+                            <property name="hexpand">True</property>
+                            <property name="label" translatable="yes">Noise filtering</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
               </object>
               <packing>
-                <property name="position">3</property>
+                <property name="position">1</property>
               </packing>
             </child>
             <child type="tab">
@@ -683,107 +781,76 @@
                 <property name="label" translatable="yes">Preprocessing</property>
               </object>
               <packing>
-                <property name="position">3</property>
+                <property name="position">1</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="detect_skew_button">
-                <property name="label" translatable="yes">Detect skew</property>
+              <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="halign">center</property>
-                <property name="valign">start</property>
-                <property name="margin_top">10</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkButton" id="detect_blocks_button">
+                    <property name="label" translatable="yes">Detect blocks</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">start</property>
+                    <property name="margin_top">10</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="detect_lines_button">
+                    <property name="label" translatable="yes">Detect lines</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">start</property>
+                    <property name="margin_top">10</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="detect_chars_button">
+                    <property name="label" translatable="yes">Detect characters</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="halign">center</property>
+                    <property name="valign">start</property>
+                    <property name="margin_top">10</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
               </object>
               <packing>
-                <property name="position">4</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child type="tab">
               <object class="GtkLabel" id="skew_detect_tab">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Skew detection</property>
+                <property name="label" translatable="yes">Detection</property>
               </object>
               <packing>
-                <property name="position">4</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="detect_blocks_button">
-                <property name="label" translatable="yes">Detect blocks</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="halign">center</property>
-                <property name="valign">start</property>
-                <property name="margin_top">10</property>
-              </object>
-              <packing>
-                <property name="position">5</property>
-              </packing>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel" id="block_detect_tab">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Block detection</property>
-              </object>
-              <packing>
-                <property name="position">5</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="detect_lines_button">
-                <property name="label" translatable="yes">Detect lines</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="halign">center</property>
-                <property name="valign">start</property>
-                <property name="margin_top">10</property>
-              </object>
-              <packing>
-                <property name="position">6</property>
-              </packing>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel" id="line_detect_tab">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Line detection</property>
-              </object>
-              <packing>
-                <property name="position">6</property>
-                <property name="tab_fill">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="detect_chars_button">
-                <property name="label" translatable="yes">Detect characters</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="halign">center</property>
-                <property name="valign">start</property>
-                <property name="margin_top">10</property>
-              </object>
-              <packing>
-                <property name="position">7</property>
-              </packing>
-            </child>
-            <child type="tab">
-              <object class="GtkLabel" id="char_detect_tab">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Character detection</property>
-              </object>
-              <packing>
-                <property name="position">7</property>
+                <property name="position">2</property>
                 <property name="tab_fill">False</property>
               </packing>
             </child>
@@ -860,5 +927,20 @@
     <child type="titlebar">
       <placeholder/>
     </child>
+  </object>
+  <object class="GtkSizeGroup">
+    <widgets>
+      <widget name="detect_blocks_button"/>
+      <widget name="detect_lines_button"/>
+      <widget name="detect_chars_button"/>
+    </widgets>
+  </object>
+  <object class="GtkSizeGroup">
+    <widgets>
+      <widget name="preprocess_button"/>
+      <widget name="filter_noise_button"/>
+      <widget name="resize_button"/>
+      <widget name="detect_skew_button"/>
+    </widgets>
   </object>
 </interface>

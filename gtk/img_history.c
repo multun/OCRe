@@ -71,8 +71,7 @@ void history_add_img(t_img_history *hist,
   hist_elem->img  = img;
   hist_elem->user_data = user_data;
 
-  if (hist->selected == NULL)
-    hist->selected = hist_elem;
+  hist->selected = hist_elem;
 
   pixbuf = pixbuf_render(type, img);
   GtkImage *wimg = GTK_IMAGE(
