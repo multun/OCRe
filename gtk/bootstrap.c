@@ -13,7 +13,7 @@
 #include "recognise.h"
 #include "../boxing/morpho.h"
 #include "../boxing/bounding_box.h"
-
+#include "save_text.h"
 
 void on_window_main_destroy(void)
 {
@@ -31,6 +31,7 @@ void ui_init(GtkBuilder *builder, t_img_history *img_history)
   detect_blocks_ui_init(builder, img_history);
   detect_lines_ui_init(builder, img_history);
   detect_chars_ui_init(builder, img_history);
+  save_text_ui_init(builder, img_history);
 }
 
 

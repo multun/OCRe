@@ -143,7 +143,7 @@
                     <property name="hscrollbar_policy">never</property>
                     <property name="shadow_type">in</property>
                     <child>
-                      <object class="GtkTextView">
+                      <object class="GtkTextView" id="result_buffer_view">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="margin_left">10</property>
@@ -164,6 +164,21 @@
                     <property name="expand">False</property>
                     <property name="fill">True</property>
                     <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkButton" id="save_text_button">
+                    <property name="label" translatable="yes">Save</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <property name="valign">center</property>
+                    <property name="hexpand">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
                   </packing>
                 </child>
               </object>
@@ -516,6 +531,7 @@
                             <property name="can_focus">True</property>
                             <property name="receives_default">True</property>
                             <property name="halign">center</property>
+                            <property name="margin_top">10</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>

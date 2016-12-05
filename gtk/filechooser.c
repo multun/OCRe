@@ -19,3 +19,12 @@ GtkWidget *create_filechooser_dialog(GtkBuilder *builder)
 				  "bitmap_filter")));
   return wdg;
 }
+
+GtkWidget *create_filesaver_dialog(void)
+{
+  return  gtk_file_chooser_dialog_new("Save file", NULL,
+				      GTK_FILE_CHOOSER_ACTION_SAVE,
+				      "Cancel", GTK_RESPONSE_CANCEL,
+				      "Save", GTK_RESPONSE_OK,
+				      NULL);
+}
