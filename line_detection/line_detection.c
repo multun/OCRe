@@ -8,9 +8,26 @@ typedef struct s_coord
   uint begin, end;
 } t_coord;
 
-#include <stdio.h>
+static inline bool col_empty(t_sub_bw_img *sub, uint x)
+{
+  for(uint y = 0; y < sub->height; y++)
+    if(!SUB_AT(sub, x, y))
+      return false;
+  return true;
+}
 
-//static is_line_empty(t_sub_bw_img *img, uint y)
+static void crop_cols(t_sub_bw_img *sub)
+{
+  for(; sub->width > 0 && col_empty(sub, 0);)
+  {
+    sub->xoff++;
+    sub->width--;
+  }
+
+  for(; sub->width > 0 && col_empty(sub, sub->width - 1);)
+    sub->width--;
+}
+
 DECL_NAMED_VECTOR(t_coord, coord);
 
 static size_t *get_hist(t_sub_bw_img *img)
@@ -24,6 +41,7 @@ static size_t *get_hist(t_sub_bw_img *img)
 	hist[y]++;
   return hist;
 }
+
 static t_coord_vect *make_coords(t_sub_bw_img *img, size_t *hist)
 {
   t_coord_vect *ret = VECT_ALLOC(coord, 32);
@@ -55,7 +73,6 @@ static t_coord_vect *make_coords(t_sub_bw_img *img, size_t *hist)
 
 t_sub_bw_img_vect *detect_lines(t_sub_bw_img *img)
 {
-  puts("running");
   size_t *hist = get_hist(img);
   t_coord_vect *coords = make_coords(img, hist);
 
@@ -70,6 +87,7 @@ t_sub_bw_img_vect *detect_lines(t_sub_bw_img *img)
       (uint)cur.begin,
       img->width,
       (uint)(cur.end - cur.begin + 1));
+    crop_cols(cursub);
     VECT_PUSH(res, cursub);
   }
   VECT_FREE(coords);
