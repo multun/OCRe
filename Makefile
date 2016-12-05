@@ -12,10 +12,13 @@ CFLAGS =-DDEBUG=$(LOG_LEVEL) -std=c99 -Wconversion -pedantic -Wall \
 	-Wredundant-decls -Wold-style-definition -Werror -ggdb3 -O0 \
 	-fno-omit-frame-pointer -fstrict-aliasing
 
-FLAGS_BUILD=-O3 -Wall -pedantic -std=c99 -Wextra -fomit-frame-pointer
+CFLAGS_BUILD=-O3 -Wall -pedantic -std=c99 -Wextra -fomit-frame-pointer
 
 # Ignore warnings from gtk headers
-CFLAGS += $(subst -I,-isystem,$(shell pkg-config --cflags gtk+-3.0))
+CFLAGS_COMMON += $(subst -I,-isystem,$(shell pkg-config --cflags gtk+-3.0))
+CFLAGS += $(CFLAGS_COMMON)
+CFLAGS_BUILD += $(CFLAGS_COMMON)
+
 LDFLAGS = $(shell pkg-config --libs gtk+-3.0) -lm
 
 EXEC=ocre
