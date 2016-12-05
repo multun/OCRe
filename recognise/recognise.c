@@ -2,6 +2,7 @@
 #include "../boxing/wrapper.h"
 #include "../block_to_line/block_to_line.h"
 #include "../character_segmentation/segmentation.h"
+#include "../line_detection/line_detection.h"
 #include "../error.h"
 // shouldn't take a network as argument, just a placeholder
 
@@ -28,7 +29,8 @@ t_string *recognise_bw_img(t_w_network_vect *net, t_bw_img *img)
 static t_string *recognise_block(t_w_network_vect *net, t_block *block)
 {
   t_string *res = alloc_sized_string("", 500);
-  t_sub_bw_img_vect *lines = line_subdivision(block);
+  //t_sub_bw_img_vect *lines = line_subdivision(block);
+  t_sub_bw_img_vect *lines = detect_lines(block);
   for(size_t i = 0; i < VECT_SIZE(lines); i++)
   {
     t_line *cur = VECT_GET(lines, i);

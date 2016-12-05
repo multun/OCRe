@@ -36,6 +36,7 @@ SRC += $(wildcard rescale/*.c)
 SRC += $(wildcard recognise/*.c)
 SRC += img_network/training.c
 SRC += img_network/charset.c
+SRC += $(wildcard line_detection/*.c)
 
 OBJ = $(SRC:.c=.o)
 DEP = ${SRC:.c=.d}

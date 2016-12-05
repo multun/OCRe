@@ -3,7 +3,7 @@
 #include "../tdefs.h"
 #include "../error.h"
 #include "detect_lines.h"
-#include "../block_to_line/wrapper.h"
+#include "../line_detection/wrapper.h"
 
 static void detect_lines_button_clicked(GtkButton *button,
 					 t_img_history *hist)
@@ -31,6 +31,6 @@ void detect_lines_ui_run(t_img_history *img_history, t_img_history_e *hist_e)
     return;
 
   t_sub_bw_img_vect* blocks = (t_sub_bw_img_vect*)hist_e->img;
-  t_sub_bw_img_vect_vect *vimg = line_extraction(blocks);
+  t_sub_bw_img_vect_vect *vimg = detect_lines_wrapped(blocks);
   history_add_img(img_history, SUB_BW_VECT2, (void*)vimg, (void*)vimg);
 }
