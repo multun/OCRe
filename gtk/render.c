@@ -62,7 +62,7 @@ DEFINE_RENDER_SUB_IMG(bw)
 
 GdkPixbuf *pixbuf_render(t_img_type type, void *img)
 {
-  GdkPixbuf *pixbuf;
+  GdkPixbuf *pixbuf = NULL;
   union
   {
     t_l_color_img_vect		*color;
